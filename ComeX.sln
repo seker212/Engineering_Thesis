@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31727.386
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComeX.WPF", "ComeX.WPF\ComeX.WPF.csproj", "{B7B5A6CE-C093-4220-ABA6-E2C82F5B9B66}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComeX.WPF", "ComeX.WPF\ComeX.WPF.csproj", "{B7B5A6CE-C093-4220-ABA6-E2C82F5B9B66}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComeX.UserDatabaseAPI", "ComeX.UserDatabaseAPI\ComeX.UserDatabaseAPI.csproj", "{2D8A0CAF-1BA3-4B24-AAD9-466A3D198782}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComeX.UserDatabaseAPI", "ComeX.UserDatabaseAPI\ComeX.UserDatabaseAPI.csproj", "{2D8A0CAF-1BA3-4B24-AAD9-466A3D198782}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComeX.Server", "ComeX.Server\ComeX.Server.csproj", "{A30CDF25-3D55-4760-B2BC-6D1FFFD0C253}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComeX.Server", "ComeX.Server\ComeX.Server.csproj", "{A30CDF25-3D55-4760-B2BC-6D1FFFD0C253}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComeX.Lib.Auth", "ComeX.Lib.Auth\ComeX.Lib.Auth.csproj", "{81B08095-CA57-4BCA-B01E-BB44F7561DB6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComeX.Lib.Auth", "ComeX.Lib.Auth\ComeX.Lib.Auth.csproj", "{81B08095-CA57-4BCA-B01E-BB44F7561DB6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib.Auth", "Lib.Auth", "{028C1A99-D966-4975-9DE6-E8C473F30CA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib.Auth.Base", "Lib.Auth.Base\Lib.Auth.Base.csproj", "{38129CCE-E29F-455A-BF82-2242E2EE3E78}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,9 +37,17 @@ Global
 		{81B08095-CA57-4BCA-B01E-BB44F7561DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81B08095-CA57-4BCA-B01E-BB44F7561DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81B08095-CA57-4BCA-B01E-BB44F7561DB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{38129CCE-E29F-455A-BF82-2242E2EE3E78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{38129CCE-E29F-455A-BF82-2242E2EE3E78}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{38129CCE-E29F-455A-BF82-2242E2EE3E78}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{38129CCE-E29F-455A-BF82-2242E2EE3E78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{81B08095-CA57-4BCA-B01E-BB44F7561DB6} = {028C1A99-D966-4975-9DE6-E8C473F30CA8}
+		{38129CCE-E29F-455A-BF82-2242E2EE3E78} = {028C1A99-D966-4975-9DE6-E8C473F30CA8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5514EF07-D25B-4877-B078-83820ED263AD}
