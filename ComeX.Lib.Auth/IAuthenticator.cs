@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Lib.Auth.Base
+namespace ComeX.Lib.Auth
 {
     /// <summary>
     /// Allows to authenticate user based on given credentials.

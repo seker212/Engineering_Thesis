@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-#nullable enable
-
-namespace Lib.Auth.Base
+namespace ComeX.Lib.Auth
 {
     /// <summary>
     /// Exception thrown by authenticator when provided credentials don't match any user.
