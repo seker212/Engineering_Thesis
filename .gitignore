@@ -351,3 +351,5 @@ MigrationBackup/
 
 # Images for testing GUI
 /ComeX.WPF/ExampleImages/
+/ComeX.WPF/*.jpg
+/ComeX.WPF/*.png

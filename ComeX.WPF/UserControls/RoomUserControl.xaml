@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="ComeX.WPF.UserControls.RoomUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ComeX.WPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="140"
+            DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Grid x:Name="Room" Height="40" Width="140">
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="../Styles.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+
+                <Style x:Key="DefaultEllipseStyle" TargetType="{x:Type Ellipse}">
+                    <Setter Property="Width" Value="10"/>
+                    <Setter Property="Height" Value="10"/>
+                    <Setter Property="Visibility" Value="Hidden"/>
+                </Style>
+                <Style x:Key="NewMessageRoomStyle" TargetType="{x:Type Ellipse}" BasedOn="{StaticResource DefaultEllipseStyle}">
+                    <Setter Property="Fill" Value="White"/>
+                    <Setter Property="Visibility" Value="Visible"/>
+                </Style>
+                <Style x:Key="NewMentionRoomStyle" TargetType="{x:Type Ellipse}" BasedOn="{StaticResource DefaultEllipseStyle}">
+                    <Setter Property="Fill" Value="Red"/>
+                    <Setter Property="Visibility" Value="Visible"/>
+                </Style>
+                <Style x:Key="RoomNameButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource DefaultButtonStyle}">
+
+                    <Setter Property="Background" Value="{x:Null}" />
+                    <Setter Property="Foreground" Value="{StaticResource LightBlue1}" />
+                    <Setter Property="FontSize" Value="14" />
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                </Style>
+            </ResourceDictionary>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="20"/>
+            <ColumnDefinition Width="120"/>
+        </Grid.ColumnDefinitions>
+        <Ellipse x:Name="NotifyRoomEllipse" Grid.Column="0" Style="{StaticResource DefaultEllipseStyle}"/>
+        <Button x:Name="RoomNameButton" Grid.Column="1" Style="{StaticResource RoomNameButtonStyle}"/>
+    </Grid>
+</UserControl>

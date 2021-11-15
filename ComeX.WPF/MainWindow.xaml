@@ -3,25 +3,21 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:ComeX.WPF"
         mc:Ignorable="d"
         Title="ComeX" Height="600" Width="800"
         MinHeight="400" MinWidth="600">
     <Window.Resources>
-        <local:MinusTenConverter x:Key="MinusTenConverter" />
-        <local:MinusAnotherValueConverter x:Key="MinusAnotherValueConverter" />
-        <RoutedUICommand x:Key="SendMessage"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
 
-        <Style x:Key="EmptyButtonStyle" TargetType="{x:Type Button}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Ellipse Width="60" Height="60" >
-                        </Ellipse>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+            <local:MinusTenConverter x:Key="MinusTenConverter" />
+            <local:MinusAnotherValueConverter x:Key="MinusAnotherValueConverter" />
+            <RoutedUICommand x:Key="SendMessage"/>
+        </ResourceDictionary>
     </Window.Resources>
 
     <Window.CommandBindings>
@@ -31,123 +27,153 @@
     <Window.InputBindings>
         <KeyBinding Command="{StaticResource SendMessage}" Key="Enter"/>
     </Window.InputBindings>
-    
-    <Grid x:Name="MainGrid" ShowGridLines="True">
+
+    <Grid x:Name="MainGrid">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="80"></ColumnDefinition>
-            <ColumnDefinition Width="100"></ColumnDefinition>
-            <ColumnDefinition MinWidth="400"></ColumnDefinition>
+            <ColumnDefinition Width="160"></ColumnDefinition>
+            <ColumnDefinition MinWidth="360" Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
-        <Grid x:Name="ServersUserGrid" ShowGridLines="True" Width="80" Background="#FF24314D">
+        <Grid x:Name="ServersUserGrid" Width="80" Background="{StaticResource DarkBlue3}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="170"></RowDefinition>
+                <RowDefinition Height="150"></RowDefinition>
             </Grid.RowDefinitions>
 
             <WrapPanel Grid.Row="0" x:Name="ServersWrapP" ItemWidth="70" Orientation="Vertical" VerticalAlignment="Top" Width="70">
                 <WrapPanel.Resources>
-                    <Style TargetType="{x:Type Button}">
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource RoundButtonStyle}">
                         <Setter Property="Margin" Value="0,5,0,5" />
                         <Setter Property="Width" Value="60" />
                         <Setter Property="Height" Value="60" />
                         <Setter Property="HorizontalAlignment" Value="Center" />
                         <Setter Property="VerticalAlignment" Value="Stretch" />
                     </Style>
+
                 </WrapPanel.Resources>
-                <Button Content="+" />
+                <Button x:Name="AddServer"
+                    Content="+"
+                        Click="AddServerMethod"
+                        />
             </WrapPanel>
 
-            <WrapPanel Grid.Row="1" x:Name="UserWrapP" Orientation="Vertical" Margin="5,0,5,0" ItemWidth="70" Width="70">
+            <WrapPanel Grid.Row="1" x:Name="UserWrapP" Orientation="Vertical" Margin="5,0,5,10" ItemWidth="70" Width="70">
                 <WrapPanel.Resources>
-                    <Style TargetType="{x:Type Button}">
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource RoundButtonStyle}">
                         <Setter Property="Margin" Value="0,5,0,5" />
                         <Setter Property="Width" Value="60" />
                         <Setter Property="Height" Value="60" />
                         <Setter Property="HorizontalAlignment" Value="Center" />
                         <Setter Property="VerticalAlignment" Value="Stretch" />
-                        
+
                     </Style>
                     <Style TargetType="{x:Type TextBox}">
                         <Setter Property="Background" Value="{x:Null}" />
                         <Setter Property="BorderBrush" Value="{x:Null}" />
-                        <Setter Property="Foreground" Value="#D7E3EA" />
-                        <Setter Property="FontFamily" Value="Impact" />
+                        <Setter Property="Foreground" Value="{StaticResource LightBlue1}" />
                         <Setter Property="FontSize" Value="14" />
                     </Style>
                 </WrapPanel.Resources>
 
-                <Button Content="Settings" />
+                <Button x:Name="UserAvatar" />
+
+                <Button x:Name="Settings"
+                        Width="60"
+                        Height="60">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/settings.png"/>
+                    </Button.Background>
+                </Button>
             </WrapPanel>
         </Grid>
 
-        <WrapPanel Grid.Column="1" x:Name="RoomsWrapP" Background="#FF11182C" Orientation="Vertical" >
-            <WrapPanel.Resources>
-                <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="Background" Value="{x:Null}" />
-                    <Setter Property="Foreground" Value="#D7E3EA" />
-                    <Setter Property="FontFamily" Value="Impact" />
-                    <Setter Property="FontSize" Value="14" />
-                    <Setter Property="TextAlignment" Value="Center" />
-                </Style>
-                <Style TargetType="{x:Type Button}">
-                    <Setter Property="Margin" Value="5,5,5,5" />
-                    <Setter Property="Width" Value="{Binding ElementName=RoomsWrapP, Path=ActualWidth, Converter={StaticResource MinusTenConverter}}" />
-                    <Setter Property="Height" Value="24" />
-                    <Setter Property="Background" Value="{x:Null}" />
-                    <Setter Property="Foreground" Value="#D7E3EA" />
-                    <Setter Property="FontFamily" Value="Impact" />
-                    <Setter Property="FontSize" Value="14" />
-                    <Setter Property="HorizontalAlignment" Value="Center" />
-                    <Setter Property="HorizontalContentAlignment" Value="Left" />
-                    <Setter Property="VerticalAlignment" Value="Stretch" />
-                </Style>
-            </WrapPanel.Resources>
-            <TextBlock Text="Rooms" TextWrapping="Wrap" Width="{Binding ActualWidth, ElementName=RoomsWrapP}" VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
-            <Button Content="General" HorizontalAlignment="Left"/>
+        <WrapPanel Grid.Column="1" x:Name="RoomsWrapP"
+                   Width="160"
+                   Background="{StaticResource DarkBlue1}"
+                   Orientation="Vertical">
         </WrapPanel>
 
-        <Grid Grid.Column="2" ShowGridLines="True" x:Name="ContentGrid">
+        <Grid Grid.Column="2" x:Name="ContentGrid">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition MinWidth="300"></ColumnDefinition>
-                <ColumnDefinition Width="100"></ColumnDefinition>
+                <ColumnDefinition MinWidth="200"></ColumnDefinition>
+                <ColumnDefinition Width="160"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
                 <RowDefinition></RowDefinition>
             </Grid.RowDefinitions>
-            <WrapPanel Grid.Column="0" Grid.Row="0" x:Name="RoomTitle" MinWidth="30" Background="#FF11182C">
-                <TextBox Text="Room description" TextWrapping="Wrap" Width="120"/>
+            <Rectangle Grid.Row="0" Grid.Column="0" Fill="{StaticResource DarkBlue2}"/>
+            <WrapPanel Grid.Column="0" Grid.Row="0" x:Name="RoomTitle"
+                       MinWidth="30"
+                       Height="40"
+                       Orientation="Horizontal"
+                       Background="{StaticResource DarkBlue2}">
+
+                <Border BorderBrush="{x:Null}" Height="40">
+                    <TextBlock x:Name="SelectedRoomTitle" Style="{StaticResource DefaultHeaderTextBlockStyle}"
+                         VerticalAlignment="Center"
+                         TextWrapping="Wrap"
+                         Width="120"/>
+                </Border>
+
+                <Border BorderBrush="{x:Null}" Height="40">
+                    <TextBlock x:Name="SelectedRoomDescription" Style="{StaticResource DefaultTextBlockStyle}"
+                         VerticalAlignment="Center"
+                         TextWrapping="Wrap"
+                         Foreground="{StaticResource LightBlue2}"/>
+                </Border>
             </WrapPanel>
-            <WrapPanel Grid.Column="1" Grid.Row="0" x:Name="UsersOnline" Background="#FF11182C">
+            <WrapPanel Grid.Column="1" Grid.Row="0" x:Name="UsersOnline" Background="{StaticResource DarkBlue2}">
                 <WrapPanel.Resources>
-                    <Style TargetType="{x:Type Button}">
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource RoundButtonStyle}">
                         <Setter Property="Margin" Value="0,5,0,5" />
-                        <Setter Property="Width" Value="20" />
-                        <Setter Property="Height" Value="20" />
+                        <Setter Property="Width" Value="40" />
+                        <Setter Property="Height" Value="40" />
                         <Setter Property="HorizontalAlignment" Value="Stretch" />
                         <Setter Property="VerticalAlignment" Value="Center" />
                     </Style>
                 </WrapPanel.Resources>
                 <Button Content="+" />
             </WrapPanel>
-            <Grid Grid.Column="0" Grid.Row="1" x:Name="RoomMessagesGrid" Background="#FF24314D">
+            <Grid Grid.Column="0" Grid.Row="1" x:Name="RoomMessagesGrid" Background="{StaticResource DarkBlue3}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="59*"/>
+                    <ColumnDefinition Width="341*"/>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="100"></RowDefinition>
+                    <RowDefinition Height="110"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <WrapPanel Grid.Row="0" x:Name="MessagesWrapP" Orientation="Vertical"></WrapPanel>
+                <WrapPanel Grid.Row="0" x:Name="MessagesWrapP" Orientation="Vertical" Grid.ColumnSpan="2"></WrapPanel>
 
-                <Grid Grid.Row="1" x:Name="TypeGrid">
+                <Grid Grid.Row="1" x:Name="TypeGrid" Margin="0,0,0,10" Grid.ColumnSpan="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="70"></RowDefinition>
                         <RowDefinition Height="40"></RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBox Grid.Row="0" x:Name="TypeTextBox" Text="Type message here..." Foreground ="#D7E3EA" Background="#FF11182C" GotFocus="RemoveMessagePlaceholder" LostFocus="AddMessagePlaceholder"></TextBox>
+                    <Rectangle Grid.Row="0" Fill="{StaticResource DarkBlue2}"/>
+                    <Rectangle x:Name="Placeholder" Grid.Row="0"
+                               Height="23"
+                               Width="141"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top">
+                        <Rectangle.Fill>
+                            <ImageBrush ImageSource="/placeholder.jpg"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <TextBox Style="{StaticResource DefaultTextBoxStyle}" Grid.Row="0" x:Name="TypeTextBox"
+                             FontSize="16"
+                             BorderThickness="0"
+                             Foreground ="{StaticResource LightBlue1}"
+                             GotFocus="RemoveMessagePlaceholder"
+                             LostFocus="AddMessagePlaceholder" FontStyle="Normal"
+                             CaretBrush="{StaticResource LightBlue1}"/>
+
                     <WrapPanel Grid.Row="1" x:Name="TypeToolsWrapPanel" Orientation="Horizontal" FlowDirection="RightToLeft">
                         <WrapPanel.Resources>
-                            <Style TargetType="{x:Type Button}">
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource RoundButtonStyle}">
                                 <Setter Property="Margin" Value="5,5,5,5" />
                                 <Setter Property="Width" Value="20" />
                                 <Setter Property="Height" Value="20" />
@@ -155,15 +181,15 @@
                                 <Setter Property="VerticalAlignment" Value="Center" />
                             </Style>
                         </WrapPanel.Resources>
-                        <Button x:Name="SendButton" Content="s" Command="{StaticResource SendMessage}" ></Button>
+                        <Button x:Name="SendButton" Width="40" Command="{StaticResource SendMessage}" ></Button>
                         <Button x:Name="GifButton"></Button>
                         <Button x:Name="PictureButton"></Button>
                     </WrapPanel>
                 </Grid>
 
             </Grid>
-            <WrapPanel Grid.Column="1" Grid.Row="1" x:Name="ThreadsWrapP" Background="#FF11182C">
-                <TextBox Text="Threads" TextWrapping="Wrap" Width="120"/>
+            <WrapPanel Grid.Column="1" Grid.Row="1" x:Name="ThreadsWrapP" Background="{StaticResource DarkBlue1}">
+
             </WrapPanel>
         </Grid>
     </Grid>

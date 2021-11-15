@@ -6,4 +6,16 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="avatar.jpg" />
+    <None Remove="placeholder.jpg" />
+    <None Remove="settings.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="avatar.jpg" />
+    <Resource Include="placeholder.jpg" />
+    <Resource Include="settings.png" />
+  </ItemGroup>
+
 </Project>
