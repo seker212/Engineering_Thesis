@@ -1,4 +1,5 @@
 ﻿using ComeX.UserDatabaseAPI.Models;
+using ComeX.UserDatabaseAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -14,20 +15,68 @@ namespace ComeX.UserDatabaseAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
-        public UserController(IConfiguration configuration)
+        private readonly UserService _userService;
+        public UserController(UserService userService)
         {
-            _configuration = configuration;
+            _userService = userService;
         }
 
         [HttpGet]
-        public JsonResult Get()
+        public async Task<IActionResult> Get()
         {
-            MongoClient dbClient = new MongoClient(_configuration.GetConnectionString("UserAPICon"));
+            var result = await _userService.Get();
 
-            var result = dbClient.GetDatabase("UserDB").GetCollection<User>("users").AsQueryable();
+            if (result is null)
+                return BadRequest();
+            else
+                return Ok(result);
+        }
 
-            return new JsonResult(result);
+        [HttpGet("{id:length(24)}", Name = "GetUser")]
+        public async Task<IActionResult> Get(string id)
+        {
+            var result = await _userService.Get(id);
+
+            if (result is null)
+                return NotFound();
+            else
+                return Ok(result);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            var result = await _userService.Create(user);
+            return Ok(result);
+        }
+
+        [HttpPut("{id:length(24)}")]
+        public async Task<IActionResult> Update(string id, User userIn)
+        {
+            var user = await _userService.Get(id);
+
+            if (user is null)
+                return NotFound();
+
+            await _userService.Update(id, userIn);
+            return NoContent();
+        }
+
+        [HttpDelete("{id:length(24)}")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            var user = await _userService.Get(id);
+
+            if (user is null)
+                return NotFound();
+
+            await _userService.Remove(user.Id);
+            return NoContent();
         }
     }
 }

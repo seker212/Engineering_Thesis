@@ -10,6 +10,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Serialization;
 using Microsoft.OpenApi.Models;
+using ComeX.UserDatabaseAPI.Models;
+using Microsoft.Extensions.Options;
+using ComeX.UserDatabaseAPI.Services;
 
 namespace ComeX.UserDatabaseAPI
 {
@@ -42,6 +45,12 @@ namespace ComeX.UserDatabaseAPI
             services.AddControllersWithViews().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
                 .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+
+            services.Configure<UserDatabaseSettings>(Configuration.GetSection(nameof(UserDatabaseSettings)));
+
+            services.AddSingleton<IUserDatabaseSettings>(sp => sp.GetRequiredService<IOptions<UserDatabaseSettings>>().Value);
+
+            services.AddSingleton<UserService>();
 
             services.AddControllers();
         }
