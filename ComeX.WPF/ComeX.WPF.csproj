@@ -10,12 +10,16 @@
     <None Remove="avatar.jpg" />
     <None Remove="placeholder.jpg" />
     <None Remove="settings.png" />
+    <None Remove="UserControls\answerPlaceholder.jpg" />
+    <None Remove="Windows\questionPlaceholder.jpg" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="avatar.jpg" />
-    <Resource Include="placeholder.jpg" />
+    <Resource Include="Images\Placeholders\messagePlaceholder.jpg" />
     <Resource Include="settings.png" />
+    <Resource Include="UserControls\answerPlaceholder.jpg" />
+    <Resource Include="Windows\questionPlaceholder.jpg" />
   </ItemGroup>
 
 </Project>

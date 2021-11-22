@@ -1,0 +1,113 @@
+﻿<Window x:Class="ComeX.WPF.Windows.CreateSurveyWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ComeX.WPF"
+        mc:Ignorable="d"
+        Title="CreateSurveyWindow"
+        ResizeMode="NoResize"
+        Height="400" Width="400">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+    
+    <Grid x:Name="CreateSurveyMainGrid" Background="{StaticResource DarkBlue3}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"></RowDefinition>
+            <RowDefinition MinHeight="360"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid x:Name="TitleGrid" Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock x:Name="Title" Grid.Column="0" Style="{StaticResource DefaultHeaderTextBlockStyle}"
+                   Margin="5,5,5,5"
+                   HorizontalAlignment="Left"
+                   Width="Auto"
+                   Background="{StaticResource DarkBlue2}"
+                   Text=" Create new survey "/>
+
+            <Button x:Name="AddSurveyButton" Grid.Column="1" Style="{StaticResource DefaultButtonStyle}"
+                    Margin="0,5,0,5"
+                    HorizontalAlignment="Center"
+                    Width="Auto"
+                    Content=" Add survey "
+                    Click = "AddAnswer"/>
+        </Grid>
+        <Grid x:Name="CreateSurveyInnerGrid" Grid.Row="1" Margin="5,5,5,5">
+            <Grid.Resources >
+                <Style TargetType="Border" >
+                    <Setter Property="Padding" Value="5,5,5,5" />
+                </Style>
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="QuestionRow" Height="40"/>
+                <RowDefinition x:Name="CheckboxedRow" Height="40"/>
+                <RowDefinition x:Name="AddAnswerRow" Height="40"/>
+                <RowDefinition x:Name="AnswersRow" Height="200"/>
+            </Grid.RowDefinitions>
+            <Rectangle Grid.Row="0" Fill="{StaticResource DarkBlue2}"
+                       Margin="0,5,0,5"/>
+            <Rectangle x:Name="Placeholder" Grid.Row="0"
+                       Margin="0,5,0,5"
+                               Height="23"
+                               Width="141"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top">
+                <Rectangle.Fill>
+                    <ImageBrush ImageSource="/Windows/questionPlaceholder.jpg"/>
+                </Rectangle.Fill>
+            </Rectangle>
+            <TextBox x:Name="QuestionTextBox" Grid.Row="0" Style="{StaticResource DefaultTextBoxStyle}"
+                     Margin="0,5,0,5"
+                     FontSize="16"
+                             BorderThickness="0"
+                             Foreground ="{StaticResource LightBlue1}"
+                             GotFocus="RemoveQuestionPlaceholder"
+                             LostFocus="AddQuestionPlaceholder" FontStyle="Normal"
+                             CaretBrush="{StaticResource LightBlue1}">
+                <TextBox.Background>
+                    <ImageBrush/>
+                </TextBox.Background>
+            </TextBox>
+            <Grid x:Name="CheckboxesGrid" Grid.Row="1" Margin="0,5,0,5">
+                <Grid.Resources>
+                    <Style TargetType="{x:Type CheckBox}">
+                        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}" />
+                        <Setter Property="FontSize" Value="14" />
+                        <Setter Property="Foreground" Value="{StaticResource LightBlue1}" />
+                    </Style>
+                </Grid.Resources>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="MultipleChoiceCol"/>
+                    <ColumnDefinition x:Name="EnableAddingCol"/>
+                </Grid.ColumnDefinitions>
+                <CheckBox x:Name="MultipleChoiceCheckBox" Grid.Column="0"
+                          Content="Multiple choice" />
+                <CheckBox x:Name="EnableAddingCheckBox" Grid.Column="1"
+                          Content="Enable adding" />
+            </Grid>
+
+            <Button x:Name="AddAnswerButton" Grid.Row="2" Style="{StaticResource DefaultButtonStyle}"
+                    Margin="0,5,0,5"
+                    HorizontalAlignment="Left"
+                    Width="Auto"
+                    Content=" Add new answer "
+                    Click = "AddAnswer"/>
+
+            <Grid Grid.Row="3" Margin="0,5,0,5" Height="180" Background="{StaticResource DarkBlue2}">
+                <ScrollViewer VerticalScrollBarVisibility="Auto" >
+                    <StackPanel x:Name="AnswersStackP"
+                               
+                        />
+                </ScrollViewer>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>

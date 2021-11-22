@@ -7,30 +7,33 @@
     <Brush x:Key="DarkBlue3">#FF24314D</Brush>
     <Brush x:Key="LightBlue1">#D7E3EA</Brush>
     <Brush x:Key="LightBlue2">#A0B1CF</Brush>
+
+    <FontFamily x:Key="DefaultFont">Calibri</FontFamily>
     
     <Style x:Key="DefaultTextBlockStyle" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="Calibri"/>
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
         <Setter Property="FontSize" Value="14"/>
         <Setter Property="Foreground" Value="{StaticResource LightBlue1}"/>
         <Setter Property="Background" Value="{x:Null}"/>
     </Style>
 
     <Style x:Key="DefaultHeaderTextBlockStyle" TargetType="TextBlock">
-        <Setter Property="FontFamily" Value="Calibri"/>
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="Foreground" Value="{StaticResource LightBlue1}"/>
         <Setter Property="Background" Value="{x:Null}"/>
     </Style>
 
     <Style x:Key="DefaultTextBoxStyle" TargetType="TextBox">
-        <Setter Property="FontFamily" Value="Calibri"/>
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="Foreground" Value="{StaticResource LightBlue1}"/>
         <Setter Property="Background" Value="{x:Null}"/>
     </Style>
 
     <Style x:Key="DefaultButtonStyle" TargetType="Button">
-        <Setter Property="FontFamily" Value="Calibri"/>
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+        <Setter Property="FontSize" Value="14"/>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">

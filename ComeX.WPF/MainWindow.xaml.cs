@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using ComeX.WPF.UserControls;
+using ComeX.WPF.Windows;
 
 namespace ComeX.WPF {
     /// <summary>
@@ -29,18 +30,18 @@ namespace ComeX.WPF {
 
             LoadUser();
             LoadServers();
-            LoadRooms();    
+            LoadRooms();
+            // TEST_AddSurvey();
+
         }
 
         void LoadUser() {
-            Avatar.ImageSource = new BitmapImage(new Uri(System.IO.Path.Combine(SolutionPath, @"ExampleImages\avatar.jpg")));
+            Avatar.ImageSource = new BitmapImage(new Uri(System.IO.Path.Combine(SolutionPath, @"ExampleImages\avatar2.jpg")));
             UserAvatar.Background = Avatar;
         }
 
         void LoadServers() {
-            for (int i = 0; i < 3; i++) {
-                
-            }
+            
         }
 
         void LoadRooms() {
@@ -50,9 +51,12 @@ namespace ComeX.WPF {
                 newRoom.RoomNameButton.Click += new RoutedEventHandler(SwitchRoom);
                 if (i == 1)
                     newRoom.SetNewMessage();
-                if (i == 2)
+                else if (i == 2)
                     newRoom.SetNewMention();
                 RoomsWrapP.Children.Add(newRoom);
+                if (i == 0) {
+                    SwitchRoom(newRoom.RoomNameButton, null);
+                }
             }
         }
 
@@ -81,13 +85,44 @@ namespace ComeX.WPF {
             }
         }
 
+        private void CreateSurvey(object sender, RoutedEventArgs e) {
+            CreateSurveyWindow surveyWindow = new CreateSurveyWindow();
+
+            /*
+            surveyWindow.Owner = Application.Current.MainWindow;
+            surveyWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            Application.Current.MainWindow.IsEnabled = false;
+            */
+
+            surveyWindow.Show();
+        }
+
+        private void TEST_AddSurvey() {
+            SurveyUserControl newSurvey = new SurveyUserControl { };
+            newSurvey.AuthorText.Text = "Anonim";
+            newSurvey.MessageAvatar.Background = Avatar;
+            newSurvey.DateText.Text = DateTime.Now.ToString();
+            newSurvey.ContentText.Text = "Question here";
+
+            SurveyAnswerUserControl newAnswer = new SurveyAnswerUserControl { };
+            newAnswer.AnswerText.Text = "new answer";
+            newAnswer.AnswerVotesCounter.Text = "10";
+
+            Button newButton = new Button();
+            newButton.Content = "Add";
+
+            newSurvey.AnswersWrapP.Children.Add(newAnswer);
+            newSurvey.AnswersWrapP.Children.Add(newButton);
+            MessagesWrapP.Children.Add(newSurvey);
+        }
+
         private void AddMessagePlaceholder(object sender, RoutedEventArgs e) {
             TextBox textbox = sender as TextBox;
-            Placeholder.Visibility = Visibility.Visible;
+            if (textbox.Text=="")
+                Placeholder.Visibility = Visibility.Visible;
         }
 
         private void RemoveMessagePlaceholder(object sender, RoutedEventArgs e) {
-            TextBox textbox = sender as TextBox;
             Placeholder.Visibility = Visibility.Hidden;
         }
     }

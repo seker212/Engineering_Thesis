@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:ComeX.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="40" d:DesignWidth="140"
-            DataContext="{Binding RelativeSource={RelativeSource Self}}">
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
     <Grid x:Name="Room" Height="40" Width="140">
         <Grid.Resources>
             <ResourceDictionary>

@@ -55,7 +55,8 @@
                 <Button x:Name="AddServer"
                     Content="+"
                         Click="AddServerMethod"
-                        />
+                        >
+                </Button>
             </WrapPanel>
 
             <WrapPanel Grid.Row="1" x:Name="UserWrapP" Orientation="Vertical" Margin="5,0,5,10" ItemWidth="70" Width="70">
@@ -81,9 +82,7 @@
                 <Button x:Name="Settings"
                         Width="60"
                         Height="60">
-                    <Button.Background>
-                        <ImageBrush ImageSource="/settings.png"/>
-                    </Button.Background>
+
                 </Button>
             </WrapPanel>
         </Grid>
@@ -114,14 +113,16 @@
                     <TextBlock x:Name="SelectedRoomTitle" Style="{StaticResource DefaultHeaderTextBlockStyle}"
                          VerticalAlignment="Center"
                          TextWrapping="Wrap"
-                         Width="120"/>
+                         Width="120"
+                         Margin="10,5,5,5"/>
                 </Border>
 
                 <Border BorderBrush="{x:Null}" Height="40">
                     <TextBlock x:Name="SelectedRoomDescription" Style="{StaticResource DefaultTextBlockStyle}"
                          VerticalAlignment="Center"
                          TextWrapping="Wrap"
-                         Foreground="{StaticResource LightBlue2}"/>
+                         Foreground="{StaticResource LightBlue2}"
+                         Margin="5,5,10,5"/>
                 </Border>
             </WrapPanel>
             <WrapPanel Grid.Column="1" Grid.Row="0" x:Name="UsersOnline" Background="{StaticResource DarkBlue2}">
@@ -160,7 +161,7 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top">
                         <Rectangle.Fill>
-                            <ImageBrush ImageSource="/placeholder.jpg"/>
+                            <ImageBrush ImageSource="/Images/Placeholders/messagePlaceholder.jpg"/>
                         </Rectangle.Fill>
                     </Rectangle>
                     <TextBox Style="{StaticResource DefaultTextBoxStyle}" Grid.Row="0" x:Name="TypeTextBox"
@@ -182,7 +183,7 @@
                             </Style>
                         </WrapPanel.Resources>
                         <Button x:Name="SendButton" Width="40" Command="{StaticResource SendMessage}" ></Button>
-                        <Button x:Name="GifButton"></Button>
+                        <Button x:Name="SurveyButton" Click="CreateSurvey"></Button>
                         <Button x:Name="PictureButton"></Button>
                     </WrapPanel>
                 </Grid>
