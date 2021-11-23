@@ -77,7 +77,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
             return Ok();
         }
 
-        [HttpDelete("(id:length(24))")]
+        [HttpDelete("{id:length(24)}")]
         public async Task<IActionResult> Delete(string id)
         {
             var token = await _tokenService.Get(id);

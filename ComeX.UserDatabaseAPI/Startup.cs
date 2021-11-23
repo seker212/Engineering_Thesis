@@ -57,8 +57,6 @@ namespace ComeX.UserDatabaseAPI
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<ITokenService, TokenService>();
 
-            //services.AddSingleton<UserService>();
-
             services.AddControllers();
         }
 
