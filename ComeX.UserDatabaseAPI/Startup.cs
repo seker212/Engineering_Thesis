@@ -57,7 +57,7 @@ namespace ComeX.UserDatabaseAPI
             services.AddSingleton<IUserService, UserService>();
             services.AddSingleton<ITokenService, TokenService>();
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options => options.UseMemberCasing());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
