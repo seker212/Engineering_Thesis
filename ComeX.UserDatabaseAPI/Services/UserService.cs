@@ -1,4 +1,5 @@
-﻿using ComeX.UserDatabaseAPI.Models;
+﻿using ComeX.UserDatabaseAPI.DAL;
+using ComeX.UserDatabaseAPI.Models;
 using Microsoft.Extensions.Configuration;
 using MongoDB.Driver;
 using System;
@@ -8,37 +9,33 @@ using System.Threading.Tasks;
 
 namespace ComeX.UserDatabaseAPI.Services
 {
-    public class UserService
+    public class UserService : IUserService
     {
-        private readonly IMongoCollection<User> _users;
-
-        public UserService(IUserDatabaseSettings settings)
+        private IUserRepository _userRepository;
+        public UserService(IUserRepository userRepository)
         {
-            var dbClient = new MongoClient(settings.ConnectionString);
-            var database = dbClient.GetDatabase(settings.DatabaseName);
-
-            _users = database.GetCollection<User>(settings.UsersCollectionName);
+            _userRepository = userRepository;
         }
 
-        public Task<List<User>> Get()
+        public Task<IEnumerable<User>> Get()
         {
-            return Task.Run<List<User>>(() =>
+            return Task.Run<IEnumerable<User>>(() =>
             {
-                return _users.Find(user => true).ToList();
+                return _userRepository.Get();
             });
         }
         public Task<User> Get(string id)
         {
             return Task.Run<User>(() =>
             {
-                return _users.Find<User>(user => user.Id == id).FirstOrDefault();
+                return _userRepository.Get(id);
             });
         }
         public Task<User> Create(User user)
         {
             return Task.Run<User>(() =>
             {
-                _users.InsertOne(user);
+                _userRepository.Insert(user);
                 return user;
             });
         }
@@ -46,21 +43,21 @@ namespace ComeX.UserDatabaseAPI.Services
         {
             return Task.Run(() =>
             {
-                _users.ReplaceOne(user => user.Id == id, userIn);
+                _userRepository.Update(id, userIn);
             });
         }
         public Task Remove(User userIn)
         {
             return Task.Run(() =>
             {
-                _users.DeleteOne(user => user.Id == userIn.Id);
+                _userRepository.Delete(userIn);
             });
         }
         public Task Remove(string id)
         {
             return Task.Run(() =>
             {
-                _users.DeleteOne(user => user.Id == id);
+                _userRepository.Delete(id);
             });
         }
     }

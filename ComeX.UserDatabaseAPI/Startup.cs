@@ -13,6 +13,7 @@ using Microsoft.OpenApi.Models;
 using ComeX.UserDatabaseAPI.Models;
 using Microsoft.Extensions.Options;
 using ComeX.UserDatabaseAPI.Services;
+using ComeX.UserDatabaseAPI.DAL;
 
 namespace ComeX.UserDatabaseAPI
 {
@@ -50,7 +51,13 @@ namespace ComeX.UserDatabaseAPI
 
             services.AddSingleton<IUserDatabaseSettings>(sp => sp.GetRequiredService<IOptions<UserDatabaseSettings>>().Value);
 
-            services.AddSingleton<UserService>();
+            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<ITokenRepository, TokenRepository>();
+
+            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<ITokenService, TokenService>();
+
+            //services.AddSingleton<UserService>();
 
             services.AddControllers();
         }

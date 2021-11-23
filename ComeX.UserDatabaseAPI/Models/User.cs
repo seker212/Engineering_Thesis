@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ComeX.UserDatabaseAPI.Models
 {
-    public class User
+    public class User : IDatabaseModel
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

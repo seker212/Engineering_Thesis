@@ -1,4 +1,5 @@
-﻿using ComeX.UserDatabaseAPI.Models;
+﻿using ComeX.UserDatabaseAPI.DAL;
+using ComeX.UserDatabaseAPI.Models;
 using ComeX.UserDatabaseAPI.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,8 +16,8 @@ namespace ComeX.UserDatabaseAPI.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        private readonly UserService _userService;
-        public UserController(UserService userService)
+        private readonly IUserService _userService;
+        public UserController(IUserService userService)
         {
             _userService = userService;
         }
@@ -29,7 +30,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
             if (result is null)
                 return BadRequest();
             else
-                return Ok(result);
+                return Ok(result.ToList());
         }
 
         [HttpGet("{id:length(24)}", Name = "GetUser")]
@@ -64,7 +65,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
                 return NotFound();
 
             await _userService.Update(id, userIn);
-            return NoContent();
+            return Ok();
         }
 
         [HttpDelete("{id:length(24)}")]
@@ -76,7 +77,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
                 return NotFound();
 
             await _userService.Remove(user.Id);
-            return NoContent();
+            return Ok();
         }
     }
 }
