@@ -5,7 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ComeX.WPF"
         mc:Ignorable="d"
+        AllowsTransparency="True"
+        Background="Transparent"
         Title="CreateSurveyWindow"
+        WindowStyle="None"
         ResizeMode="NoResize"
         Height="400" Width="400">
     <Window.Resources>
@@ -15,32 +18,46 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
-    
-    <Grid x:Name="CreateSurveyMainGrid" Background="{StaticResource DarkBlue3}">
+
+    <Border x:Name="BorderMainGrid" Style="{StaticResource WindowBorderStyle}">
+    <Grid x:Name="CreateSurveyMainGrid" Background="{StaticResource DarkBlue3}"
+          Margin="5,5,5,5">
         <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
-            <RowDefinition MinHeight="360"></RowDefinition>
+            <RowDefinition MinHeight="350"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid x:Name="TitleGrid" Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="220"/>
+                <ColumnDefinition Width="80"/>
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="Title" Grid.Column="0" Style="{StaticResource DefaultHeaderTextBlockStyle}"
                    Margin="5,5,5,5"
                    HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
                    Width="Auto"
-                   Background="{StaticResource DarkBlue2}"
                    Text=" Create new survey "/>
 
             <Button x:Name="AddSurveyButton" Grid.Column="1" Style="{StaticResource DefaultButtonStyle}"
                     Margin="0,5,0,5"
                     HorizontalAlignment="Center"
-                    Width="Auto"
+                    HorizontalContentAlignment="Center"
+                    Width="70"
                     Content=" Add survey "
-                    Click = "AddAnswer"/>
+                    Click = "AddSurveyButtonHandler"/>
+            <Button x:Name="CancelButton" Grid.Column="2" Style="{StaticResource DefaultButtonStyle}"
+                    Margin="0,5,0,5"
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Width="70"
+                    Content=" Cancel "
+                    IsCancel="true"/>
         </Grid>
-        <Grid x:Name="CreateSurveyInnerGrid" Grid.Row="1" Margin="5,5,5,5">
+        <Grid x:Name="CreateSurveyInnerGrid" Grid.Row="1"
+              Margin="5,5,5,5"
+              Width="380">
             <Grid.Resources >
                 <Style TargetType="Border" >
                     <Setter Property="Padding" Value="5,5,5,5" />
@@ -61,7 +78,7 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top">
                 <Rectangle.Fill>
-                    <ImageBrush ImageSource="/Windows/questionPlaceholder.jpg"/>
+                        <ImageBrush ImageSource="../Resources/Images/Placeholders/questionPlaceholder.jpg"/>
                 </Rectangle.Fill>
             </Rectangle>
             <TextBox x:Name="QuestionTextBox" Grid.Row="0" Style="{StaticResource DefaultTextBoxStyle}"
@@ -103,11 +120,10 @@
 
             <Grid Grid.Row="3" Margin="0,5,0,5" Height="180" Background="{StaticResource DarkBlue2}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" >
-                    <StackPanel x:Name="AnswersStackP"
-                               
-                        />
+                    <StackPanel x:Name="AnswersStackP" Width="380"/>
                 </ScrollViewer>
             </Grid>
         </Grid>
     </Grid>
+    </Border>
 </Window>

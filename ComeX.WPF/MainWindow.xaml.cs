@@ -74,29 +74,34 @@ namespace ComeX.WPF {
 
         private void SendMessage(object sender, RoutedEventArgs e) {
             if (TypeTextBox.Text != "") {
-                MessageUserControl newMessage = new MessageUserControl { };
-                newMessage.AuthorText.Text = "Anonim";
-                newMessage.MessageAvatar.Background = Avatar;
-                newMessage.DateText.Text = DateTime.Now.ToString();
-                newMessage.ContentText.Text = TypeTextBox.Text;
-                MessagesWrapP.Children.Add(newMessage);
+                MessageUserControl newMessageContent = new MessageUserControl { };
+                newMessageContent.ContentText.Text = TypeTextBox.Text;
+
+                MessageTemplateUserControl newMessage = new MessageTemplateUserControl ("Anonim", Avatar, newMessageContent) { };
+
+                //newMessage.Content = newMessageContent;
+
+                DisplayMessage(newMessage);
 
                 TypeTextBox.Text = "";
             }
         }
 
+        private void DisplayMessage(MessageTemplateUserControl newMessage) {
+            MessagesWrapP.Children.Add(newMessage);
+        }
+
         private void CreateSurvey(object sender, RoutedEventArgs e) {
             CreateSurveyWindow surveyWindow = new CreateSurveyWindow();
 
-            /*
             surveyWindow.Owner = Application.Current.MainWindow;
             surveyWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            Application.Current.MainWindow.IsEnabled = false;
-            */
+            //Application.Current.MainWindow.IsEnabled = false;
 
-            surveyWindow.Show();
+            surveyWindow.ShowDialog();
         }
 
+        /*
         private void TEST_AddSurvey() {
             SurveyUserControl newSurvey = new SurveyUserControl { };
             newSurvey.AuthorText.Text = "Anonim";
@@ -115,6 +120,7 @@ namespace ComeX.WPF {
             newSurvey.AnswersWrapP.Children.Add(newButton);
             MessagesWrapP.Children.Add(newSurvey);
         }
+        */
 
         private void AddMessagePlaceholder(object sender, RoutedEventArgs e) {
             TextBox textbox = sender as TextBox;

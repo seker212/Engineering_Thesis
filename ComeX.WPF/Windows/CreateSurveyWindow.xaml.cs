@@ -22,6 +22,20 @@ namespace ComeX.WPF.Windows {
             InitializeComponent();
         }
 
+        // TODO
+        // private Survey CreateSurvey() {           
+            // return survey obj
+        // }
+
+        private void AddSurveyButtonHandler(object sender, RoutedEventArgs e) {
+            // Survey survey = CreateSurvey();
+
+        }
+
+        private void CancelButtonHandler (object sender, RoutedEventArgs e) {
+            
+        }
+
         private void AddQuestionPlaceholder(object sender, RoutedEventArgs e) {
             TextBox textbox = sender as TextBox;
             if (textbox.Text == "")

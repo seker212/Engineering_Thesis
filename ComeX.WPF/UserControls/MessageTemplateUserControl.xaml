@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="ComeX.WPF.MessageTemplateUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ComeX.WPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="200"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}"
+             x:Name="MessageUC">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <local:MinusAnotherValueConverter x:Key="MinusAnotherValueConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Grid.Row="0" x:Name="Message">
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="Grid.Column" Value="1"/>
+                <Setter Property="Grid.Row" Value="1"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="Foreground" Value="{StaticResource LightBlue1}"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Name="MessageAvatarCol" Width="40"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="AuthorDateRow" Height="40"></RowDefinition>
+            <RowDefinition x:Name="ContentRow"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Button x:Name="MessageAvatar" Grid.Column="0" Grid.Row="0" Style="{StaticResource RoundButtonStyle}"/>
+        <WrapPanel x:Name="MessageNickDateWrapP" Grid.Column="1" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+            <WrapPanel.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="Margin" Value="5,5,5,5" />
+                </Style>
+            </WrapPanel.Resources>
+            <TextBlock x:Name="AuthorText" Text="{Binding Author}" FontSize="16" Foreground="{StaticResource LightBlue1}"/>
+            <TextBlock x:Name="DateText" Text="{Binding Date}" FontSize="12"  Foreground="{StaticResource LightBlue1}"/>
+        </WrapPanel>
+        <Grid x:Name="ContentGrid" Grid.Column="1" Grid.Row="1"/>
+    </Grid>
+</UserControl>

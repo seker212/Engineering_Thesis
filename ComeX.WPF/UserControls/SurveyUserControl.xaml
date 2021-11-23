@@ -13,44 +13,27 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    <Grid>
-        <Grid.Resources>
-            <Style TargetType="{x:Type TextBlock}">
-                <Setter Property="Grid.Column" Value="1"/>
-                <Setter Property="Grid.Row" Value="1"/>
-                <Setter Property="TextWrapping" Value="Wrap"/>
-                <Setter Property="Foreground" Value="{StaticResource LightBlue1}"/>
-            </Style>
-        </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Name="AvatarCol" Width="40"></ColumnDefinition>
-            <ColumnDefinition>
-                <ColumnDefinition.Width>
-                    <GridLength>*</GridLength>
-                </ColumnDefinition.Width>
-            </ColumnDefinition>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition x:Name="AuthorDateRow" Height="40"></RowDefinition>
-            <RowDefinition x:Name="ContentRow"></RowDefinition>
-            <RowDefinition x:Name="AnswersRow"></RowDefinition>
-        </Grid.RowDefinitions>
-        <Button x:Name="MessageAvatar" Grid.Column="0" Grid.Row="0" Style="{StaticResource RoundButtonStyle}"/>
-        <WrapPanel x:Name="MessageNickDateWrapP" Grid.Column="1" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
-            <WrapPanel.Resources>
+    <Border x:Name="BorderMainGrid" Style="{StaticResource DefaultBorderStyle}">
+        <Grid>
+            <Grid.Resources>
                 <Style TargetType="{x:Type TextBlock}">
-                    <Setter Property="Margin" Value="5,5,5,5" />
+                    <Setter Property="Grid.Column" Value="1"/>
+                    <Setter Property="Grid.Row" Value="1"/>
+                    <Setter Property="TextWrapping" Value="Wrap"/>
+                    <Setter Property="Foreground" Value="{StaticResource LightBlue1}"/>
                 </Style>
-            </WrapPanel.Resources>
-            <TextBlock x:Name="AuthorText" Text="{Binding Author}" FontSize="16" Foreground="{StaticResource LightBlue1}"/>
-            <TextBlock x:Name="DateText" Text="{Binding Date}" FontSize="12"  Foreground="{StaticResource LightBlue1}"/>
-        </WrapPanel>
-        <TextBlock x:Name="ContentText" Text="{Binding Content}"/>
-        <WrapPanel x:Name="AnswersWrapP" Grid.Column="1" Grid.Row="2"
+            </Grid.Resources>
+            <Grid.RowDefinitions>
+                <RowDefinition x:Name="ContentRow"></RowDefinition>
+                <RowDefinition x:Name="AnswersRow"></RowDefinition>
+            </Grid.RowDefinitions>
+            <TextBlock x:Name="ContentText" Grid.Row="0"
+                   Text="{Binding Content}"/>
+            <WrapPanel x:Name="AnswersWrapP" Grid.Row="1"
                    Orientation="Vertical"
                    VerticalAlignment="Top"
                    HorizontalAlignment="Left">
-
-        </WrapPanel>
-    </Grid>
+            </WrapPanel>
+        </Grid>
+    </Border>
 </UserControl>

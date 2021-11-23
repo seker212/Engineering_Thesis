@@ -161,7 +161,7 @@
                                HorizontalAlignment="Left"
                                VerticalAlignment="Top">
                         <Rectangle.Fill>
-                            <ImageBrush ImageSource="/Images/Placeholders/messagePlaceholder.jpg"/>
+                            <ImageBrush ImageSource="Resources/Images/Placeholders/messagePlaceholder.jpg"/>
                         </Rectangle.Fill>
                     </Rectangle>
                     <TextBox Style="{StaticResource DefaultTextBoxStyle}" Grid.Row="0" x:Name="TypeTextBox"
