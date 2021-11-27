@@ -8,16 +8,19 @@ using System.Threading.Tasks;
 
 namespace ComeX.Lib.Auth
 {
-    class LoginManager
+    public class LoginManager
     {
-        private UserApiManager _userApiManager;
+        private IUserApiManager _userApiManager;
         private ConnectionCache _connectionCache;
 
-        public LoginManager(UserApiManager userApiManager, ConnectionCache connectionCache)
+        internal LoginManager(IUserApiManager userApiManager, ConnectionCache connectionCache)
         {
             _userApiManager = userApiManager;
             _connectionCache = connectionCache;
         }
+
+        public LoginManager(ConnectionCache connectionCache)
+            : this(new UserApiManager(), connectionCache) { }
 
         public void Login(string connectionId, string token)
         {

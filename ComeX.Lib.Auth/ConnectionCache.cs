@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ComeX.Lib.Auth
 {
-    class ConnectionCache : IConnectionCache
+    public class ConnectionCache : IConnectionCache
     {
         private ConcurrentDictionary<string, TokenData> _cacheDict;
 

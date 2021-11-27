@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace ComeX.Lib.Auth
 {
-    internal class UserApiManager
+    internal class UserApiManager : IUserApiManager
     {
         private IRestClient _restClient;
         private UserApiRequestFactory _requestFactory;
 
-        internal TokenMessage GetToken(string tokenHash)
+        public TokenMessage GetToken(string tokenHash)
         {
             var request = _requestFactory.GetTokenInfo(tokenHash);
             return ExecuteGetModel<TokenMessage>(request);
