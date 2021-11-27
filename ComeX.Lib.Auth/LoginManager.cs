@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ComeX.Lib.Common.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
@@ -22,8 +23,14 @@ namespace ComeX.Lib.Auth
         {
             using (var hashingHelper = new HashingHelper(SHA512.Create()))
             {
-                var tokenData = _userApiManager.GetToken(hashingHelper.GenerateHash(token));
-                _connectionCache.TryAdd(connectionId, tokenData);
+                var tokenHash = hashingHelper.GenerateHash(token);
+                var tokenMessage = _userApiManager.GetToken(tokenHash);
+                var tokenData = new TokenData(tokenHash, tokenMessage.Username, DateTime.Parse(tokenMessage.ValidTo), connectionId);
+                if (tokenData.IsValid())
+                   if (!_connectionCache.TryAdd(connectionId, tokenData))
+                        throw new Exception(); //FIXME: Change exception
+                else
+                    throw new Exception(); //FIXME: Change exception
             }
         }
 

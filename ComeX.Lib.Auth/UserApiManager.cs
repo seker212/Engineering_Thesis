@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using ComeX.Lib.Common.UserDatabaseAPI;
+using Newtonsoft.Json;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,10 @@ namespace ComeX.Lib.Auth
         private IRestClient _restClient;
         private UserApiRequestFactory _requestFactory;
 
-        internal TokenData GetToken(string tokenHash) //FIXME: Change model
+        internal TokenMessage GetToken(string tokenHash)
         {
             var request = _requestFactory.GetTokenInfo(tokenHash);
-            return ExecuteGetModel<TokenData>(request);
+            return ExecuteGetModel<TokenMessage>(request);
         }
 
         private T ExecuteGetModel<T>(IRestRequest request)
@@ -27,14 +28,14 @@ namespace ComeX.Lib.Auth
             {
                 try
                 {
-                    return JsonConvert.DeserializeObject<T>(response.Content) ?? throw new UserApiException();
+                    return JsonConvert.DeserializeObject<T>(response.Content) ?? throw new UserApiException(); //FIXME: Change exception message
                 }
                 catch (Exception ex)
                 {
-                    throw new UserApiException("", ex);
+                    throw new UserApiException("", ex); //FIXME: Change exception message
                 }
             }
-            throw new UserApiException();
+            throw new UserApiException(); //FIXME: Change exception message
         }
     }
 }
