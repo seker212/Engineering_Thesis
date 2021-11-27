@@ -10,11 +10,19 @@ namespace ComeX.UserDatabaseAPI.Models
 {
     public class User : IDatabaseModel
     {
+        public User(string username, string passwordHash, string salt)
+        {
+            Username = username;
+            PasswordHash = passwordHash;
+            Salt = salt;
+        }
+
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
         public string Username { get; set; }
         public string PasswordHash { get; set; }
+        public string Salt { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {

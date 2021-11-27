@@ -12,9 +12,25 @@ namespace ComeX.UserDatabaseAPI.Services
     public class UserService : IUserService
     {
         private IUserRepository _userRepository;
-        public UserService(IUserRepository userRepository)
+        private ITokenRepository _tokenRepository;
+        public UserService(IUserRepository userRepository, ITokenRepository tokenRepository)
         {
             _userRepository = userRepository;
+            _tokenRepository = tokenRepository;
+        }
+
+        public Task<User> CreateUser(string username, string password)
+        {
+            return Task.Run<User>(() =>
+            {
+                UserDatabaseAPI.Helpers.HashingHelper hashingHelper = new UserDatabaseAPI.Helpers.HashingHelper;
+                var hashedPassword = hashingHelper.GenerateHash(password);
+                var user = new User(username, hashedPassword, hashingHelper.Salt);
+
+                _userRepository.Insert(user);
+
+                return user;
+            });
         }
 
         public Task<IEnumerable<User>> Get()

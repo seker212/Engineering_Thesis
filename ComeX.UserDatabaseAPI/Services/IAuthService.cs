@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace ComeX.UserDatabaseAPI.Services
 {
-    public interface ITokenService
+    public interface IAuthService
     {
         Task<Token> Create(Token token);
         Task<IEnumerable<Token>> Get();

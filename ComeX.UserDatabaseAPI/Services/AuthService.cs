@@ -8,12 +8,12 @@ using System.Threading.Tasks;
 
 namespace ComeX.UserDatabaseAPI.Services
 {
-    public class TokenService : ITokenService
+    public class AuthService : IAuthService
     {
         private ITokenRepository _tokenRepository;
         private IUserRepository _userRepository;
 
-        public TokenService(ITokenRepository tokenRepository, IUserRepository userRepository)
+        public AuthService(ITokenRepository tokenRepository, IUserRepository userRepository)
         {
             _tokenRepository = tokenRepository;
             _userRepository = userRepository;

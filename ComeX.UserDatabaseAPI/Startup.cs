@@ -55,7 +55,7 @@ namespace ComeX.UserDatabaseAPI
             services.AddSingleton<ITokenRepository, TokenRepository>();
 
             services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<ITokenService, TokenService>();
+            services.AddSingleton<IAuthService, AuthService>();
 
             services.AddControllers().AddNewtonsoftJson(options => options.UseMemberCasing());
         }

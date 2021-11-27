@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ComeX.CommunicationModels\ComeX.Lib.Common.csproj" />
+    <ProjectReference Include="..\ComeX.Lib.Common\ComeX.Lib.Common.csproj" />
   </ItemGroup>
 
 </Project>
