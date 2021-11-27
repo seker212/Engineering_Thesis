@@ -9,7 +9,7 @@ namespace ComeX.UserDatabaseAPI.Services
         Task<Token> Create(Token token);
         Task<IEnumerable<Token>> Get();
         Task<Token> Get(string id);
-        Task<CommunicationModels.UserDatabaseAPI.TokenMessage> GetTokenInfo(string tokenHash);
+        Task<ComeX.Lib.Common.UserDatabaseAPI.TokenMessage> GetTokenInfo(string tokenHash);
         Task Remove(string Id);
         Task Remove(Token tokenIn);
         Task Update(string id, Token tokenIn);

@@ -33,16 +33,16 @@ namespace ComeX.UserDatabaseAPI.Services
                 return _tokenRepository.Get(id);
             });
         }
-        public Task<CommunicationModels.UserDatabaseAPI.TokenMessage> GetTokenInfo(string tokenHash)
+        public Task<ComeX.Lib.Common.UserDatabaseAPI.TokenMessage> GetTokenInfo(string tokenHash)
         {
-            return Task.Run<CommunicationModels.UserDatabaseAPI.TokenMessage>(() =>
+            return Task.Run<ComeX.Lib.Common.UserDatabaseAPI.TokenMessage>(() =>
             {
                 var token = _tokenRepository.GetByHash(tokenHash);
                 if (token != null)
                 {
                     var user = _userRepository.Get(token.UserId);
 
-                    return new CommunicationModels.UserDatabaseAPI.TokenMessage(user.Username, token.ValidTo);
+                    return new ComeX.Lib.Common.UserDatabaseAPI.TokenMessage(user.Username, token.ValidTo);
                 }
                 else
                     return null;
