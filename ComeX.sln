@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComeX.Server", "ComeX.Serve
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComeX.Lib.Auth", "ComeX.Lib.Auth\ComeX.Lib.Auth.csproj", "{81B08095-CA57-4BCA-B01E-BB44F7561DB6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComeX.Lib.Common", "ComeX.CommunicationModels\ComeX.Lib.Common.csproj", "{6D0DF8E1-2998-4C04-9E2A-B6869C4ADDA9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComeX.Lib.Common", "ComeX.Lib.Common\ComeX.Lib.Common.csproj", "{6D0DF8E1-2998-4C04-9E2A-B6869C4ADDA9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
