@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace ComeX.CommunicationModels.UserDatabaseAPI
+namespace ComeX.Lib.Common.UserDatabaseAPI
 {
     public class TokenMessage
     {
