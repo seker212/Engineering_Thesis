@@ -13,7 +13,13 @@ namespace ComeX.Lib.Auth
     internal class UserApiManager : IUserApiManager
     {
         private IRestClient _restClient;
-        private UserApiRequestFactory _requestFactory;
+        private IUserApiRequestFactory _requestFactory;
+
+        public UserApiManager(IUserApiRequestFactory requestFactory, Uri baseUserApiUri)
+        {
+            _requestFactory = requestFactory;
+            _restClient = new RestClient(baseUserApiUri);
+        }
 
         public TokenMessage GetToken(string tokenHash)
         {

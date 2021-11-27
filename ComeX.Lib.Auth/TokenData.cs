@@ -23,9 +23,10 @@ namespace ComeX.Lib.Auth
 
         private List<string> _connectionIds;
 
-        public string TokenHash { get; }
+        internal string TokenHash { get; }
+        internal DateTime ValidTo { get; }
+        public string UserId { get; }
         public string Username { get; }
-        public DateTime ValidTo { get; }
         public IReadOnlyList<string> ConnectionIds { get => _connectionIds; }
 
         internal void AddConnectionId(string connectionId) => _connectionIds.Add(connectionId);

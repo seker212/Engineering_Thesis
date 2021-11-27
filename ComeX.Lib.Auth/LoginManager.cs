@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ComeX.Lib.Auth
 {
-    public class LoginManager
+    public class LoginManager : ILoginManager
     {
         private IUserApiManager _userApiManager;
         private ConnectionCache _connectionCache;
@@ -19,9 +19,6 @@ namespace ComeX.Lib.Auth
             _connectionCache = connectionCache;
         }
 
-        public LoginManager(ConnectionCache connectionCache)
-            : this(new UserApiManager(), connectionCache) { }
-
         public void Login(string connectionId, string token)
         {
             using (var hashingHelper = new HashingHelper(SHA512.Create()))
@@ -30,10 +27,10 @@ namespace ComeX.Lib.Auth
                 var tokenMessage = _userApiManager.GetToken(tokenHash);
                 var tokenData = new TokenData(tokenHash, tokenMessage.Username, DateTime.Parse(tokenMessage.ValidTo), connectionId);
                 if (tokenData.IsValid())
-                   if (!_connectionCache.TryAdd(connectionId, tokenData))
+                    if (!_connectionCache.TryAdd(connectionId, tokenData))
                         throw new Exception(); //FIXME: Change exception
-                else
-                    throw new Exception(); //FIXME: Change exception
+                    else
+                        throw new Exception(); //FIXME: Change exception
             }
         }
 

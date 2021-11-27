@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ComeX.Lib.Auth
 {
-    internal class UserApiRequestFactory
+    internal class UserApiRequestFactory : IUserApiRequestFactory
     {
-        internal IRestRequest GetTokenInfo(string tokenHash)
+        public IRestRequest GetTokenInfo(string tokenHash)
         {
             var request = new RestRequest("api/Token/GetTokenInfo");
             request.Method = Method.GET;
