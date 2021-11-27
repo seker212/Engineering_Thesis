@@ -23,6 +23,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
             var result = await _userService.Get();
@@ -34,6 +35,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
         }
 
         [HttpGet("{id:length(24)}", Name = "GetUser")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(string id)
         {
             var result = await _userService.Get(id);
@@ -45,6 +47,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Create(User user)
         {
             if (!ModelState.IsValid)
@@ -57,6 +60,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
         }
 
         [HttpPut("{id:length(24)}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Update(string id, User userIn)
         {
             var user = await _userService.Get(id);
@@ -69,6 +73,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
         }
 
         [HttpDelete("{id:length(24)}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Delete(string id)
         {
             var user = await _userService.Get(id);

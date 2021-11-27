@@ -21,6 +21,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get()
         {
             var result = await _tokenService.Get();
@@ -32,6 +33,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
         }
 
         [HttpGet("{id:length(24)}", Name = "GetToken")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Get(string id)
         {
             var result = await _tokenService.Get(id);
@@ -43,6 +45,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
         }
 
         [HttpGet("GetTokenInfo")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> GetTokenInfo(string tokenHash)
         {
             var result = await _tokenService.GetTokenInfo(tokenHash);
@@ -54,6 +57,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Create(Token token)
         {
             if (!ModelState.IsValid)
@@ -66,6 +70,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
         }
 
         [HttpPut("{id:length(24)}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Update(string id, Token tokenIn)
         {
             var token = await _tokenService.Get(id);
@@ -78,6 +83,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
         }
 
         [HttpDelete("{id:length(24)}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Delete(string id)
         {
             var token = await _tokenService.Get(id);
