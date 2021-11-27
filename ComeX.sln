@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComeX.Lib.Auth", "ComeX.Lib
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lib.Auth", "Lib.Auth", "{028C1A99-D966-4975-9DE6-E8C473F30CA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lib.Auth.Base", "Lib.Auth.Base\Lib.Auth.Base.csproj", "{38129CCE-E29F-455A-BF82-2242E2EE3E78}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,17 +35,12 @@ Global
 		{81B08095-CA57-4BCA-B01E-BB44F7561DB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81B08095-CA57-4BCA-B01E-BB44F7561DB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81B08095-CA57-4BCA-B01E-BB44F7561DB6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{38129CCE-E29F-455A-BF82-2242E2EE3E78}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{38129CCE-E29F-455A-BF82-2242E2EE3E78}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{38129CCE-E29F-455A-BF82-2242E2EE3E78}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{38129CCE-E29F-455A-BF82-2242E2EE3E78}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{81B08095-CA57-4BCA-B01E-BB44F7561DB6} = {028C1A99-D966-4975-9DE6-E8C473F30CA8}
-		{38129CCE-E29F-455A-BF82-2242E2EE3E78} = {028C1A99-D966-4975-9DE6-E8C473F30CA8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {5514EF07-D25B-4877-B078-83820ED263AD}
