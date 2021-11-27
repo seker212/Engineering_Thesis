@@ -6,8 +6,7 @@ namespace ComeX.Lib.Auth
     {
         public IRestRequest GetTokenInfo(string tokenHash)
         {
-            var request = new RestRequest("api/Token/GetTokenInfo");
-            request.Method = Method.GET;
+            var request = new RestRequest("api/Token/GetTokenInfo", Method.GET);
             request.AddQueryParameter("tokenHash", tokenHash);
             return request;
         }

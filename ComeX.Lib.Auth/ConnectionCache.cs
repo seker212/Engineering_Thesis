@@ -8,7 +8,7 @@ namespace ComeX.Lib.Auth
 {
     public class ConnectionCache : IConnectionCache
     {
-        private ConcurrentDictionary<string, TokenData> _cacheDict;
+        private readonly ConcurrentDictionary<string, TokenData> _cacheDict;
 
         public IEnumerable<string> Keys => _cacheDict.Keys;
 
@@ -18,7 +18,7 @@ namespace ComeX.Lib.Auth
 
         public TokenData this[string key] => _cacheDict[key];
 
-        public ConnectionCache()
+        internal ConnectionCache()
         {
             _cacheDict = new ConcurrentDictionary<string, TokenData>();
         }

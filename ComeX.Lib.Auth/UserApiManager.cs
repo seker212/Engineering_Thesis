@@ -8,8 +8,8 @@ namespace ComeX.Lib.Auth
 {
     internal class UserApiManager : IUserApiManager
     {
-        private IRestClient _restClient;
-        private IUserApiRequestFactory _requestFactory;
+        private readonly IRestClient _restClient;
+        private readonly IUserApiRequestFactory _requestFactory;
 
         public UserApiManager(IUserApiRequestFactory requestFactory, Uri baseUserApiUri)
         {
@@ -17,10 +17,10 @@ namespace ComeX.Lib.Auth
             _restClient = new RestClient(baseUserApiUri);
         }
 
-        public TokenMessage GetToken(string tokenHash)
+        public TokenDataModel GetToken(string tokenHash)
         {
             var request = _requestFactory.GetTokenInfo(tokenHash);
-            return ExecuteGetModel<TokenMessage>(request);
+            return ExecuteGetModel<TokenDataModel>(request);
         }
 
         private T ExecuteGetModel<T>(IRestRequest request)
@@ -30,14 +30,16 @@ namespace ComeX.Lib.Auth
             {
                 try
                 {
-                    return JsonConvert.DeserializeObject<T>(response.Content) ?? throw new UserApiException(); //FIXME: Change exception message
+                    return JsonConvert.DeserializeObject<T>(response.Content) ?? throw new UserApiException("Deserialization to model returned null.");
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (ex.GetType() != typeof(UserApiException))
                 {
-                    throw new UserApiException("", ex); //FIXME: Change exception message
+                    throw new UserApiException("Could not deserialize http response content.", ex);
                 }
             }
-            throw new UserApiException(); //FIXME: Change exception message
+            else if (response.StatusCode == HttpStatusCode.Unauthorized)
+                throw new UserApiException("Unauthorised", response.StatusCode);
+            throw new UserApiException($"User WebAPI returned unsupported status code: {response.StatusCode}");
         }
     }
 }

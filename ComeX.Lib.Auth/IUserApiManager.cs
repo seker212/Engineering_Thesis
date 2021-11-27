@@ -4,6 +4,6 @@ namespace ComeX.Lib.Auth
 {
     internal interface IUserApiManager
     {
-        TokenMessage GetToken(string tokenHash);
+        TokenDataModel GetToken(string tokenHash);
     }
 }

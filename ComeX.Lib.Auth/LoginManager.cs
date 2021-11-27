@@ -1,13 +1,15 @@
 ﻿using ComeX.Lib.Common.Helpers;
+using ComeX.Lib.Common.UserDatabaseAPI;
 using System;
+using System.Net;
 using System.Security.Cryptography;
 
 namespace ComeX.Lib.Auth
 {
     public class LoginManager : ILoginManager
     {
-        private IUserApiManager _userApiManager;
-        private ConnectionCache _connectionCache;
+        private readonly IUserApiManager _userApiManager;
+        private readonly ConnectionCache _connectionCache;
 
         internal LoginManager(IUserApiManager userApiManager, ConnectionCache connectionCache)
         {
@@ -17,17 +19,28 @@ namespace ComeX.Lib.Auth
 
         public void Login(string connectionId, string token)
         {
+            string tokenHash;
+            TokenDataModel tokenReceived;
             using (var hashingHelper = new HashingHelper(SHA512.Create()))
             {
-                var tokenHash = hashingHelper.GenerateHash(token);
-                var tokenMessage = _userApiManager.GetToken(tokenHash);
-                var tokenData = new TokenData(tokenHash, tokenMessage.Username, DateTime.Parse(tokenMessage.ValidTo), connectionId);
-                if (tokenData.IsValid())
-                    if (!_connectionCache.TryAdd(connectionId, tokenData))
-                        throw new Exception(); //FIXME: Change exception
-                    else
-                        throw new Exception(); //FIXME: Change exception
+                tokenHash = hashingHelper.GenerateHash(token);
             }
+            try
+            {
+                tokenReceived = _userApiManager.GetToken(tokenHash);
+            }
+            catch (UserApiException ex) when (ex.ResponseStatusCode.HasValue && ex.ResponseStatusCode.Value == HttpStatusCode.Unauthorized)
+            {
+                throw new InvalidCredentialsException("Invalid token.");
+            }
+            var tokenData = new TokenData(tokenHash, tokenReceived.UserId, tokenReceived.Username, DateTime.Parse(tokenReceived.ValidTo), connectionId);
+            if (tokenData.IsValid())
+            {
+                if (!_connectionCache.TryAdd(connectionId, tokenData))
+                    throw new InvalidCredentialsException("Could not add connectionId and token to connection cache.");
+            }
+            else
+                throw new InvalidCredentialsException("Invalid token.");
         }
 
         public void Logout(string connectionId)

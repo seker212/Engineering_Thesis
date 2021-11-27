@@ -1,10 +1,13 @@
 ﻿using System;
 
+#nullable enable
+
 namespace ComeX.Lib.Auth
 {
     /// <summary>
     /// Exception thrown by authenticator when provided credentials don't match any user.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Major Code Smell", "S3925:\"ISerializable\" should be implemented correctly")]
     public class InvalidCredentialsException : Exception
     {
         /// <summary>
