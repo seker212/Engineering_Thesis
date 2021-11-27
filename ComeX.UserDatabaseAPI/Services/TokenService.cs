@@ -1,6 +1,5 @@
 ﻿using ComeX.UserDatabaseAPI.DAL;
 using ComeX.UserDatabaseAPI.Models;
-using ComeX.UserDatabaseAPI.APIModels;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -34,16 +33,16 @@ namespace ComeX.UserDatabaseAPI.Services
                 return _tokenRepository.Get(id);
             });
         }
-        public Task<TokenMessage> GetTokenInfo(string tokenHash)
+        public Task<CommunicationModels.UserDatabaseAPI.TokenMessage> GetTokenInfo(string tokenHash)
         {
-            return Task.Run<TokenMessage>(() =>
+            return Task.Run<CommunicationModels.UserDatabaseAPI.TokenMessage>(() =>
             {
                 var token = _tokenRepository.GetByHash(tokenHash);
                 if (token != null)
                 {
                     var user = _userRepository.Get(token.UserId);
 
-                    return new TokenMessage(user.Username, token.ValidTo);
+                    return new CommunicationModels.UserDatabaseAPI.TokenMessage(user.Username, token.ValidTo);
                 }
                 else
                     return null;
