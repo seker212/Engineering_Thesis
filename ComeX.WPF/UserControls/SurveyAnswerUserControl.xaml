@@ -19,9 +19,15 @@
             <ColumnDefinition x:Name="AnswerTextCol" MinWidth="80"></ColumnDefinition>
             <ColumnDefinition x:Name="AnswerVotesCounterCol" Width="50"></ColumnDefinition>
         </Grid.ColumnDefinitions>
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultTextBlockStyle}">
+                <Setter Property="VerticalAlignment" Value="Center" />
+                <Setter Property="Margin" Value="5,5,5,5" />
+            </Style>
+        </Grid.Resources>
         <Button x:Name="AnswerButton" Grid.Column="0" Style="{StaticResource RoundButtonStyle}" />
-        <TextBlock x:Name="AnswerText" Grid.Column="1" Style="{StaticResource DefaultTextBlockStyle}" Text="{Binding Content}"/>
-        <TextBlock x:Name="AnswerVotesCounter" Grid.Column="2" Style="{StaticResource DefaultTextBlockStyle}" Text="{Binding Counter}"/>
+        <TextBlock x:Name="AnswerText" Grid.Column="1" Text="{Binding Content}"/>
+        <TextBlock x:Name="AnswerVotesCounter" Grid.Column="2" Text="{Binding Counter}"/>
         
     </Grid>
 </UserControl>

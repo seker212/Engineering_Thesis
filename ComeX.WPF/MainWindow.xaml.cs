@@ -31,7 +31,7 @@ namespace ComeX.WPF {
             LoadUser();
             LoadServers();
             LoadRooms();
-            // TEST_AddSurvey();
+            TEST_AddSurvey();
 
         }
 
@@ -100,13 +100,9 @@ namespace ComeX.WPF {
 
             surveyWindow.ShowDialog();
         }
-
-        /*
+     
         private void TEST_AddSurvey() {
             SurveyUserControl newSurvey = new SurveyUserControl { };
-            newSurvey.AuthorText.Text = "Anonim";
-            newSurvey.MessageAvatar.Background = Avatar;
-            newSurvey.DateText.Text = DateTime.Now.ToString();
             newSurvey.ContentText.Text = "Question here";
 
             SurveyAnswerUserControl newAnswer = new SurveyAnswerUserControl { };
@@ -118,9 +114,11 @@ namespace ComeX.WPF {
 
             newSurvey.AnswersWrapP.Children.Add(newAnswer);
             newSurvey.AnswersWrapP.Children.Add(newButton);
-            MessagesWrapP.Children.Add(newSurvey);
+
+            MessageTemplateUserControl newMessage = new MessageTemplateUserControl("Anonim", Avatar, newSurvey) { };
+
+            MessagesWrapP.Children.Add(newMessage);
         }
-        */
 
         private void AddMessagePlaceholder(object sender, RoutedEventArgs e) {
             TextBox textbox = sender as TextBox;

@@ -31,11 +31,23 @@ namespace ComeX.WPF {
             AddContent(content);
         }
 
+        public MessageTemplateUserControl(string author, ImageBrush Avatar, SurveyUserControl content) {
+            InitializeComponent();
+            AuthorText.Text = author;
+            MessageAvatar.Background = Avatar;
+            DateText.Text = DateTime.Now.ToString();
+            AddContent(content);
+        }
+
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(MessageUserControl), typeof(MessageTemplateUserControl));
         public static readonly DependencyProperty AuthorProperty = DependencyProperty.Register("Author", typeof(string), typeof(MessageTemplateUserControl));
         public static readonly DependencyProperty DateProperty = DependencyProperty.Register("Date", typeof(string), typeof(MessageTemplateUserControl));
 
         public void AddContent(MessageUserControl messageUC) {
+            ContentGrid.Children.Add(messageUC);
+        }
+
+        public void AddContent(SurveyUserControl messageUC) {
             ContentGrid.Children.Add(messageUC);
         }
     }
