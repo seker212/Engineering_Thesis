@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using ComeX.Lib.Common.ServerCommunicationModels;
+using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace ComeX.Server.Hubs
     public class ComeXChatHub : Hub
     {
         // otrzymano wiadomość tekstową
-        public async Task SendChatMessage()
+        public async Task SendChatMessage(Message message)
         {
             // check czy ma plik
-            await Clients.All.SendAsync("RecieveChatMessage");
+            await Clients.All.SendAsync("RecieveChatMessage", message);
         }
 
         // otrzymano ankietę
