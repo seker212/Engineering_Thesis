@@ -37,7 +37,7 @@ namespace ComeX.WPF {
 
         void LoadUser() {
             Avatar.ImageSource = new BitmapImage(new Uri(System.IO.Path.Combine(SolutionPath, @"ExampleImages\avatar2.jpg")));
-            UserAvatar.Background = Avatar;
+            //UserAvatar.Background = Avatar;
         }
 
         void LoadServers() {

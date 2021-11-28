@@ -26,14 +26,14 @@
             </Style>
         </Grid.Resources>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Name="MessageAvatarCol" Width="40"></ColumnDefinition>
+            <ColumnDefinition Name="MessageAvatarCol" Width="10"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition x:Name="AuthorDateRow" Height="40"></RowDefinition>
             <RowDefinition x:Name="ContentRow"></RowDefinition>
         </Grid.RowDefinitions>
-        <Button x:Name="MessageAvatar" Grid.Column="0" Grid.Row="0" Style="{StaticResource RoundButtonStyle}"/>
+
         <WrapPanel x:Name="MessageNickDateWrapP" Grid.Column="1" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
             <WrapPanel.Resources>
                 <Style TargetType="{x:Type TextBlock}">

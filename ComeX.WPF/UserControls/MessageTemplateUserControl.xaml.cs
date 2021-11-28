@@ -26,7 +26,7 @@ namespace ComeX.WPF {
         public MessageTemplateUserControl(string author, ImageBrush Avatar, MessageUserControl content) {
             InitializeComponent();
             AuthorText.Text = author;
-            MessageAvatar.Background = Avatar;
+            //MessageAvatar.Background = Avatar;
             DateText.Text = DateTime.Now.ToString();
             AddContent(content);
         }
@@ -34,7 +34,7 @@ namespace ComeX.WPF {
         public MessageTemplateUserControl(string author, ImageBrush Avatar, SurveyUserControl content) {
             InitializeComponent();
             AuthorText.Text = author;
-            MessageAvatar.Background = Avatar;
+            //MessageAvatar.Background = Avatar;
             DateText.Text = DateTime.Now.ToString();
             AddContent(content);
         }
