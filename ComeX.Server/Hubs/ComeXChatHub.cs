@@ -1,4 +1,5 @@
 ﻿using ComeX.Lib.Common.ServerCommunicationModels;
+using ComeX.Server.DB;
 using Microsoft.AspNetCore.SignalR;
 using System;
 using System.Collections.Generic;
@@ -9,10 +10,14 @@ namespace ComeX.Server.Hubs
 {
     public class ComeXChatHub : Hub
     {
+
+        Database DB = new Database();
+
         // otrzymano wiadomość tekstową
         public async Task SendChatMessage(Message message)
         {
             // check czy ma plik
+            DB.SaveMessage(message);
             await Clients.All.SendAsync("RecieveChatMessage", message);
         }
 
