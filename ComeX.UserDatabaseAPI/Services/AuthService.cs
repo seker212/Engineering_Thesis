@@ -18,64 +18,19 @@ namespace ComeX.UserDatabaseAPI.Services
             _tokenRepository = tokenRepository;
             _userRepository = userRepository;
         }
-
-        public Task<IEnumerable<Token>> Get()
+        public Task<ComeX.Lib.Common.UserDatabaseAPI.TokenDataModel> GetTokenInfo(string tokenHash)
         {
-            return Task.Run<IEnumerable<Token>>(() =>
-            {
-                return _tokenRepository.Get();
-            });
-        }
-        public Task<Token> Get(string id)
-        {
-            return Task.Run<Token>(() =>
-            {
-                return _tokenRepository.Get(id);
-            });
-        }
-        public Task<ComeX.Lib.Common.UserDatabaseAPI.TokenMessage> GetTokenInfo(string tokenHash)
-        {
-            return Task.Run<ComeX.Lib.Common.UserDatabaseAPI.TokenMessage>(() =>
+            return Task.Run<ComeX.Lib.Common.UserDatabaseAPI.TokenDataModel>(() =>
             {
                 var token = _tokenRepository.GetByHash(tokenHash);
-                if (token != null)
+                if (token is not null)
                 {
                     var user = _userRepository.Get(token.UserId);
 
-                    return new ComeX.Lib.Common.UserDatabaseAPI.TokenMessage(user.Username, token.ValidTo);
+                    if (user is not null)
+                        return new ComeX.Lib.Common.UserDatabaseAPI.TokenDataModel(user.UserId, user.Username, token.ValidTo);
                 }
-                else
-                    return null;
-            });
-        }
-        public Task<Token> Create(Token token)
-        {
-            return Task.Run<Token>(() =>
-            {
-                _tokenRepository.Insert(token);
-
-                return token;
-            });
-        }
-        public Task Update(string id, Token tokenIn)
-        {
-            return Task.Run(() =>
-            {
-                _tokenRepository.Update(id, tokenIn);
-            });
-        }
-        public Task Remove(Token tokenIn)
-        {
-            return Task.Run(() =>
-            {
-                _tokenRepository.Delete(tokenIn);
-            });
-        }
-        public Task Remove(string Id)
-        {
-            return Task.Run(() =>
-            {
-                _tokenRepository.Delete(Id);
+                return null;
             });
         }
     }

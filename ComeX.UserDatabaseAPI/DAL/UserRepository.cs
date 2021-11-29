@@ -13,8 +13,7 @@ namespace ComeX.UserDatabaseAPI.DAL
         {
             _collection = _database.GetCollection<User>(settings.UsersCollectionName);
         }
-
-        public IEnumerable<User> Get() => _collection.Find(user => true).ToList();
+        public User GetByUsername(string username) => _collection.Find<User>(user => user.Username == username).FirstOrDefault();
         public User Get(string id) => _collection.Find<User>(user => user.Id == id).FirstOrDefault();
         public void Insert(User user) => _collection.InsertOne(user);
         public void Update(string id, User userIn) => _collection.ReplaceOne(user => user.Id == id, userIn);

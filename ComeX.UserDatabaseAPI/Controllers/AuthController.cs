@@ -18,5 +18,17 @@ namespace ComeX.UserDatabaseAPI.Controllers
         {
             _tokenService = tokenService;
         }
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> GetTokenInfo([FromQuery] string tokenHash)
+        {
+            var result = await _tokenService.GetTokenInfo(tokenHash);
+            if (result is not null)
+                return Ok(result);
+            else
+                return NotFound();
+        }
     }
 }

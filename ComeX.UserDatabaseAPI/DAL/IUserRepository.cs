@@ -5,7 +5,7 @@ namespace ComeX.UserDatabaseAPI.DAL
 {
     public interface IUserRepository : IRepository<User>
     {
-        IEnumerable<User> Get();
+        User GetByUsername(string username);
         User Get(string id);
         void Insert(User user);
         void Update(string id, User userIn);

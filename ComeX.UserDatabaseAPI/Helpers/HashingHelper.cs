@@ -31,7 +31,7 @@ namespace ComeX.UserDatabaseAPI.Helpers
             return hashedPassword;
         }
 
-        private void GenerateSalt()
+        public void GenerateSalt()
         {
             using (var rngCsp = new RNGCryptoServiceProvider())
             {

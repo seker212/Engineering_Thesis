@@ -6,11 +6,9 @@ namespace ComeX.UserDatabaseAPI.Services
 {
     public interface IUserService
     {
-        Task<User> Create(User user);
-        Task<IEnumerable<User>> Get();
-        Task<User> Get(string id);
-        Task Remove(string id);
-        Task Remove(User userIn);
-        Task Update(string id, User userIn);
+        Task<User> CreateUser(string username, string password);
+        Task<Lib.Common.UserDatabaseAPI.LoginDataModel> Login(string username, string password);
+        Task<User> UpdateUser(string username, string password, string newPassword);
+        Task<bool> DeleteUser(string username, string password);
     }
 }

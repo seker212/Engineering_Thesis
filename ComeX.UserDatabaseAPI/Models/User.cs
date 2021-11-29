@@ -10,8 +10,9 @@ namespace ComeX.UserDatabaseAPI.Models
 {
     public class User : IDatabaseModel
     {
-        public User(string username, string passwordHash, string salt)
+        public User(string userId, string username, string passwordHash, string salt)
         {
+            UserId = userId;
             Username = username;
             PasswordHash = passwordHash;
             Salt = salt;
@@ -20,6 +21,7 @@ namespace ComeX.UserDatabaseAPI.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }
+        public string UserId { get; set; }
         public string Username { get; set; }
         public string PasswordHash { get; set; }
         public string Salt { get; set; }

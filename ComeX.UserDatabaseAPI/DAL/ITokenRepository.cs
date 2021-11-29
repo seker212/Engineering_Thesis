@@ -11,6 +11,7 @@ namespace ComeX.UserDatabaseAPI.DAL
         IEnumerable<Token> Get();
         Token Get(string id);
         Token GetByHash(string tokenHash);
+        Token GetByUserId(string userId);
         void Insert(Token token);
         void Update(string id, Token tokenIn);
     }

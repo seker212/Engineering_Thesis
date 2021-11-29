@@ -10,6 +10,15 @@ namespace ComeX.UserDatabaseAPI.Models
 {
     public class Token : IDatabaseModel
     {
+        public Token(string tokenValue, string tokenHash, string userId, string validFrom, string validTo)
+        {
+            TokenValue = tokenValue;
+            TokenHash = tokenHash;
+            UserId = userId;
+            ValidFrom = validFrom;
+            ValidTo = validTo;
+        }
+
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string Id { get; set; }

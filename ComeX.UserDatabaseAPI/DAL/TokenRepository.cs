@@ -16,6 +16,7 @@ namespace ComeX.UserDatabaseAPI.DAL
         public IEnumerable<Token> Get() => _collection.Find(token => true).ToList();
         public Token Get(string id) => _collection.Find<Token>(token => token.Id == id).FirstOrDefault();
         public Token GetByHash(string tokenHash) => _collection.Find<Token>(token => token.TokenHash == tokenHash).FirstOrDefault();
+        public Token GetByUserId(string userId) => _collection.Find<Token>(token => token.UserId == userId).FirstOrDefault();
         public void Insert(Token token) => _collection.InsertOne(token);
         public void Update(string id, Token tokenIn) => _collection.ReplaceOne(token => token.Id == id, tokenIn);
         public void Delete(Token tokenIn) => _collection.DeleteOne(token => token.Id == tokenIn.Id);
