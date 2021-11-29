@@ -9,12 +9,8 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles.xaml"/>
+                <ResourceDictionary Source="../Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-
-            <local:MinusTenConverter x:Key="MinusTenConverter" />
-            <local:MinusAnotherValueConverter x:Key="MinusAnotherValueConverter" />
-            <RoutedUICommand x:Key="SendMessage"/>
         </ResourceDictionary>
     </Window.Resources>
     

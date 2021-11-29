@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using System.IO;
 using ComeX.WPF.UserControls;
 using ComeX.WPF.Windows;
+using System.Diagnostics;
 
 namespace ComeX.WPF {
     /// <summary>
@@ -25,13 +26,19 @@ namespace ComeX.WPF {
         string SolutionPath = Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.FullName;
         ImageBrush Avatar = new ImageBrush();
 
+        List<MessageTemplateUserControl> MessagesList;
+
         public MainWindow() {
             InitializeComponent();
 
             LoadUser();
             LoadServers();
             LoadRooms();
-            TEST_AddSurvey();
+            MessagesListView.Items.Clear();
+
+            MessagesList = new List<MessageTemplateUserControl>();
+
+            //TEST_AddSurvey();
 
         }
 
@@ -88,10 +95,11 @@ namespace ComeX.WPF {
         }
 
         private void DisplayMessage(MessageTemplateUserControl newMessage) {
-            MessagesWrapP.Children.Add(newMessage);
+            //MessagesWrapP.Children.Add(newMessage);
         }
 
         private void CreateSurvey(object sender, RoutedEventArgs e) {
+            Trace.WriteLine("Survey");
             CreateSurveyWindow surveyWindow = new CreateSurveyWindow();
 
             surveyWindow.Owner = Application.Current.MainWindow;
@@ -117,7 +125,7 @@ namespace ComeX.WPF {
 
             MessageTemplateUserControl newMessage = new MessageTemplateUserControl("Anonim", Avatar, newSurvey) { };
 
-            MessagesWrapP.Children.Add(newMessage);
+            //MessagesWrapP.Children.Add(newMessage);
         }
 
         private void AddMessagePlaceholder(object sender, RoutedEventArgs e) {

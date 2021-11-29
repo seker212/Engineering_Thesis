@@ -12,9 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using ComeX.WPF.UserControls;
 
-namespace ComeX.WPF {
+namespace ComeX.WPF.UserControls {
     /// <summary>
     /// Logika interakcji dla klasy MessageTemplateUserControl.xaml
     /// </summary>
@@ -39,6 +38,11 @@ namespace ComeX.WPF {
             AddContent(content);
         }
 
+        public string Author {
+            get { return (string)GetValue(AuthorProperty); }
+            set { SetValue(AuthorProperty, value); }
+        }
+        
         public static readonly DependencyProperty ContentProperty = DependencyProperty.Register("Content", typeof(MessageUserControl), typeof(MessageTemplateUserControl));
         public static readonly DependencyProperty AuthorProperty = DependencyProperty.Register("Author", typeof(string), typeof(MessageTemplateUserControl));
         public static readonly DependencyProperty DateProperty = DependencyProperty.Register("Date", typeof(string), typeof(MessageTemplateUserControl));
