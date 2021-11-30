@@ -7,6 +7,7 @@
     <Brush x:Key="DarkBlue3">#FF24314D</Brush>
     <Brush x:Key="LightBlue1">#D7E3EA</Brush>
     <Brush x:Key="LightBlue2">#A0B1CF</Brush>
+    <Brush x:Key="Blue1">#81D5EF</Brush>
 
     <FontFamily x:Key="DefaultFont">Calibri</FontFamily>
     
@@ -25,6 +26,13 @@
     </Style>
 
     <Style x:Key="DefaultTextBoxStyle" TargetType="TextBox">
+        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="{StaticResource LightBlue1}"/>
+        <Setter Property="Background" Value="{x:Null}"/>
+    </Style>
+
+    <Style x:Key="DefaultPasswordBoxStyle" TargetType="PasswordBox">
         <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
         <Setter Property="FontSize" Value="16"/>
         <Setter Property="Foreground" Value="{StaticResource LightBlue1}"/>
@@ -97,5 +105,88 @@
     </Style>
     <Style x:Key="WindowBorderStyle" TargetType="{x:Type Border}" BasedOn="{StaticResource DefaultBorderStyle}">
         <Setter Property="Background" Value="{StaticResource DarkBlue3}" />
-    </Style> 
+    </Style>
+
+    <ControlTemplate x:Key="RoundedButtonTemplate" TargetType="{x:Type Button}">
+        <Border x:Name="Border" 
+                CornerRadius="10" 
+                BorderBrush="{TemplateBinding BorderBrush}" 
+                BorderThickness="{TemplateBinding BorderThickness}"
+                Background="{TemplateBinding Background}"
+                SnapsToDevicePixels="True">
+            <ContentPresenter x:Name="ContentPresenter"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              Content="{TemplateBinding Content}"
+                              ContentStringFormat="{TemplateBinding ContentStringFormat}"
+                              Focusable="False"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              Margin="{TemplateBinding Padding}"
+                              RecognizesAccessKey="True"
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsDefaulted" Value="True">
+                <Setter Property="BorderBrush" TargetName="Border" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}"/>
+            </Trigger>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" TargetName="Border" Value="#FFBEE6FD"/>
+                <Setter Property="BorderBrush" TargetName="Border" Value="#FF3C7FB1"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" TargetName="Border" Value="#FFC4E5F6"/>
+                <Setter Property="BorderBrush" TargetName="Border" Value="#FF2C628B"/>
+            </Trigger>
+            <Trigger Property="ToggleButton.IsChecked" Value="True">
+                <Setter Property="Background" TargetName="Border" Value="#FFBCDDEE"/>
+                <Setter Property="BorderBrush" TargetName="Border" Value="#FF245A83"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" TargetName="Border" Value="#FFF4F4F4"/>
+                <Setter Property="BorderBrush" TargetName="Border" Value="#FFADB2B5"/>
+                <Setter Property="TextElement.Foreground" TargetName="ContentPresenter" Value="#FF838383"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="BorderTextBoxTemplate" TargetType="{x:Type TextBox}">
+        <Border Background="{TemplateBinding Background}" 
+                x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10">
+            <ScrollViewer x:Name="PART_ContentHost"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" TargetName="Bd"/>
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+            </Trigger>
+            <Trigger Property="Width" Value="Auto">
+                <Setter Property="MinWidth" Value="100"/>
+            </Trigger>
+            <Trigger Property="Height" Value="Auto">
+                <Setter Property="MinHeight" Value="20"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="BorderPasswordBoxTemplate" TargetType="{x:Type PasswordBox}">
+        <Border Background="{TemplateBinding Background}" 
+                x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}" CornerRadius="10">
+            <ScrollViewer x:Name="PART_ContentHost"/>
+        </Border>
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" TargetName="Bd"/>
+                <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
+            </Trigger>
+            <Trigger Property="Width" Value="Auto">
+                <Setter Property="MinWidth" Value="100"/>
+            </Trigger>
+            <Trigger Property="Height" Value="Auto">
+                <Setter Property="MinHeight" Value="20"/>
+            </Trigger>
+        </ControlTemplate.Triggers>
+    </ControlTemplate>
+
 </ResourceDictionary>

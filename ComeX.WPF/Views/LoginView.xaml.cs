@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,19 +12,13 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using System.IO;
-using ComeX.WPF.UserControls;
-using ComeX.WPF.Windows;
-using System.Diagnostics;
 
-namespace ComeX.WPF {
+namespace ComeX.WPF.Views {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Logika interakcji dla klasy LoginView.xaml
     /// </summary>
-    public partial class MainWindow : Window {
-
-
-        public MainWindow() {
+    public partial class LoginView : UserControl {
+        public LoginView() {
             InitializeComponent();
         }
     }

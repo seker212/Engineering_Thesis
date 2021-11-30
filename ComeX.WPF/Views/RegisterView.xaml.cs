@@ -10,14 +10,15 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ComeX.WPF.Windows {
+namespace ComeX.WPF.Views {
     /// <summary>
-    /// Logika interakcji dla klasy LoginWindow.xaml
+    /// Logika interakcji dla klasy RegisterView.xaml
     /// </summary>
-    public partial class LoginWindow : Window {
-        public LoginWindow() {
+    public partial class RegisterView : UserControl {
+        public RegisterView() {
             InitializeComponent();
         }
     }

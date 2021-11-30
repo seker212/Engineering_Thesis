@@ -10,10 +10,10 @@
     <Resource Include="Resources\Images\Placeholders\messagePlaceholder.jpg" />
     <Resource Include="Resources\Images\Placeholders\answerPlaceholder.jpg" />
     <Resource Include="Resources\Images\Placeholders\questionPlaceholder.jpg" />
+    <Resource Include="ExampleImages\put.jpg" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Views\" />
     <Folder Include="Resources\" />
   </ItemGroup>
 
