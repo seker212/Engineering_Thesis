@@ -103,7 +103,7 @@ namespace ComeX.UserDatabaseAPI.Services
                         {
                             hashingHelper.GenerateSalt();
                             var newHashedPassword = hashingHelper.GenerateHash(newPassword);
-                            var newUser = new User(user.Id, username, newHashedPassword, hashingHelper.Salt);
+                            var newUser = new User(user.UserId, username, newHashedPassword, hashingHelper.Salt);
                             newUser.Id = user.Id;
 
                             _userRepository.Update(user.Id, newUser);
