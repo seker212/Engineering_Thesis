@@ -130,7 +130,7 @@ namespace ComeX.WPF {
 
         private void AddMessagePlaceholder(object sender, RoutedEventArgs e) {
             TextBox textbox = sender as TextBox;
-            if (textbox.Text=="")
+            if (textbox.Text==string.Empty)
                 Placeholder.Visibility = Visibility.Visible;
         }
 

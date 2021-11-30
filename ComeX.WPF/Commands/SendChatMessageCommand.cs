@@ -1,5 +1,5 @@
 ﻿using ComeX.Lib.Common.ServerCommunicationModels;
-using ComeX.WPF.Models;
+using ComeX.WPF.ViewModels;
 using ComeX.WPF.Services;
 using System;
 using System.Collections.Generic;
@@ -11,11 +11,11 @@ using System.Windows.Input;
 
 namespace ComeX.WPF.Commands {
     public class SendChatMessageCommand : ICommand {
-        private readonly ChatModel _model;
+        private readonly ChatViewModel _viewModel;
         private readonly SignalRChatService _chatService;
 
-        public SendChatMessageCommand(ChatModel model, SignalRChatService chatService) {
-            _model = model;
+        public SendChatMessageCommand(ChatViewModel viewModel, SignalRChatService chatService) {
+            _viewModel = viewModel;
             _chatService = chatService;
         }
 
@@ -27,11 +27,12 @@ namespace ComeX.WPF.Commands {
 
         public async void Execute(object parameter) {
             try {
-                Message message = new Message("Anonim", Guid.Empty, Guid.Empty, _model.Content, false);
+                Message message = new Message("Anonim", Guid.Empty, Guid.Empty, _viewModel.Content, false);
                 await _chatService.SendChatMessage(message);
-                _model.ErrorMessage = string.Empty;
+                _viewModel.ErrorMessage = string.Empty;
+                _viewModel.Content = string.Empty;
             } catch (Exception e) {
-                _model.ErrorMessage = "Unable to send message.";
+                _viewModel.ErrorMessage = "Unable to send message.";
             }
         }
     }

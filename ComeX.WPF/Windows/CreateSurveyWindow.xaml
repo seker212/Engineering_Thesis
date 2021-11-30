@@ -105,11 +105,9 @@
                     <ColumnDefinition x:Name="MultipleChoiceCol"/>
                     <ColumnDefinition x:Name="EnableAddingCol"/>
                 </Grid.ColumnDefinitions>
-                <CheckBox x:Name="MultipleChoiceCheckBox" Grid.Column="0"
+                    <CheckBox x:Name="MultipleChoiceCheckBox" Grid.Column="0"
                           Content="Multiple choice" />
-                <CheckBox x:Name="EnableAddingCheckBox" Grid.Column="1"
-                          Content="Enable adding" />
-            </Grid>
+                </Grid>
 
             <Button x:Name="AddAnswerButton" Grid.Row="2" Style="{StaticResource DefaultButtonStyle}"
                     Margin="0,5,0,5"

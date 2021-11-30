@@ -1,4 +1,4 @@
-﻿using ComeX.WPF.Models;
+﻿using ComeX.WPF.ViewModels;
 using ComeX.WPF.Services;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
@@ -19,7 +19,7 @@ namespace ComeX.WPF {
                 .WithUrl("http://localhost:5000/ComeXChat")
                 .Build();
 
-            ChatModel chatModel = ChatModel.CreatedConnectedModel(new SignalRChatService(connection));
+            ChatViewModel chatModel = ChatViewModel.CreatedConnectedModel(new SignalRChatService(connection));
 
             MainWindow window = new MainWindow() {
                 DataContext = chatModel

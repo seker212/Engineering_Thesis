@@ -6,8 +6,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ComeX.WPF.Models {
-    public class BaseModel : INotifyPropertyChanged {
+namespace ComeX.WPF.ViewModels {
+    public class BaseViewModel : INotifyPropertyChanged {
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null) {

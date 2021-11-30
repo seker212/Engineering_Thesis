@@ -24,5 +24,9 @@ namespace ComeX.WPF.Services {
         public async Task SendChatMessage(Message message) {
             await _connection.SendAsync("SendChatMessage", message);
         }
+
+        public async Task SendChatSurvey(Survey survey) {
+            await _connection.SendAsync("SendChatSurvey", survey);
+        }
     }
 }

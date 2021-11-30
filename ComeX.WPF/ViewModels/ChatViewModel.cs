@@ -10,8 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace ComeX.WPF.Models {
-    public class ChatModel : BaseModel {
+namespace ComeX.WPF.ViewModels {
+    public class ChatViewModel : BaseViewModel {
         private string _author;
         public string Author {
             get {
@@ -34,6 +34,16 @@ namespace ComeX.WPF.Models {
             }
         }
 
+        private string _date;
+        public string Date {
+            get {
+                return _date;
+            }
+            set {
+                _date = value;
+                OnPropertyChanged(nameof(Date));
+            }
+        }
 
         private string _errorMessage = string.Empty;
         public string ErrorMessage {
@@ -60,24 +70,24 @@ namespace ComeX.WPF.Models {
             }
         }
 
-        public ObservableCollection<ChatMessageModel> Messages { get; }
+        public ObservableCollection<ChatMessageViewModel> Messages { get; }
 
         public ICommand SendChatMessageCommand { get; }
 
-        public ChatModel(SignalRChatService chatService) {
+        public ChatViewModel(SignalRChatService chatService) {
             SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
 
-            Messages = new ObservableCollection<ChatMessageModel>();
+            Messages = new ObservableCollection<ChatMessageViewModel>();
 
             chatService.ChatMessageReceived += ChatService_ChatMessageReceived;
         }
 
-        public static ChatModel CreatedConnectedModel(SignalRChatService chatService) {
-            ChatModel viewModel = new ChatModel(chatService);
+        public static ChatViewModel CreatedConnectedModel(SignalRChatService chatService) {
+            ChatViewModel viewModel = new ChatViewModel(chatService);
 
             chatService.Connect().ContinueWith(task => {
                 if (task.Exception != null) {
-                    viewModel.ErrorMessage = "Unable to connect to color chat hub";
+                    viewModel.ErrorMessage = "Unable to connect to chat server";
                 }
             });
 
@@ -85,7 +95,7 @@ namespace ComeX.WPF.Models {
         }
 
         private void ChatService_ChatMessageReceived(Message message) {
-            Messages.Add(new ChatMessageModel(message));
+            Messages.Add(new ChatMessageViewModel(message));
         }
     }
 }

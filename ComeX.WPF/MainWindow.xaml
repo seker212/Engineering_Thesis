@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:ComeX.WPF"
-        xmlns:vm="clr-namespace:ComeX.WPF.Models"
+        xmlns:vm="clr-namespace:ComeX.WPF.ViewModels"
         xmlns:uc="clr-namespace:ComeX.WPF.UserControls"
-        d:DataContext="{d:DesignInstance vm:ChatModel}"
+        d:DataContext="{d:DesignInstance vm:ChatViewModel}"
         mc:Ignorable="d"
         Title="ComeX" Height="600" Width="800"
         MinHeight="400" MinWidth="600">

@@ -5,8 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ComeX.WPF.Models {
-    public class ChatMessageModel : BaseModel {
+namespace ComeX.WPF.ViewModels {
+    public class ChatMessageViewModel : BaseViewModel {
         public Message Message { get; set; }
 
         public string MessageContent {
@@ -20,7 +20,7 @@ namespace ComeX.WPF.Models {
             }
         }
 
-        public ChatMessageModel(Message message) {
+        public ChatMessageViewModel(Message message) {
             Message = message;
             //MessageContent = Message.Content;
             //MessageAuthor = Message.Token;
