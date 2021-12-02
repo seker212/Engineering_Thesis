@@ -10,6 +10,7 @@
     <Resource Include="Resources\Images\Placeholders\messagePlaceholder.jpg" />
     <Resource Include="Resources\Images\Placeholders\answerPlaceholder.jpg" />
     <Resource Include="Resources\Images\Placeholders\questionPlaceholder.jpg" />
+    <Resource Include="Resources\Fonts\Nunito-Medium.ttf" />
     <Resource Include="ExampleImages\put.jpg" />
   </ItemGroup>
 

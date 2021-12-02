@@ -19,14 +19,9 @@ namespace ComeX.WPF {
                 .WithUrl("http://localhost:5000/ComeXChat")
                 .Build();
 
-            ChatViewModel chatViewModel = ChatViewModel.CreatedConnectedModel(new SignalRChatService(connection));
-
-            LoginViewModel loginViewModel = LoginViewModel.CreatedConnectedModel(new LoginService(connection));
-
             MainWindow window = new MainWindow() {
-                DataContext = new MainViewModel(loginViewModel)
-                //DataContext = new MainViewModel(chatViewModel)
-            };
+                DataContext = new MainViewModel(connection)
+        };
             window.Show();
         }
     }

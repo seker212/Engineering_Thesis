@@ -1,4 +1,6 @@
 ﻿using ComeX.WPF.Commands;
+using ComeX.WPF.Services;
+using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,41 +23,22 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        private ICommand _changeViewToLogin { get; set; }
-        private ICommand _changeViewToRegister { get; set; }
+        public MainViewModel(HubConnection connection) {
+            Mediator.Subscribe("ChangeViewToRegister", ChangeViewToRegister);
+            Mediator.Subscribe("ChangeViewToLogin", ChangeViewToLogin);
 
-        public MainViewModel(ChatViewModel chatViewModel) {
-            ChatViewModel = chatViewModel;
-        }
+            ChatViewModel = ChatViewModel.CreatedConnectedModel(new SignalRChatService(connection));
+            LoginViewModel = LoginViewModel.CreatedConnectedModel(new LoginService(connection));
+            RegisterViewModel = RegisterViewModel.CreatedConnectedModel(new RegisterService(connection));
 
-        public MainViewModel(LoginViewModel loginViewModel) {
-            LoginViewModel = loginViewModel;
             CurrentView = LoginViewModel;
         }
 
-        public ICommand ChangeViewToLoginCommand {
-            get {
-                return _changeViewToLogin ?? (_changeViewToLogin = new RelayCommand(
-                   x => {
-                       ChangeViewToLogin();
-                   }));
-            }
-        }
-
-        public ICommand ChangeViewToRegisterCommand {
-            get {
-                return _changeViewToRegister ?? (_changeViewToRegister = new RelayCommand(
-                   x => {
-                       ChangeViewToRegister();
-                   }));
-            }
-        }
-
-        private void ChangeViewToLogin() {
+        private void ChangeViewToLogin(object obj) {
             CurrentView = LoginViewModel;
         }
 
-        private void ChangeViewToRegister() {
+        private void ChangeViewToRegister(object obj) {
             CurrentView = RegisterViewModel;
         }
     }

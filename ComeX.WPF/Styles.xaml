@@ -10,6 +10,7 @@
     <Brush x:Key="Blue1">#81D5EF</Brush>
 
     <FontFamily x:Key="DefaultFont">Calibri</FontFamily>
+    <FontFamily x:Key="HeaderFont">./Resources/Fonts/Nunito-Medium.ttf#Nunito Regular</FontFamily>
     
     <Style x:Key="DefaultTextBlockStyle" TargetType="TextBlock">
         <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
@@ -35,6 +36,13 @@
     <Style x:Key="DefaultPasswordBoxStyle" TargetType="PasswordBox">
         <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
         <Setter Property="FontSize" Value="16"/>
+        <Setter Property="Foreground" Value="{StaticResource LightBlue1}"/>
+        <Setter Property="Background" Value="{x:Null}"/>
+    </Style>
+
+    <Style x:Key="DefaultHeaderLabelStyle" TargetType="Label">
+        <Setter Property="FontFamily" Value="{StaticResource HeaderFont}"/>
+        <Setter Property="FontSize" Value="20"/>
         <Setter Property="Foreground" Value="{StaticResource LightBlue1}"/>
         <Setter Property="Background" Value="{x:Null}"/>
     </Style>
@@ -98,6 +106,7 @@
             </Setter.Value>
         </Setter>
     </Style>
+    
     <Style x:Key="DefaultBorderStyle" TargetType="{x:Type Border}">
         <Setter Property="BorderBrush" Value="{StaticResource DarkBlue2}" />
         <Setter Property="BorderThickness" Value="4" />

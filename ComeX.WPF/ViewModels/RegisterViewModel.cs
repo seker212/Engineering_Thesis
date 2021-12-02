@@ -68,6 +68,15 @@ namespace ComeX.WPF.ViewModels {
         }
 
         public ICommand RegisterCommand { get; }
+        private ICommand _changeViewToLoginCommand;
+        public ICommand ChangeViewToLoginCommand {
+            get {
+                return _changeViewToLoginCommand ?? (_changeViewToLoginCommand = new RelayCommand(x => {
+                    Mediator.Notify("ChangeViewToLogin", "");
+                }));
+            }
+        }
+
 
         public RegisterViewModel(RegisterService registerService) {
             RegisterCommand = new RegisterCommand(this, registerService);
