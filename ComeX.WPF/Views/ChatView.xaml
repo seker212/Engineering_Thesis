@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ComeX.WPF.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             Height="450" Width="800">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -225,11 +225,9 @@
                                     <Setter Property="VerticalAlignment" Value="Center" />
                                 </Style>
                             </WrapPanel.Resources>
-                            <Button x:Name="SendButton" Width="40" Command="{Binding SendChatMessageCommand}" >
-
-                            </Button>
-                            <!--<Button x:Name="SurveyButton" Click="CreateSurvey"></Button>-->
-                            <Button x:Name="PictureButton"></Button>
+                        <Button x:Name="SendButton" Width="40" Command="{Binding SendChatMessageCommand}" />
+                        <Button x:Name="SurveyButton" Click="CreateSurvey"></Button>
+                        <Button x:Name="PictureButton"></Button>
                         </WrapPanel>
                     </Grid>
 

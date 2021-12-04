@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ComeX.Lib.Common.ServerCommunicationModels;
 using ComeX.WPF.UserControls;
 
 namespace ComeX.WPF.Windows {
@@ -22,18 +23,20 @@ namespace ComeX.WPF.Windows {
             InitializeComponent();
         }
 
-        // TODO
-        // private Survey CreateSurvey() {           
-            // return survey obj
-        // }
-
         private void AddSurveyButtonHandler(object sender, RoutedEventArgs e) {
-            // Survey survey = CreateSurvey();
+            List<SurveyAnswer> answerList = new List<SurveyAnswer>();
+            foreach (CreateSurveyAnswerUserControl answer in AnswersStackP.Children) {
+                string answerText = answer.AnswerTextBox.Text;
+                if (answerText != string.Empty)
+                    answerList.Add(new SurveyAnswer() { Content = answerText });
+            }
 
-        }
+            Survey newSurvey = new Survey();
+            newSurvey.IsMultipleChoice = (bool)MultipleChoiceCheckBox.IsChecked;
+            newSurvey.Question = QuestionTextBox.Text;
+            newSurvey.AnswerList = answerList;
 
-        private void CancelButtonHandler (object sender, RoutedEventArgs e) {
-            
+            // return newSurvey;
         }
 
         private void AddQuestionPlaceholder(object sender, RoutedEventArgs e) {
