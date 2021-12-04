@@ -5,7 +5,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Security;
 
 namespace ComeX.WPF.ViewModels {
     public class LoginViewModel : BaseViewModel {
@@ -20,14 +23,80 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        private string _password;
-        public string Password {
+        private SecureString _password;
+        public SecureString Password {
             get {
                 return _password;
             }
             set {
                 _password = value;
                 OnPropertyChanged(nameof(Password));
+            }
+        }
+
+        private string _usernameError;
+        public string UsernameError {
+            get {
+                return _usernameError;
+            }
+            set {
+                _usernameError = value;
+                OnPropertyChanged(nameof(UsernameError));
+            }
+        }
+
+        private string _passwordError;
+        public string PasswordError {
+            get {
+                return _passwordError;
+            }
+            set {
+                _passwordError = value;
+                OnPropertyChanged(nameof(PasswordError));
+            }
+        }
+
+        private Visibility _usernameErrorVisibility;
+        public Visibility UsernameErrorVisibility {
+            get {
+                return _usernameErrorVisibility;
+            }
+            set {
+                _usernameErrorVisibility = value;
+                OnPropertyChanged(nameof(UsernameErrorVisibility));
+            }
+        }
+
+        private Visibility _passwordErrorVisibility;
+        public Visibility PasswordErrorVisibility {
+            get {
+                return _passwordErrorVisibility;
+            }
+            set {
+                _passwordErrorVisibility = value;
+                OnPropertyChanged(nameof(PasswordErrorVisibility));
+            }
+        }
+
+        private Brush _usernameBoxBorder;
+        public Brush UsernameBoxBorder {
+            get {
+                return _usernameBoxBorder;
+            }
+            set {
+                _usernameBoxBorder = value;
+                OnPropertyChanged(nameof(UsernameBoxBorder));
+            }
+        }
+
+        private Brush _passwordBoxBorder;
+        public Brush PasswordBoxBorder {
+            get {
+                return _passwordBoxBorder;
+            }
+            set {
+                _passwordBoxBorder = value;
+                OnPropertyChanged(nameof(PasswordBoxBorder));
             }
         }
 
@@ -57,6 +126,7 @@ namespace ComeX.WPF.ViewModels {
         }
 
         public ICommand LoginCommand { get; }
+
         private ICommand _changeViewToRegisterCommand;
         public ICommand ChangeViewToRegisterCommand { get {
                 return _changeViewToRegisterCommand ?? (_changeViewToRegisterCommand = new RelayCommand(x => {
@@ -64,12 +134,18 @@ namespace ComeX.WPF.ViewModels {
                 }));
             } }
 
+        private Brush _defaultBorderBrush;
+
         public LoginViewModel(LoginService loginService) {
             LoginCommand = new LoginCommand(this, loginService);
 
-            //Messages = new ObservableCollection<ChatMessageViewModel>();
+            UsernameErrorVisibility = Visibility.Collapsed;
+            PasswordErrorVisibility = Visibility.Collapsed;
 
-            //chatService.ChatMessageReceived += ChatService_ChatMessageReceived;
+            _defaultBorderBrush = (Brush)Application.Current.MainWindow.FindResource("DarkBlue3");
+
+            UsernameBoxBorder = _defaultBorderBrush;
+            PasswordBoxBorder = _defaultBorderBrush;
         }
 
         public static LoginViewModel CreatedConnectedModel(LoginService loginService) {
@@ -84,8 +160,25 @@ namespace ComeX.WPF.ViewModels {
             return viewModel;
         }
 
-        //private void ChatService_ChatMessageReceived(Message message) {
-        //    Messages.Add(new ChatMessageViewModel(message));
-        //}
+        public void SetUsernameErrorMessage (string errorMessage) {
+            UsernameError = errorMessage;
+            UsernameErrorVisibility = Visibility.Visible;
+            UsernameBoxBorder = Brushes.Red;
+        }
+        public void UnsetUsernameErrorMessage() {
+            UsernameErrorVisibility = Visibility.Collapsed;
+            UsernameBoxBorder = _defaultBorderBrush;
+        }
+
+        public void SetPasswordErrorMessage(string errorMessage) {
+            PasswordError = errorMessage;
+            PasswordErrorVisibility = Visibility.Visible;
+            PasswordBoxBorder = Brushes.Red;
+        }
+
+        public void UnsetPasswordErrorMessage() {
+            PasswordErrorVisibility = Visibility.Collapsed;
+            PasswordBoxBorder = _defaultBorderBrush;
+        }
     }
 }

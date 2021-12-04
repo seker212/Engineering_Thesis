@@ -21,5 +21,11 @@ namespace ComeX.WPF.Views {
         public LoginView() {
             InitializeComponent();
         }
+
+        private void OnPasswordChanged(object sender, RoutedEventArgs e) {
+            if (this.DataContext != null) {
+                ((dynamic)this.DataContext).Password = ((PasswordBox)sender).SecurePassword;
+            }
+        }
     }
 }

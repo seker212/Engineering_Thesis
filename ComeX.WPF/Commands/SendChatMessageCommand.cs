@@ -27,11 +27,15 @@ namespace ComeX.WPF.Commands {
 
         public async void Execute(object parameter) {
             try {
+                string content = _viewModel.Content;
+                if (string.IsNullOrWhiteSpace(content)) throw new ArgumentException("Empty message");
                 Message message = new Message("Anonim", Guid.Empty, Guid.Empty, _viewModel.Content, false);
                 await _chatService.SendChatMessage(message);
                 _viewModel.ErrorMessage = string.Empty;
                 _viewModel.Content = string.Empty;
-            } catch (Exception e) {
+            } catch (ArgumentException e) {
+                _viewModel.ErrorMessage = e.Message;
+            } catch (Exception e) { // TODO handling server problems
                 _viewModel.ErrorMessage = "Unable to send message.";
             }
         }
