@@ -15,7 +15,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.IO;
 using ComeX.WPF.UserControls;
-using ComeX.WPF.Windows;
 using System.Diagnostics;
 
 namespace ComeX.WPF {

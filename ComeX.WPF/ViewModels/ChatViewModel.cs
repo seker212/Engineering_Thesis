@@ -73,13 +73,16 @@ namespace ComeX.WPF.ViewModels {
         public ObservableCollection<ChatMessageViewModel> Messages { get; }
 
         public ICommand SendChatMessageCommand { get; }
+        public ICommand CreateSurveyCommand { get; }
 
         public ChatViewModel(SignalRChatService chatService) {
             SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
+            CreateSurveyCommand = new CreateSurveyCommand(this, chatService);
 
             Messages = new ObservableCollection<ChatMessageViewModel>();
 
             chatService.ChatMessageReceived += ChatService_ChatMessageReceived;
+            chatService.SurveyReceived += ChatService_SurveyReceived;
         }
 
         public static ChatViewModel CreatedConnectedModel(SignalRChatService chatService) {
@@ -96,6 +99,10 @@ namespace ComeX.WPF.ViewModels {
 
         private void ChatService_ChatMessageReceived(Message message) {
             Messages.Add(new ChatMessageViewModel(message));
+        }
+
+        private void ChatService_SurveyReceived(Survey survey) {
+            // Messages.Add(new SurveyViewModel(survey));
         }
     }
 }

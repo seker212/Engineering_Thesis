@@ -226,7 +226,7 @@
                                 </Style>
                             </WrapPanel.Resources>
                         <Button x:Name="SendButton" Width="40" Command="{Binding SendChatMessageCommand}" />
-                        <Button x:Name="SurveyButton" Click="CreateSurvey"></Button>
+                        <Button x:Name="SurveyButton" Command="{Binding CreateSurveyCommand}"></Button>
                         <Button x:Name="PictureButton"></Button>
                         </WrapPanel>
                     </Grid>

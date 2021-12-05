@@ -31,7 +31,8 @@ namespace ComeX.WPF.ViewModels {
             LoginViewModel = LoginViewModel.CreatedConnectedModel(new LoginService(connection));
             RegisterViewModel = RegisterViewModel.CreatedConnectedModel(new RegisterService(connection));
 
-            CurrentView = LoginViewModel;
+            CurrentView = ChatViewModel;
+            // CurrentView = LoginViewModel;
         }
 
         private void ChangeViewToLogin(object obj) {

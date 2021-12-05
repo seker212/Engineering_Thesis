@@ -19,24 +19,56 @@ namespace ComeX.WPF.Windows {
     /// Logika interakcji dla klasy CreateSurveyWindow.xaml
     /// </summary>
     public partial class CreateSurveyWindow : Window {
+        private Survey _newSurvey;
+        public Survey NewSurvey {
+            get {
+                return _newSurvey;
+            }
+            set {
+                _newSurvey = value;
+            }
+        }
+
+        private string _errorMessage = string.Empty;
+        public string ErrorMessage {
+            get {
+                return _errorMessage;
+            }
+            set {
+                _errorMessage = value;
+            }
+        }
+
+        public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
+
         public CreateSurveyWindow() {
             InitializeComponent();
+            NewSurvey = null;
         }
 
         private void AddSurveyButtonHandler(object sender, RoutedEventArgs e) {
+            if (string.IsNullOrWhiteSpace(QuestionTextBox.Text)) {
+                ErrorMessage = "Question is empty";
+            }
             List<SurveyAnswer> answerList = new List<SurveyAnswer>();
             foreach (CreateSurveyAnswerUserControl answer in AnswersStackP.Children) {
                 string answerText = answer.AnswerTextBox.Text;
                 if (answerText != string.Empty)
                     answerList.Add(new SurveyAnswer() { Content = answerText });
             }
+            if (answerList.Count == 0) {
+                ErrorMessage = "Survey must contain at least one answer";
+            }
 
-            Survey newSurvey = new Survey();
-            newSurvey.IsMultipleChoice = (bool)MultipleChoiceCheckBox.IsChecked;
-            newSurvey.Question = QuestionTextBox.Text;
-            newSurvey.AnswerList = answerList;
+            if (!HasErrorMessage) {
+                Survey newSurvey = new Survey();
+                newSurvey.IsMultipleChoice = (bool)MultipleChoiceCheckBox.IsChecked;
+                newSurvey.Question = QuestionTextBox.Text;
+                newSurvey.AnswerList = answerList;
 
-            // return newSurvey;
+                NewSurvey = newSurvey;
+            }
+            this.Close();
         }
 
         private void AddQuestionPlaceholder(object sender, RoutedEventArgs e) {

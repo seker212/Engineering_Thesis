@@ -1,4 +1,5 @@
-﻿using ComeX.WPF.UserControls;
+﻿using ComeX.Lib.Common.ServerCommunicationModels;
+using ComeX.WPF.UserControls;
 using ComeX.WPF.Windows;
 using System;
 using System.Collections.Generic;
@@ -83,16 +84,6 @@ namespace ComeX.WPF.Views {
 
                 TypeTextBox.Text = "";
             }
-        }
-
-        private void CreateSurvey(object sender, RoutedEventArgs e) {
-            CreateSurveyWindow surveyWindow = new CreateSurveyWindow();
-
-            surveyWindow.Owner = Application.Current.MainWindow;
-            surveyWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            //Application.Current.MainWindow.IsEnabled = false;
-
-            surveyWindow.ShowDialog();
         }
 
         private void TEST_AddSurvey() {
