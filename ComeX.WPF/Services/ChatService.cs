@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 using ComeX.Lib.Common.ServerCommunicationModels;
 
 namespace ComeX.WPF.Services {
-    public class SignalRChatService {
+    public class ChatService {
         private readonly HubConnection _connection;
 
         public event Action<Message> ChatMessageReceived;
         public event Action<Survey> SurveyReceived;
 
-        public SignalRChatService(HubConnection connection) {
+        public ChatService(HubConnection connection) {
             _connection = connection;
             _connection.On<Message>("RecieveChatMessage", (message) => ChatMessageReceived?.Invoke(message));
             _connection.On<Survey>("RecieveChatSurvey", (survey) => SurveyReceived?.Invoke(survey));

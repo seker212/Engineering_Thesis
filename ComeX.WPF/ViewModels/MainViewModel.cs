@@ -27,7 +27,7 @@ namespace ComeX.WPF.ViewModels {
             Mediator.Subscribe("ChangeViewToRegister", ChangeViewToRegister);
             Mediator.Subscribe("ChangeViewToLogin", ChangeViewToLogin);
 
-            ChatViewModel = ChatViewModel.CreatedConnectedModel(new SignalRChatService(connection));
+            ChatViewModel = ChatViewModel.CreatedConnectedModel(new ChatService(connection));
             LoginViewModel = LoginViewModel.CreatedConnectedModel(new LoginService(connection));
             RegisterViewModel = RegisterViewModel.CreatedConnectedModel(new RegisterService(connection));
 

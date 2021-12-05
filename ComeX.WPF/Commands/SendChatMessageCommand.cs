@@ -12,9 +12,9 @@ using System.Windows.Input;
 namespace ComeX.WPF.Commands {
     public class SendChatMessageCommand : ICommand {
         private readonly ChatViewModel _viewModel;
-        private readonly SignalRChatService _chatService;
+        private readonly ChatService _chatService;
 
-        public SendChatMessageCommand(ChatViewModel viewModel, SignalRChatService chatService) {
+        public SendChatMessageCommand(ChatViewModel viewModel, ChatService chatService) {
             _viewModel = viewModel;
             _chatService = chatService;
         }

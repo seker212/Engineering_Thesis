@@ -71,20 +71,6 @@ namespace ComeX.WPF.Views {
 
         void AddServerMethod(object sender, RoutedEventArgs e) { }
 
-        private void SendMessage(object sender, RoutedEventArgs e) {
-            if (TypeTextBox.Text != "") {
-                MessageUserControl newMessageContent = new MessageUserControl { };
-                newMessageContent.ContentText.Text = TypeTextBox.Text;
-
-                MessageTemplateUserControl newMessage = new MessageTemplateUserControl("Anonim", Avatar, newMessageContent) { };
-
-                //newMessage.Content = newMessageContent;
-
-
-                TypeTextBox.Text = "";
-            }
-        }
-
         private void AddMessagePlaceholder(object sender, RoutedEventArgs e) {
             TextBox textbox = sender as TextBox;
             if (textbox.Text == string.Empty)

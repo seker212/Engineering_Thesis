@@ -75,7 +75,7 @@ namespace ComeX.WPF.ViewModels {
         public ICommand SendChatMessageCommand { get; }
         public ICommand CreateSurveyCommand { get; }
 
-        public ChatViewModel(SignalRChatService chatService) {
+        public ChatViewModel(ChatService chatService) {
             SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
             CreateSurveyCommand = new CreateSurveyCommand(this, chatService);
 
@@ -85,7 +85,7 @@ namespace ComeX.WPF.ViewModels {
             chatService.SurveyReceived += ChatService_SurveyReceived;
         }
 
-        public static ChatViewModel CreatedConnectedModel(SignalRChatService chatService) {
+        public static ChatViewModel CreatedConnectedModel(ChatService chatService) {
             ChatViewModel viewModel = new ChatViewModel(chatService);
 
             chatService.Connect().ContinueWith(task => {

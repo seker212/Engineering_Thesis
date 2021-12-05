@@ -13,9 +13,9 @@ using System.Windows.Input;
 namespace ComeX.WPF.Commands {
     public class CreateSurveyCommand : ICommand {
         private readonly ChatViewModel _viewModel;
-        private readonly SignalRChatService _service;
+        private readonly ChatService _service;
 
-        public CreateSurveyCommand(ChatViewModel viewModel, SignalRChatService service) {
+        public CreateSurveyCommand(ChatViewModel viewModel, ChatService service) {
             _viewModel = viewModel;
             _service = service;
         }
@@ -31,6 +31,7 @@ namespace ComeX.WPF.Commands {
                 Survey newSurvey = OpenSurveyWindow();
                 if (newSurvey != null) {
                     newSurvey.Token = "Anonim";
+
                     await _service.SendChatSurvey(newSurvey);
                     _viewModel.ErrorMessage = string.Empty;
                 }
