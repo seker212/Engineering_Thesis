@@ -32,7 +32,6 @@ namespace ComeX.WPF.Views {
             LoadServers();
             LoadRooms();
 
-            //TEST_AddSurvey();
         }
 
         void LoadUser() {
@@ -84,25 +83,6 @@ namespace ComeX.WPF.Views {
 
                 TypeTextBox.Text = "";
             }
-        }
-
-        private void TEST_AddSurvey() {
-            SurveyUserControl newSurvey = new SurveyUserControl { };
-            newSurvey.ContentText.Text = "Question here";
-
-            SurveyAnswerUserControl newAnswer = new SurveyAnswerUserControl { };
-            newAnswer.AnswerText.Text = "new answer";
-            newAnswer.AnswerVotesCounter.Text = "10";
-
-            Button newButton = new Button();
-            newButton.Content = "Add";
-
-            newSurvey.AnswersWrapP.Children.Add(newAnswer);
-            newSurvey.AnswersWrapP.Children.Add(newButton);
-
-            MessageTemplateUserControl newMessage = new MessageTemplateUserControl("Anonim", Avatar, newSurvey) { };
-
-            //MessagesWrapP.Children.Add(newMessage);
         }
 
         private void AddMessagePlaceholder(object sender, RoutedEventArgs e) {

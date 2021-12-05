@@ -30,6 +30,7 @@ namespace ComeX.WPF.Commands {
             try {
                 Survey newSurvey = OpenSurveyWindow();
                 if (newSurvey != null) {
+                    newSurvey.Token = "Anonim";
                     await _service.SendChatSurvey(newSurvey);
                     _viewModel.ErrorMessage = string.Empty;
                 }

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ComeX.WPF.Views"
              mc:Ignorable="d" 
-             Height="450" Width="800">
+             MinHeight="450" MinWidth="800">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -133,6 +133,7 @@
                     </Grid.RowDefinitions>
 
                     <ListView Grid.Row="0" Grid.ColumnSpan="2" x:Name="MessagesListView"
+                          Margin="5"
                           ItemsSource="{Binding Messages}"
                           Background="{StaticResource DarkBlue3}"
                           BorderBrush="{x:Null}">
@@ -154,38 +155,97 @@
                         </ListView.ItemsPanel>
                         <ListView.ItemTemplate>
                             <DataTemplate>
-                                <Grid Grid.Row="0" x:Name="Message">
-                                    <Grid.Resources>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Setter Property="Grid.Column" Value="1"/>
-                                            <Setter Property="Grid.Row" Value="1"/>
-                                            <Setter Property="TextWrapping" Value="Wrap"/>
-                                            <Setter Property="Foreground" Value="{StaticResource LightBlue1}"/>
-                                        </Style>
-                                    </Grid.Resources>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Name="MessageAvatarCol" Width="10"></ColumnDefinition>
-                                        <ColumnDefinition Width="*"></ColumnDefinition>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition x:Name="AuthorDateRow" Height="40"></RowDefinition>
+                                <Grid Grid.Row="0" x:Name="Message" Margin="2">
+                                <Grid.Resources>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Grid.Column" Value="1"/>
+                                        <Setter Property="Grid.Row" Value="1"/>
+                                        <Setter Property="TextWrapping" Value="Wrap"/>
+                                        <Setter Property="Foreground" Value="{StaticResource LightBlue1}"/>
+                                    </Style>
+                                </Grid.Resources>
+                                <Grid.RowDefinitions>
+                                        <RowDefinition x:Name="AuthorDateRow" Height="20"></RowDefinition>
                                         <RowDefinition x:Name="ContentRow"></RowDefinition>
-                                    </Grid.RowDefinitions>
+                                </Grid.RowDefinitions>
 
-                                    <WrapPanel x:Name="MessageNickDateWrapP" Grid.Column="1" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center">
+                                    <WrapPanel x:Name="MessageNickDateWrapP" Grid.Row="0"
+                                               Orientation="Horizontal" 
+                                               VerticalAlignment="Center">
                                         <WrapPanel.Resources>
                                             <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="Margin" Value="5,5,5,5" />
-                                            </Style>
+                                                <Setter Property="Margin" Value="0,0,10,0" />
+                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                        </Style>
                                         </WrapPanel.Resources>
-                                        <TextBlock x:Name="AuthorText" Text="{Binding MessageAuthor}" FontSize="16" Foreground="{StaticResource LightBlue1}"/>
-                                        <TextBlock x:Name="DateText" Text="Today" FontSize="12"  Foreground="{StaticResource LightBlue1}"/>
+                                        <TextBlock x:Name="AuthorText"
+                                                   FontSize="16"
+                                                   Foreground="{StaticResource LightBlue1}"
+                                                   Text="{Binding MessageAuthor}"/>
+                                        <TextBlock x:Name="DateText"                                                
+                                                   FontSize="12"
+                                                   Foreground="{StaticResource LightBlue2}"
+                                                   Text="{Binding MessageDateTime}"/>
                                     </WrapPanel>
-                                    <Grid x:Name="ContentGrid" Grid.Column="1" Grid.Row="1">
+                                    <Grid x:Name="ContentGrid" Grid.Row="1" Margin="5">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
                                         <TextBlock x:Name="ContentText" Grid.Row="0"
-                   Text="{Binding MessageContent}">
+                                                   Margin="0,0,0,5"
+                                            Text="{Binding MessageContent}">
                                         </TextBlock>
-                                    </Grid>
+
+                                    <Border x:Name="BorderAnswerListView" Grid.Row="1" Style="{StaticResource DefaultBorderStyle}" Visibility="{Binding SurveyAnswersVisibility}">
+                                    <ListView x:Name="AnswersListView"
+                                              BorderThickness="0"
+                                              Background="{StaticResource DarkBlue2}"
+                                              Visibility="{Binding SurveyAnswersVisibility}"
+                                              ItemsSource="{Binding SurveyAnswersContent}">
+                                        <ListView.ItemContainerStyle>
+                                            <Style TargetType="ListViewItem">
+                                                <Setter Property="Template">
+                                                    <Setter.Value>
+                                                        <ControlTemplate TargetType="ListViewItem">
+                                                            <ContentPresenter />
+                                                        </ControlTemplate>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </Style>
+                                        </ListView.ItemContainerStyle>
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <Grid x:Name="SurveyAnswer">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition x:Name="AnswerButtonCol" Width="30"></ColumnDefinition>
+                                                        <ColumnDefinition x:Name="AnswerTextCol" Width="200"></ColumnDefinition>
+                                                        <ColumnDefinition x:Name="AnswerVotesCounterCol" Width="50"></ColumnDefinition>
+                                                    </Grid.ColumnDefinitions>
+                                                    <Grid.Resources>
+                                                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultTextBlockStyle}">
+                                                            <Setter Property="VerticalAlignment" Value="Center" />
+                                                            <Setter Property="Margin" Value="5,5,5,5"/>
+                                                            <Setter Property="Foreground" Value="{StaticResource LightBlue1}"/>
+                                                        </Style>
+                                                    </Grid.Resources>
+                                                    <Button x:Name="AnswerButton" Grid.Column="0" Style="{StaticResource RoundButtonStyle}"
+                                                            Width="25"
+                                                            Height="25"
+                                                            VerticalAlignment="Top"/>
+                                                        <StackPanel Grid.Column="1" Orientation="Vertical">
+                                                    <TextBlock x:Name="AnswerText"
+                                                               TextWrapping="Wrap"
+                                                               Text="{Binding}"/>
+                                                        </StackPanel>
+                                                        <TextBlock x:Name="AnswerVotesCounter" Grid.Column="2"
+                                                               HorizontalAlignment="Right" Text="12"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                    </Border>
+                                </Grid>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -206,6 +266,8 @@
                                 <ImageBrush ImageSource="Resources/Images/Placeholders/messagePlaceholder.jpg"/>
                             </Rectangle.Fill>-->
                         </Rectangle>
+                    <StackPanel
+                        Orientation="Vertical">
                         <TextBox Style="{StaticResource DefaultTextBoxStyle}" Grid.Row="0" x:Name="TypeTextBox"
                              FontSize="16"
                              BorderThickness="0"
@@ -214,8 +276,9 @@
                              FontStyle="Normal"
                              CaretBrush="{StaticResource LightBlue1}"
                              Text="{Binding Content}"/>
+                    </StackPanel>
 
-                        <WrapPanel Grid.Row="1" x:Name="TypeToolsWrapPanel" Orientation="Horizontal" FlowDirection="RightToLeft">
+                    <WrapPanel Grid.Row="1" x:Name="TypeToolsWrapPanel" Orientation="Horizontal" FlowDirection="RightToLeft">
                             <WrapPanel.Resources>
                                 <Style TargetType="{x:Type Button}" BasedOn="{StaticResource RoundButtonStyle}">
                                     <Setter Property="Margin" Value="5,5,5,5" />
