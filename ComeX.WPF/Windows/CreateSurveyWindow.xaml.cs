@@ -29,27 +29,20 @@ namespace ComeX.WPF.Windows {
             }
         }
 
-        private string _errorMessage = string.Empty;
-        public string ErrorMessage {
-            get {
-                return _errorMessage;
-            }
-            set {
-                _errorMessage = value;
-            }
-        }
-
-        public bool HasErrorMessage => !string.IsNullOrEmpty(ErrorMessage);
-
         public CreateSurveyWindow() {
             InitializeComponent();
             NewSurvey = null;
         }
 
         private void AddSurveyButtonHandler(object sender, RoutedEventArgs e) {
+            UnsetQuestionErrorMessage();
+            UnsetAnswerErrorMessage();
+            bool isInputCorrect = true;
             if (string.IsNullOrWhiteSpace(QuestionTextBox.Text)) {
-                ErrorMessage = "Question is empty";
+                isInputCorrect = false;
+                SetQuestionErrorMessage("Question is empty");
             }
+
             List<SurveyAnswer> answerList = new List<SurveyAnswer>();
             foreach (CreateSurveyAnswerUserControl answer in AnswersStackP.Children) {
                 string answerText = answer.AnswerTextBox.Text;
@@ -57,18 +50,19 @@ namespace ComeX.WPF.Windows {
                     answerList.Add(new SurveyAnswer() { Content = answerText });
             }
             if (answerList.Count == 0) {
-                ErrorMessage = "Survey must contain at least one answer";
+                isInputCorrect = false;
+                SetAnswerErrorMessage("Survey must contain at least one answer");
             }
 
-            if (!HasErrorMessage) {
+            if (isInputCorrect) {
                 Survey newSurvey = new Survey();
                 newSurvey.IsMultipleChoice = (bool)MultipleChoiceCheckBox.IsChecked;
                 newSurvey.Question = QuestionTextBox.Text;
                 newSurvey.AnswerList = answerList;
 
                 NewSurvey = newSurvey;
+                this.Close();
             }
-            this.Close();
         }
 
         private void AddQuestionPlaceholder(object sender, RoutedEventArgs e) {
@@ -83,6 +77,26 @@ namespace ComeX.WPF.Windows {
 
         private void AddAnswer(object sender, RoutedEventArgs e) {
             AnswersStackP.Children.Add(new CreateSurveyAnswerUserControl { });
+        }
+
+        public void SetQuestionErrorMessage(string errorMessage) {
+            QuestionErrorLabel.Content = errorMessage;
+            QuestionErrorLabel.Visibility = Visibility.Visible;
+            QuestionTextBox.BorderThickness = new Thickness(2);
+        }
+
+        public void UnsetQuestionErrorMessage() {
+            QuestionErrorLabel.Visibility = Visibility.Collapsed;
+            QuestionTextBox.BorderThickness = new Thickness(0);
+        }
+
+        public void SetAnswerErrorMessage(string errorMessage) {
+            AnswerErrorLabel.Content = errorMessage;
+            AnswerErrorLabel.Visibility = Visibility.Visible;
+        }
+
+        public void UnsetAnswerErrorMessage() {
+            AnswerErrorLabel.Visibility = Visibility.Collapsed;
         }
     }
 }

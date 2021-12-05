@@ -64,14 +64,19 @@
                 </Style>
             </Grid.Resources>
             <Grid.RowDefinitions>
+                <RowDefinition x:Name="QuestionErrorRow" Height="Auto"/>
                 <RowDefinition x:Name="QuestionRow" Height="40"/>
                 <RowDefinition x:Name="CheckboxedRow" Height="40"/>
                 <RowDefinition x:Name="AddAnswerRow" Height="40"/>
-                <RowDefinition x:Name="AnswersRow" Height="200"/>
+                <RowDefinition x:Name="AnswersRow" Height="*"/>
             </Grid.RowDefinitions>
-            <Rectangle Grid.Row="0" Fill="{StaticResource DarkBlue2}"
+             <Label x:Name="QuestionErrorLabel" Grid.Row="0"
+                       Margin="0,0,0,0"
+                       Foreground="Red"
+                       Visibility="Collapsed"/>
+                <Rectangle Grid.Row="1" Fill="{StaticResource DarkBlue2}"
                        Margin="0,5,0,5"/>
-            <Rectangle x:Name="Placeholder" Grid.Row="0"
+            <Rectangle x:Name="Placeholder" Grid.Row="1"
                        Margin="0,5,0,5"
                                Height="23"
                                Width="141"
@@ -81,19 +86,20 @@
                         <ImageBrush ImageSource="../Resources/Images/Placeholders/questionPlaceholder.jpg"/>
                 </Rectangle.Fill>
             </Rectangle>
-            <TextBox x:Name="QuestionTextBox" Grid.Row="0" Style="{StaticResource DefaultTextBoxStyle}"
-                     Margin="0,5,0,5"
+                <TextBox x:Name="QuestionTextBox" Grid.Row="1" Style="{StaticResource DefaultTextBoxStyle}"
+                     Margin="0,5,8,5"
                      FontSize="16"
                              BorderThickness="0"
                              Foreground ="{StaticResource LightBlue1}"
+                             BorderBrush="Red"
                              GotFocus="RemoveQuestionPlaceholder"
                              LostFocus="AddQuestionPlaceholder" FontStyle="Normal"
                              CaretBrush="{StaticResource LightBlue1}">
-                <TextBox.Background>
-                    <ImageBrush/>
-                </TextBox.Background>
-            </TextBox>
-            <Grid x:Name="CheckboxesGrid" Grid.Row="1" Margin="0,5,0,5">
+                    <TextBox.Background>
+                        <ImageBrush/>
+                    </TextBox.Background>
+                </TextBox>
+                <Grid x:Name="CheckboxesGrid" Grid.Row="2" Margin="0,5,0,5">
                 <Grid.Resources>
                     <Style TargetType="{x:Type CheckBox}">
                         <Setter Property="FontFamily" Value="{StaticResource DefaultFont}" />
@@ -109,16 +115,28 @@
                           Content="Multiple choice" />
                 </Grid>
 
-            <Button x:Name="AddAnswerButton" Grid.Row="2" Style="{StaticResource DefaultButtonStyle}"
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+            <Button x:Name="AddAnswerButton" Grid.Column="0" Style="{StaticResource DefaultButtonStyle}"
                     Margin="0,5,0,5"
                     HorizontalAlignment="Left"
                     Width="Auto"
                     Content=" Add new answer "
                     Click = "AddAnswer"/>
-
-            <Grid Grid.Row="3" Margin="0,5,0,5" Height="180" Background="{StaticResource DarkBlue2}">
+             <Label x:Name="AnswerErrorLabel" Grid.Column="1"
+                       Foreground="Red"
+                       VerticalAlignment="Bottom"
+                       Margin="5,0,0,0"
+                       Visibility="Collapsed"/>
+                </Grid>
+                <Grid Grid.Row="4" Margin="0,5,8,5" Height="180" Background="{StaticResource DarkBlue2}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" >
-                    <StackPanel x:Name="AnswersStackP" Width="380"/>
+                    <StackPanel x:Name="AnswersStackP"
+                                HorizontalAlignment="Left"
+                                Width="380"/>
                 </ScrollViewer>
             </Grid>
         </Grid>

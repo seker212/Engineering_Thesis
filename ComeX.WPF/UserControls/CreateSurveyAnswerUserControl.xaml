@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ComeX.WPF"
              mc:Ignorable="d" 
-             d:DesignHeight="37" d:DesignWidth="380">
+             d:DesignHeight="37" d:DesignWidth="370">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -17,7 +17,7 @@
           Height="33"
           Margin="2,2,2,2">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="335"/>
+            <ColumnDefinition Width="315"/>
             <ColumnDefinition Width="30" />
         </Grid.ColumnDefinitions>
         <Rectangle Grid.Row="0" Fill="{StaticResource DarkBlue2}"
@@ -40,6 +40,7 @@
                              GotFocus="RemoveAnswerPlaceholder"
                              LostFocus="AddAnswerPlaceholder" FontStyle="Normal"
                              CaretBrush="{StaticResource LightBlue1}"/>
+
         <Button x:Name="DeleteButton" Grid.Column="1" Style="{StaticResource RoundButtonStyle}"
                 Width="30"
                 Height="30"
