@@ -14,7 +14,7 @@ namespace ComeX.UserDatabaseAPI.Helpers
 
         public bool IsNotExpired(string date)
         {
-            return DateTime.Parse(date) > DateTime.Now;
+            return DateTime.Compare(DateTime.Parse(date), DateTime.UtcNow) > 0;
         }
     }
 }
