@@ -56,7 +56,7 @@ namespace ComeX.UserDatabaseAPI.Services
                         if (hashedPassword == user.PasswordHash)
                         {
                             var tokenGenerator = new Helpers.TokenGenerator();
-                            var token =_tokenRepository.Get(user.Id);
+                            var token =_tokenRepository.GetByUserId(user.Id);
                             var validFrom = DateTime.UtcNow;
                             var validTo = validFrom.AddDays(TOKEN_DURATION);
 
@@ -65,7 +65,7 @@ namespace ComeX.UserDatabaseAPI.Services
                                 var tokenValue = tokenGenerator.GenerateToken();
                                 var tokenHash = tokenGenerator.GenerateTokenHash(tokenValue);
 
-                                _tokenRepository.Insert(new Token(tokenValue, tokenHash, user.Id, validFrom.ToString(), validTo.ToString()));
+                                _tokenRepository.Insert(new Token(null, tokenValue, tokenHash, user.Id, validFrom.ToString(), validTo.ToString()));
                                 return new Lib.Common.UserDatabaseAPI.LoginDataModel(tokenValue, user.Username);
                             }
                             else if (new UserDatabaseAPI.Helpers.DateCheckHelper().IsNotExpired(token.ValidTo))
@@ -77,7 +77,7 @@ namespace ComeX.UserDatabaseAPI.Services
                                 var newTokenValue = tokenGenerator.GenerateToken();
                                 var newTokenHash = tokenGenerator.GenerateTokenHash(newTokenValue);
 
-                                _tokenRepository.Update(token.Id, new Token(newTokenValue, newTokenHash, user.Id, validFrom.ToString(), validTo.ToString()));
+                                _tokenRepository.Update(token.Id, new Token(token.Id, newTokenValue, newTokenHash, user.Id, validFrom.ToString(), validTo.ToString()));
                                 return new Lib.Common.UserDatabaseAPI.LoginDataModel(newTokenValue, user.Username);
                             }
                         }
