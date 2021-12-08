@@ -1,4 +1,5 @@
-﻿using ComeX.WPF.Services;
+﻿using ComeX.Lib.Common.UserDatabaseAPI;
+using ComeX.WPF.Services;
 using ComeX.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -12,11 +13,11 @@ using System.Windows.Input;
 namespace ComeX.WPF.Commands {
     public class RegisterCommand : ICommand {
         private readonly RegisterViewModel _viewModel;
-        private readonly RegisterService _registerService;
+        private readonly LoginService _service;
 
-        public RegisterCommand(RegisterViewModel viewModel, RegisterService registerService) {
+        public RegisterCommand(RegisterViewModel viewModel, LoginService service) {
             _viewModel = viewModel;
-            _registerService = registerService;
+            _service = service;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -57,13 +58,19 @@ namespace ComeX.WPF.Commands {
                     isInputCorrect = false;
                 }
                 if (isInputCorrect) {
-                    //Login login = new Login(login, password);
-                    //await _chatService.SendChatMessage(message);
+                    LoginDataModel loginDataModel = await _service.Register(login, _viewModel.SecureStringToString(password));
+
+                    _viewModel.LoginDM = loginDataModel;
+                    _viewModel.SetLoginDMCommand.Execute(null);
+                    _viewModel.ChangeViewToChatCommand.Execute(null);
                     //_viewModel.ErrorMessage = string.Empty;
-                    //_viewModel.Content = string.Empty;
                 }
+            } catch (ArgumentException e) { // if usernames are unique - throw when username is in use
+                _viewModel.SetUsernameErrorMessage("");
+                _viewModel.SetPasswordErrorMessage("");
+                _viewModel.SetRetypePasswordErrorMessage("");
             } catch (Exception e) {
-                _viewModel.ErrorMessage = "Unable to send message.";
+                _viewModel.ErrorMessage = "Register failed";
             }
         }
 

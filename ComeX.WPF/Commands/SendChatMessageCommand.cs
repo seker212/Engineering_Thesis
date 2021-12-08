@@ -29,7 +29,7 @@ namespace ComeX.WPF.Commands {
             try {
                 string content = _viewModel.Content;
                 if (string.IsNullOrWhiteSpace(content)) throw new ArgumentException("Empty message");
-                Message message = new Message("Anonim", Guid.Empty, Guid.Empty, _viewModel.Content, false);
+                Message message = new Message(_viewModel.LoginDM.Username, Guid.Empty, Guid.Empty, _viewModel.Content, false);
                 await _chatService.SendChatMessage(message);
                 _viewModel.ErrorMessage = string.Empty;
                 _viewModel.Content = string.Empty;

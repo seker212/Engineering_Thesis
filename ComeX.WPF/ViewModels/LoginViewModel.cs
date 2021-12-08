@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Security;
+using ComeX.Lib.Common.UserDatabaseAPI;
 
 namespace ComeX.WPF.ViewModels {
     public class LoginViewModel : BaseViewModel {
@@ -125,6 +126,17 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private LoginDataModel _loginDM;
+        public LoginDataModel LoginDM {
+            get {
+                return _loginDM;
+            }
+            set {
+                _loginDM = value;
+                OnPropertyChanged(nameof(LoginDM));
+            }
+        }
+
         public ICommand LoginCommand { get; }
 
         private ICommand _changeViewToRegisterCommand;
@@ -133,6 +145,24 @@ namespace ComeX.WPF.ViewModels {
                     Mediator.Notify("ChangeViewToRegister", "");
                 }));
             } }
+
+        private ICommand _changeViewToChatCommand;
+        public ICommand ChangeViewToChatCommand {
+            get {
+                return _changeViewToChatCommand ?? (_changeViewToChatCommand = new RelayCommand(x => {
+                    Mediator.Notify("ChangeViewToChat", "");
+                }));
+            }
+        }
+
+        private ICommand _setLoginDMCommand;
+        public ICommand SetLoginDMCommand {
+            get {
+                return _setLoginDMCommand ?? (_setLoginDMCommand = new RelayCommand(x => {
+                    Mediator.Notify("SetLoginDM", LoginDM);
+                }));
+            }
+        }
 
         private Brush _defaultBorderBrush;
 
@@ -151,12 +181,6 @@ namespace ComeX.WPF.ViewModels {
         public static LoginViewModel CreatedConnectedModel(LoginService loginService) {
             LoginViewModel viewModel = new LoginViewModel(loginService);
 
-            loginService.Connect().ContinueWith(task => {
-                if (task.Exception != null) {
-                    viewModel.ErrorMessage = "Unable to connect to chat server";
-                }
-            });
-
             return viewModel;
         }
 
@@ -165,6 +189,7 @@ namespace ComeX.WPF.ViewModels {
             UsernameErrorVisibility = Visibility.Visible;
             UsernameBoxBorder = Brushes.Red;
         }
+
         public void UnsetUsernameErrorMessage() {
             UsernameErrorVisibility = Visibility.Collapsed;
             UsernameBoxBorder = _defaultBorderBrush;

@@ -1,4 +1,5 @@
-﻿using ComeX.WPF.Commands;
+﻿using ComeX.Lib.Common.UserDatabaseAPI;
+using ComeX.WPF.Commands;
 using ComeX.WPF.Services;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
@@ -24,15 +25,17 @@ namespace ComeX.WPF.ViewModels {
         }
 
         public MainViewModel(HubConnection connection) {
-            Mediator.Subscribe("ChangeViewToRegister", ChangeViewToRegister);
-            Mediator.Subscribe("ChangeViewToLogin", ChangeViewToLogin);
-
             ChatViewModel = ChatViewModel.CreatedConnectedModel(new ChatService(connection));
             LoginViewModel = LoginViewModel.CreatedConnectedModel(new LoginService(connection));
-            RegisterViewModel = RegisterViewModel.CreatedConnectedModel(new RegisterService(connection));
+            RegisterViewModel = RegisterViewModel.CreatedConnectedModel(new LoginService(connection));
 
-            CurrentView = ChatViewModel;
-            // CurrentView = LoginViewModel;
+            Mediator.Subscribe("ChangeViewToRegister", ChangeViewToRegister);
+            Mediator.Subscribe("ChangeViewToLogin", ChangeViewToLogin);
+            Mediator.Subscribe("ChangeViewToChat", ChangeViewToChat);
+            Mediator.Subscribe("SetLoginDM", SetLoginDM);
+
+            // CurrentView = ChatViewModel;
+            CurrentView = LoginViewModel;
         }
 
         private void ChangeViewToLogin(object obj) {
@@ -41,6 +44,14 @@ namespace ComeX.WPF.ViewModels {
 
         private void ChangeViewToRegister(object obj) {
             CurrentView = RegisterViewModel;
+        }
+
+        private void ChangeViewToChat(object obj) {
+            CurrentView = ChatViewModel;
+        }
+
+        private void SetLoginDM(object obj) {
+            ChatViewModel.LoginDM = (LoginDataModel)obj;
         }
     }
 }

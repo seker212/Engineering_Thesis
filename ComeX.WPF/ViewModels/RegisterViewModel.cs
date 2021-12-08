@@ -1,4 +1,5 @@
-﻿using ComeX.WPF.Commands;
+﻿using ComeX.Lib.Common.UserDatabaseAPI;
+using ComeX.WPF.Commands;
 using ComeX.WPF.Services;
 using System;
 using System.Collections.Generic;
@@ -169,6 +170,17 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private LoginDataModel _loginDM;
+        public LoginDataModel LoginDM {
+            get {
+                return _loginDM;
+            }
+            set {
+                _loginDM = value;
+                OnPropertyChanged(nameof(LoginDM));
+            }
+        }
+
         public ICommand RegisterCommand { get; }
 
         private ICommand _changeViewToLoginCommand;
@@ -180,10 +192,29 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private ICommand _changeViewToChatCommand;
+        public ICommand ChangeViewToChatCommand {
+            get {
+                return _changeViewToChatCommand ?? (_changeViewToChatCommand = new RelayCommand(x => {
+                    Mediator.Notify("ChangeViewToChat", "");
+                }));
+            }
+        }
+
+        private ICommand _setLoginDMCommand;
+        public ICommand SetLoginDMCommand {
+            get {
+                return _setLoginDMCommand ?? (_setLoginDMCommand = new RelayCommand(x => {
+                    Mediator.Notify("SetLoginDM", LoginDM);
+                }));
+            }
+        }
+
+
         private Brush _defaultBorderBrush;
 
-        public RegisterViewModel(RegisterService registerService) {
-            RegisterCommand = new RegisterCommand(this, registerService);
+        public RegisterViewModel(LoginService service) {
+            RegisterCommand = new RegisterCommand(this, service);
 
             UsernameErrorVisibility = Visibility.Collapsed;
             PasswordErrorVisibility = Visibility.Collapsed;
@@ -196,14 +227,8 @@ namespace ComeX.WPF.ViewModels {
             RetypePasswordBoxBorder = _defaultBorderBrush;
         }
 
-        public static RegisterViewModel CreatedConnectedModel(RegisterService registerService) {
-            RegisterViewModel viewModel = new RegisterViewModel(registerService);
-
-            registerService.Connect().ContinueWith(task => {
-                if (task.Exception != null) {
-                    viewModel.ErrorMessage = "Unable to connect to chat server";
-                }
-            });
+        public static RegisterViewModel CreatedConnectedModel(LoginService service) {
+            RegisterViewModel viewModel = new RegisterViewModel(service);
 
             return viewModel;
         }

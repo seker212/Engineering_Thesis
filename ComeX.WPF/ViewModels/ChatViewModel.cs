@@ -1,4 +1,5 @@
 ﻿using ComeX.Lib.Common.ServerCommunicationModels;
+using ComeX.Lib.Common.UserDatabaseAPI;
 using ComeX.WPF.Commands;
 using ComeX.WPF.Services;
 using System;
@@ -12,6 +13,17 @@ using System.Windows.Input;
 
 namespace ComeX.WPF.ViewModels {
     public class ChatViewModel : BaseViewModel {
+        private LoginDataModel _loginDM;
+        public LoginDataModel LoginDM {
+            get {
+                return _loginDM;
+            }
+            set {
+                _loginDM = value;
+                OnPropertyChanged(nameof(LoginDM));
+            }
+        }
+
         private string _author;
         public string Author {
             get {

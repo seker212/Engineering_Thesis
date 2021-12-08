@@ -1,8 +1,10 @@
-﻿using ComeX.WPF.Services;
+﻿using ComeX.Lib.Common.UserDatabaseAPI;
+using ComeX.WPF.Services;
 using ComeX.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,13 +44,17 @@ namespace ComeX.WPF.Commands {
                     isInputCorrect = false;
                 }
                 if (isInputCorrect) {
-                    //Login login = new Login(login, password);
-                    //await _chatService.SendChatMessage(message);
-                    //_viewModel.ErrorMessage = string.Empty;
-                    //_viewModel.Content = string.Empty;
+                    LoginDataModel loginDataModel = await _loginService.Login(login, _viewModel.SecureStringToString(password));
+                    _viewModel.LoginDM = loginDataModel;
+                    _viewModel.SetLoginDMCommand.Execute(null);
+                    _viewModel.ChangeViewToChatCommand.Execute(null);
+                   // _viewModel.ErrorMessage = string.Empty;
                 }
+            } catch (ArgumentException e) {
+                _viewModel.SetUsernameErrorMessage("");
+                _viewModel.SetPasswordErrorMessage("Username or password is invalid");
             } catch (Exception e) {
-                _viewModel.ErrorMessage = "Unable to send message.";
+                _viewModel.ErrorMessage = "Login failed";
             }
         }
     }
