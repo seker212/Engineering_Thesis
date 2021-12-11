@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ComeX.Lib.Auth\ComeX.Lib.Auth.csproj" />
     <ProjectReference Include="..\ComeX.Lib.Common\ComeX.Lib.Common.csproj" />
   </ItemGroup>
 

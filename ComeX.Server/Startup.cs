@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ComeX.Lib.Auth;
 
 namespace ComeX.Server
 {
@@ -26,6 +27,7 @@ namespace ComeX.Server
         {
             services.AddRazorPages();
             services.AddSignalR();
+            services.AddComeXAuth(new Uri("https://localhost:44327"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,8 +48,6 @@ namespace ComeX.Server
             app.UseStaticFiles();
 
             app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

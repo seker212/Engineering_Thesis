@@ -13,7 +13,6 @@ CREATE TABLE "user_tokens" (
 CREATE TABLE "rooms" (
   "id" uuid PRIMARY KEY,
   "name" text,
-  "serverId" uuid,
   "isArchived" boolean
 );
 
@@ -36,7 +35,7 @@ CREATE TABLE "reactions" (
   "id" uuid PRIMARY KEY,
   "userId" uuid,
   "messageId" uuid,
-  "emoji" nchar
+  "emoji" text
 );
 
 CREATE TABLE "surveys" (
@@ -60,20 +59,11 @@ CREATE TABLE "votes" (
   "answerId" uuid
 );
 
-CREATE TABLE "servers" (
-  "id" uuid PRIMARY KEY,
-  "name" text,
-  "ownerId" uuid
-);
-
 CREATE TABLE "blocked_users" (
-  "userId" uuid,
-  "serverId" uuid
+  "userId" uuid
 );
 
 ALTER TABLE "user_tokens" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
-
-ALTER TABLE "rooms" ADD FOREIGN KEY ("serverId") REFERENCES "servers" ("id");
 
 ALTER TABLE "user_to_room" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
 
@@ -99,8 +89,4 @@ ALTER TABLE "votes" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
 
 ALTER TABLE "votes" ADD FOREIGN KEY ("answerId") REFERENCES "answers" ("id");
 
-ALTER TABLE "servers" ADD FOREIGN KEY ("ownerId") REFERENCES "users" ("id");
-
 ALTER TABLE "blocked_users" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
-
-ALTER TABLE "blocked_users" ADD FOREIGN KEY ("serverId") REFERENCES "servers" ("id");
