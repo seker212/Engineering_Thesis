@@ -7,10 +7,13 @@ using Newtonsoft.Json;
 
 namespace ComeX.Lib.Common.ServerCommunicationModels {
     public class Room {
-        public Room(string name) {
+        public Room(Guid roomId, string name) {
+            RoomId = roomId;
             Name = name;
         }
 
+        [JsonProperty("RoomId")]
+        public Guid RoomId { get; set; }
         [JsonProperty("Name")]
         public string Name { get; set; }
     }
