@@ -5,20 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace ComeX.Lib.Common.ServerCommunicationModels {
-    public class Survey {
-        public Survey(string token, Guid roomId, string question, bool isMultipleChoice, List<string> answerList) {
-            Token = token;
+namespace ComeX.Lib.Common.ServerResponseModels {
+    public class SurveyResponse {
+        public SurveyResponse(string username, Guid roomId, string question, bool isMultipleChoice, Dictionary<SurveyAnswerResponse, int> answerList) {
+            Username = username;
             RoomId = roomId;
             Question = question;
             IsMultipleChoice = isMultipleChoice;
             AnswerList = answerList;
         }
 
-        public Survey() { }
+        public SurveyResponse() { }
 
-        [JsonProperty("Token")]
-        public string Token { get; set; }
+        [JsonProperty("Username")]
+        public string Username { get; set; }
         [JsonProperty("RoomId")]
         public Guid RoomId { get; set; }
         [JsonProperty("Question")]
@@ -26,6 +26,6 @@ namespace ComeX.Lib.Common.ServerCommunicationModels {
         [JsonProperty("IsMultipleChoice")]
         public bool IsMultipleChoice { get; set; }
         [JsonProperty("AnswerList")]
-        public List<string> AnswerList { get; set; }
+        public Dictionary<SurveyAnswerResponse, int> AnswerList { get; set; }
     }
 }

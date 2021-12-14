@@ -7,17 +7,11 @@ using Newtonsoft.Json;
 
 namespace ComeX.Lib.Common.ServerCommunicationModels {
     public class Room {
-        public Room(string name, Guid serverId, bool isArchived) {
+        public Room(string name) {
             Name = name;
-            ServerId = serverId;
-            IsArchived = isArchived;
         }
 
         [JsonProperty("Name")]
         public string Name { get; set; }
-        [JsonProperty("ServerId")]
-        public Guid ServerId { get; set; }
-        [JsonProperty("IsArchived")]
-        public bool IsArchived { get; set; }
     }
 }
