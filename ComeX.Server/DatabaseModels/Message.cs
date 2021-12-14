@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace ComeX.Server.DatabaseModels
 {
-    public class Messages : IDbModel
+    public class Message : IDbModel
     {
         private static readonly string[] _staticColumnNames = new string[] { "id", "authorId", "hasFile", "roomId", "sendTime", "parentId", "content" };
 
-        public Messages(Guid id, Guid authorId, bool hasFile, Guid roomId, string sendTime, Guid parentId, string content)
+        public Message(Guid id, Guid authorId, bool hasFile, Guid roomId, string sendTime, Guid parentId, string content)
         {
             Id = id;
             AuthorId = authorId;

@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace ComeX.Server.DatabaseModels
 {
-    public class Blocked_users : IDbModel
+    public class Blocked_user : IDbModel
     {
         private static readonly string[] _staticColumnNames = new string[] { "userId" };
 
-        public Blocked_users(Guid userId)
+        public Blocked_user(Guid userId)
         {
             UserId = userId;
         }

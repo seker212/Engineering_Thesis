@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace ComeX.Server.DatabaseModels
 {
-    public class User_tokens : IDbModel
+    public class User_token : IDbModel
     {
         private static readonly string[] _staticColumnNames = new string[] { "tokenHash", "userId", "validFrom", "validTo" };
 
-        public User_tokens(string tokenHash, Guid userId, string validFrom, string validTo)
+        public User_token(string tokenHash, Guid userId, string validFrom, string validTo)
         {
             TokenHash = tokenHash;
             UserId = userId;

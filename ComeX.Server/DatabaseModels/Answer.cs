@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace ComeX.Server.DatabaseModels
 {
-    public class Answers : IDbModel
+    public class Answer : IDbModel
     {
         private static readonly string[] _staticColumnNames = new string[] { "id", "content", "surveyId" };
 
-        public Answers(Guid id, string content, Guid surveyId)
+        public Answer(Guid id, string content, Guid surveyId)
         {
             Id = id;
             Content = content;

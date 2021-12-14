@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace ComeX.Server.DatabaseModels
 {
-    public class Reactions : IDbModel
+    public class Reaction : IDbModel
     {
         private static readonly string[] _staticColumnNames = new string[] { "id", "userId", "messageId", "emoji" };
 
-        public Reactions(Guid id, Guid userId, Guid messageId, string emoji)
+        public Reaction(Guid id, Guid userId, Guid messageId, string emoji)
         {
             Id = id;
             UserId = userId;
