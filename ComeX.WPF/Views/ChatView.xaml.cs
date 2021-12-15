@@ -30,7 +30,7 @@ namespace ComeX.WPF.Views {
 
             LoadUser();
             LoadServers();
-            LoadRooms();
+            //LoadRooms();
 
         }
 
@@ -50,8 +50,6 @@ namespace ComeX.WPF.Views {
                 newRoom.RoomNameButton.Click += new RoutedEventHandler(SwitchRoom);
                 if (i == 1)
                     newRoom.SetNewMessage();
-                else if (i == 2)
-                    newRoom.SetNewMention();
                 RoomsWrapP.Children.Add(newRoom);
                 if (i == 0) {
                     SwitchRoom(newRoom.RoomNameButton, null);
@@ -64,8 +62,7 @@ namespace ComeX.WPF.Views {
         void SwitchRoom(object sender, RoutedEventArgs e) {
             Button button = sender as Button;
             RoomUserControl room = button.DataContext as RoomUserControl;
-            SelectedRoomTitle.Text = (string)button.Content;
-            SelectedRoomDescription.Text = "Opis pokoju " + (string)button.Content;
+            //SelectedRoomTitle.Text = (string)button.Content;
             room.DeleteNotify();
         }
 

@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:uc="clr-namespace:ComeX.WPF.UserControls"
              xmlns:local="clr-namespace:ComeX.WPF.Views"
              mc:Ignorable="d" 
              MinHeight="450" MinWidth="800">
@@ -76,7 +77,31 @@
                    Width="160"
                    Background="{StaticResource DarkBlue1}"
                    Orientation="Vertical">
-            </WrapPanel>
+            <ListView Grid.Row="0" Grid.ColumnSpan="2" x:Name="RoomsListView"
+                          Margin="5"
+                          ItemsSource="{Binding RoomsNames}"
+                          Background="{x:Null}"
+                          BorderBrush="{x:Null}">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="ListViewItem">
+                                    <ContentPresenter />
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <WrapPanel>
+                            <uc:RoomUserControl/>
+                        </WrapPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </WrapPanel>
 
             <Grid Grid.Column="2" x:Name="ContentGrid">
                 <Grid.ColumnDefinitions>
@@ -94,22 +119,15 @@
                        Orientation="Horizontal"
                        Background="{StaticResource DarkBlue2}">
 
-                    <Border BorderBrush="{x:Null}" Height="40">
-                        <TextBlock x:Name="SelectedRoomTitle" Style="{StaticResource DefaultHeaderTextBlockStyle}"
+                <Border BorderBrush="{x:Null}" Height="40">
+                    <TextBlock x:Name="SelectedRoomTitle" Style="{StaticResource DefaultHeaderTextBlockStyle}"
                          VerticalAlignment="Center"
                          TextWrapping="Wrap"
                          Width="120"
-                         Margin="10,5,5,5"/>
-                    </Border>
-
-                    <Border BorderBrush="{x:Null}" Height="40">
-                        <TextBlock x:Name="SelectedRoomDescription" Style="{StaticResource DefaultTextBlockStyle}"
-                         VerticalAlignment="Center"
-                         TextWrapping="Wrap"
-                         Foreground="{StaticResource LightBlue2}"
-                         Margin="5,5,10,5"/>
-                    </Border>
-                </WrapPanel>
+                         Margin="10,5,5,5"
+                         Text="{Binding CurrentRoomName}"/>
+                </Border>
+            </WrapPanel>
                 <WrapPanel Grid.Column="1" Grid.Row="0" x:Name="UsersOnline" Background="{StaticResource DarkBlue2}">
                     <WrapPanel.Resources>
                         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource RoundButtonStyle}">
@@ -134,7 +152,7 @@
 
                     <ListView Grid.Row="0" Grid.ColumnSpan="2" x:Name="MessagesListView"
                           Margin="5"
-                          ItemsSource="{Binding Messages}"
+                          ItemsSource="{Binding CurrentRoomMessages}"
                           Background="{StaticResource DarkBlue3}"
                           BorderBrush="{x:Null}">
                         <ListView.ItemContainerStyle>
@@ -239,7 +257,7 @@
                                                                Text="{Binding}"/>
                                                         </StackPanel>
                                                         <TextBlock x:Name="AnswerVotesCounter" Grid.Column="2"
-                                                               HorizontalAlignment="Right" Text="12"/>
+                                                               HorizontalAlignment="Right" Text="0"/>
                                                 </Grid>
                                             </DataTemplate>
                                         </ListView.ItemTemplate>

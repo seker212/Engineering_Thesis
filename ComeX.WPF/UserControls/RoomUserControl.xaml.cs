@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ComeX.WPF.Commands;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,6 +24,8 @@ namespace ComeX.WPF.UserControls {
             InitializeComponent();
         }
 
+        public string RoomName { get; set; }
+
         public void SetNewMessage() {
             this.NotifyRoomEllipse.Style = (Style)Room.FindResource("NewMessageRoomStyle");
         }
@@ -32,6 +36,16 @@ namespace ComeX.WPF.UserControls {
 
         public void DeleteNotify() {
             this.NotifyRoomEllipse.Style = (Style)Room.FindResource("DefaultEllipseStyle");
+        }
+
+
+        private ICommand _changeRoomCommand;
+        public ICommand ChangeRoomCommand {
+            get {
+                return _changeRoomCommand ?? (_changeRoomCommand = new RelayCommand(x => {
+                    Mediator.Notify("ChangeRoom", RoomNameButton.Content.ToString());
+                }));
+            }
         }
     }
 }
