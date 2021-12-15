@@ -28,17 +28,19 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        public List<SurveyAnswer> SurveyAnswers {
+        public List<string> SurveyAnswers {
             get {
                 return Survey.AnswerList;
             }
         }
 
+        /*
         public List<string> SurveyAnswersContent {
             get {
                 return SurveyAnswers.Select(a => a.Content).ToList();
             }
         }
+        */
 
         public bool SurveyIsMultipleChoice {
             get {

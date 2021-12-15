@@ -43,11 +43,11 @@ namespace ComeX.WPF.Windows {
                 SetQuestionErrorMessage("Question is empty");
             }
 
-            List<SurveyAnswer> answerList = new List<SurveyAnswer>();
+            List<string> answerList = new List<string>();
             foreach (CreateSurveyAnswerUserControl answer in AnswersStackP.Children) {
                 string answerText = answer.AnswerTextBox.Text;
                 if (answerText != string.Empty)
-                    answerList.Add(new SurveyAnswer() { Content = answerText });
+                    answerList.Add(answerText);
             }
             if (answerList.Count == 0) {
                 isInputCorrect = false;
