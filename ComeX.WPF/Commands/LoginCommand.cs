@@ -51,7 +51,7 @@ namespace ComeX.WPF.Commands {
                    // _viewModel.ErrorMessage = string.Empty;
                 }
             } catch (ArgumentException e) {
-                _viewModel.SetUsernameErrorMessage("");
+                _viewModel.SetUsernameErrorMessage(string.Empty);
                 _viewModel.SetPasswordErrorMessage("Username or password is invalid");
             } catch (Exception e) {
                 _viewModel.ErrorMessage = "Login failed";

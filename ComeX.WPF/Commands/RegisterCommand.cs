@@ -63,12 +63,9 @@ namespace ComeX.WPF.Commands {
                     _viewModel.LoginDM = loginDataModel;
                     _viewModel.SetLoginDMCommand.Execute(null);
                     _viewModel.ChangeViewToChatCommand.Execute(null);
-                    //_viewModel.ErrorMessage = string.Empty;
                 }
-            } catch (ArgumentException e) { // if usernames are unique - throw when username is in use
-                _viewModel.SetUsernameErrorMessage("");
-                _viewModel.SetPasswordErrorMessage("");
-                _viewModel.SetRetypePasswordErrorMessage("");
+            } catch (ArgumentException e) {
+                _viewModel.SetUsernameErrorMessage("This username is already taken");
             } catch (Exception e) {
                 _viewModel.ErrorMessage = "Register failed";
             }

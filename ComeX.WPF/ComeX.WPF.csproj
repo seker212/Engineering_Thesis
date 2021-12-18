@@ -12,11 +12,12 @@
     <Resource Include="Resources\Images\Placeholders\questionPlaceholder.jpg" />
     <Resource Include="Resources\Fonts\Nunito-Medium.ttf" />
     <Resource Include="ExampleImages\put.jpg" />
+    <Resource Include="Resources\Images\logo1.png" />
+    <Resource Include="Resources\Images\logo2.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Resources\" />
-    <Folder Include="Windows\" />
   </ItemGroup>
 
   <ItemGroup>

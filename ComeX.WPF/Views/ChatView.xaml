@@ -65,11 +65,11 @@
 
                     <Button x:Name="UserAvatar" />
 
-                    <Button x:Name="Settings"
+                <Button x:Name="Settings"
                         Width="60"
-                        Height="60">
-
-                    </Button>
+                        Height="60"
+                        Command="{Binding SettingsCommand}">
+                </Button>
                 </WrapPanel>
             </Grid>
 

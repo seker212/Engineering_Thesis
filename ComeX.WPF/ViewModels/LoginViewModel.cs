@@ -184,9 +184,17 @@ namespace ComeX.WPF.ViewModels {
             return viewModel;
         }
 
+        public void ResetViewModel () {
+            Username = string.Empty;
+            UnsetUsernameErrorMessage();
+            UnsetPasswordErrorMessage();
+        }
+
         public void SetUsernameErrorMessage (string errorMessage) {
-            UsernameError = errorMessage;
-            UsernameErrorVisibility = Visibility.Visible;
+            if (errorMessage != string.Empty) {
+                UsernameError = errorMessage;
+                UsernameErrorVisibility = Visibility.Visible;
+            }
             UsernameBoxBorder = Brushes.Red;
         }
 
@@ -196,8 +204,10 @@ namespace ComeX.WPF.ViewModels {
         }
 
         public void SetPasswordErrorMessage(string errorMessage) {
-            PasswordError = errorMessage;
-            PasswordErrorVisibility = Visibility.Visible;
+            if (errorMessage != string.Empty) {
+                PasswordError = errorMessage;
+                PasswordErrorVisibility = Visibility.Visible;
+            }
             PasswordBoxBorder = Brushes.Red;
         }
 

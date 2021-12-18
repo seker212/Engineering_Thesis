@@ -39,10 +39,12 @@ namespace ComeX.WPF.ViewModels {
         }
 
         private void ChangeViewToLogin(object obj) {
+            LoginViewModel.ResetViewModel();
             CurrentView = LoginViewModel;
         }
 
         private void ChangeViewToRegister(object obj) {
+            RegisterViewModel.ResetViewModel();
             CurrentView = RegisterViewModel;
         }
 

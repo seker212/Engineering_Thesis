@@ -138,12 +138,23 @@ namespace ComeX.WPF.ViewModels {
         public ICommand CreateSurveyCommand { get; }
         public ICommand GetRoomsListCommand { get; }
         public ICommand ChangeRoomCommand { get; }
+        public ICommand SettingsCommand { get; }
+
+        private ICommand _changeViewToLoginCommand;
+        public ICommand ChangeViewToLoginCommand {
+            get {
+                return _changeViewToLoginCommand ?? (_changeViewToLoginCommand = new RelayCommand(x => {
+                    Mediator.Notify("ChangeViewToLogin", "");
+                }));
+            }
+        }
 
         public ChatViewModel(ChatService chatService) {
             SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
             CreateSurveyCommand = new CreateSurveyCommand(this, chatService);
             GetRoomsListCommand = new GetRoomsListCommand(this, chatService);
             ChangeRoomCommand = new ChangeRoomCommand(this, chatService);
+            SettingsCommand = new SettingsCommand(this, chatService);
 
             Mediator.Subscribe("ChangeRoom", ChangeRoom);
 
