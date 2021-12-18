@@ -36,5 +36,55 @@ namespace ComeX.WPF.Windows {
             Option = OptionEnum.Logout;
             this.Close();
         }
+
+        // todo
+        private void ChangePasswordButtonHandler(object sender, RoutedEventArgs e) {
+            if (true) { // password correct
+                Option = OptionEnum.ChangePassword;
+                this.Close();
+            } else {
+
+            }
+        }
+
+        // todo
+        private void DeleteAccountButtonHandler(object sender, RoutedEventArgs e) {
+            if (true) { // password correct
+                Option = OptionEnum.DeleteAccount;
+                this.Close();
+            } else {
+
+            }
+        }
+
+        // todo
+        private void CancelButtonHandler(object sender, RoutedEventArgs e) {
+            if (true) { // password correct
+                Option = OptionEnum.Cancel;
+                this.Close();
+            } else {
+
+            }
+        }
+
+        private void AddOldPasswordPlaceholder(object sender, RoutedEventArgs e) {
+            PasswordBox textbox = sender as PasswordBox;
+            if (textbox.Password.Length == 0)
+                OldPasswordPlaceholder.Visibility = Visibility.Visible;
+        }
+
+        private void RemoveOldPasswordPlaceholder(object sender, RoutedEventArgs e) {
+            OldPasswordPlaceholder.Visibility = Visibility.Hidden;
+        }
+
+        private void AddNewPasswordPlaceholder(object sender, RoutedEventArgs e) {
+            PasswordBox textbox = sender as PasswordBox;
+            if (textbox.Password.Length == 0)
+                NewPasswordPlaceholder.Visibility = Visibility.Visible;
+        }
+
+        private void RemoveNewPasswordPlaceholder(object sender, RoutedEventArgs e) {
+            NewPasswordPlaceholder.Visibility = Visibility.Hidden;
+        }
     }
 }

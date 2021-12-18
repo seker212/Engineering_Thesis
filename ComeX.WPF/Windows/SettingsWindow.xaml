@@ -20,10 +20,133 @@
     </Window.Resources>
 
     <Border x:Name="BorderMainGrid" Style="{StaticResource WindowBorderStyle}">
-        <Grid>
-            <Button x:Name="LogoutButton"
-                    Content="Log out"
+        <Grid x:Name="SettingsMainGrid" Background="{StaticResource DarkBlue3}"
+          Margin="5,5,5,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid x:Name="TitleGrid" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="200"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="80"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock x:Name="Title" Grid.Column="0" Style="{StaticResource DefaultHeaderTextBlockStyle}"
+                   Margin="5,5,5,5"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Width="Auto"
+                   Text=" Settings "/>
+
+                <Button x:Name="LogoutButton" Grid.Column="1" Style="{StaticResource WindowRoundButtonStyle}"
+                    Margin="0,5,0,5"
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    Width="80"
+                    Content=" Log out "
                     Click="LogoutButtonHandler"/>
+
+                <Button x:Name="CancelButton" Grid.Column="2" Style="{StaticResource WindowRoundButtonStyle}"
+                    Margin="0,5,0,5"
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Width="70"
+                    Content=" Cancel "
+                    Click="CancelButtonHandler"/>
+            </Grid>
+            <Grid Grid.Row="1" Margin="0,5,8,5" Background="{StaticResource DarkBlue2}">
+                <StackPanel x:Name="MainStackP" HorizontalAlignment="Left">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type Label}">
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="Foreground" Value="{StaticResource LightBlue1}"/>
+                            <Setter Property="Margin" Value="10,10,10,0"/>
+                            <Setter Property="FontSize" Value="14"/>
+                        </Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                            <Setter Property="Foreground" Value="{StaticResource LightBlue2}"/>
+                            <Setter Property="Margin" Value="10,0,10,0"/>
+                            <Setter Property="FontSize" Value="11"/>
+                            <Setter Property="TextWrapping" Value="Wrap"/>
+                        </Style>
+                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource WindowRoundButtonStyle}">
+                            <Setter Property="Width" Value="120" />
+                            <Setter Property="HorizontalAlignment" Value="Left" />
+                            <Setter Property="Margin" Value="10,0,10,0"/>
+                        </Style>
+                        <Style TargetType="{x:Type PasswordBox}">
+                            <Setter Property="Template" Value="{StaticResource BorderPasswordBoxTemplate}" />
+                            <Setter Property="Background" Value="{x:Null}" />
+                            <Setter Property="Foreground" Value="{StaticResource LightBlue1}" />
+                            <Setter Property="CaretBrush" Value="{StaticResource LightBlue1}" />
+                            <Setter Property="FontSize" Value="14" />
+                            <Setter Property="BorderThickness" Value="4" />
+                            <Setter Property="BorderBrush" Value="{StaticResource DarkBlue3}" />
+                            <Setter Property="Margin" Value="10,5,10,5"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <Label Content="Change password" />
+                    <TextBlock
+                           Text="New password must contain at least: 8 characters, 1 upper letter, 1 lower letter, 1 number" />
+                    <Grid Margin="10,0,10,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+
+                        <Rectangle x:Name="OldPasswordPlaceholder" Grid.Column="0" Grid.Row="0"
+                       Margin="18,5,0,5"
+                               Height="23"
+                               Width="101"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource="../Resources/Images/Placeholders/oldPasswordPlaceholder.jpg"/>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Rectangle x:Name="NewPasswordPlaceholder" Grid.Column="1" Grid.Row="0"
+                       Margin="18,5,0,5"
+                               Height="23"
+                               Width="107"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top">
+                            <Rectangle.Fill>
+                                <ImageBrush ImageSource="../Resources/Images/Placeholders/newPasswordPlaceholder.jpg"/>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <PasswordBox x:Name="OldPassword" Grid.Column="0" Grid.Row="0"
+                             GotFocus="RemoveOldPasswordPlaceholder"
+                             LostFocus="AddOldPasswordPlaceholder"/>
+                        <PasswordBox x:Name="NewPassword" Grid.Column="1" Grid.Row="0"
+                             GotFocus="RemoveNewPasswordPlaceholder"
+                             LostFocus="AddNewPasswordPlaceholder"/>
+                        <Label x:Name="OldPasswordErrorLabel" Grid.Column="0" Grid.Row="1"
+                            Margin="0,0,0,0"
+                            Foreground="Red"
+                            Visibility="Collapsed"/>
+                        <Label x:Name="NewPasswordErrorLabel" Grid.Column="1" Grid.Row="1"
+                            Margin="0,0,0,0"
+                            Foreground="Red"
+                            Visibility="Collapsed"/>
+                    </Grid>
+                    <Button Content=" Change password "
+                            Click="ChangePasswordButtonHandler"/>
+
+                    <Label Content="Delete account" />
+                    <TextBlock Text="Deleted account cannot be retrieved" />
+                    <Button Content=" Delete account "
+                            Click="DeleteAccountButtonHandler"/>
+                </StackPanel>
+            </Grid>
         </Grid>
     </Border>
 </Window>

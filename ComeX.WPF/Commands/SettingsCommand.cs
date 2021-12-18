@@ -35,7 +35,14 @@ namespace ComeX.WPF.Commands {
                             break;
                         }
                     case OptionEnum.ChangePassword: {
-                            // todo
+                            ChangePasswordOption();
+                            break;
+                        }
+                    case OptionEnum.DeleteAccount: {
+                            DeleteAccountOption();
+                            break;
+                        }
+                    case OptionEnum.Cancel: {
                             break;
                         }
                 } 
@@ -62,6 +69,14 @@ namespace ComeX.WPF.Commands {
 
         private void LogoutOption() {
             _viewModel.ChangeViewToLoginCommand.Execute(null);
+        }
+
+        private void ChangePasswordOption() {
+            // todo
+        }
+
+        private void DeleteAccountOption() {
+            // todo
         }
     }
 }

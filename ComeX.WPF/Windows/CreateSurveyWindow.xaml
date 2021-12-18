@@ -20,16 +20,16 @@
     </Window.Resources>
 
     <Border x:Name="BorderMainGrid" Style="{StaticResource WindowBorderStyle}">
-    <Grid x:Name="CreateSurveyMainGrid" Background="{StaticResource DarkBlue3}"
+        <Grid x:Name="CreateSurveyMainGrid" Background="{StaticResource DarkBlue3}"
           Margin="5,5,5,5">
-        <Grid.RowDefinitions>
+            <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition MinHeight="350"></RowDefinition>
         </Grid.RowDefinitions>
         <Grid x:Name="TitleGrid" Grid.Row="0">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="220"/>
-                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="100"/>
                 <ColumnDefinition Width="80"/>
             </Grid.ColumnDefinitions>
             <TextBlock x:Name="Title" Grid.Column="0" Style="{StaticResource DefaultHeaderTextBlockStyle}"
@@ -39,14 +39,14 @@
                    Width="Auto"
                    Text=" Create new survey "/>
 
-            <Button x:Name="AddSurveyButton" Grid.Column="1" Style="{StaticResource DefaultButtonStyle}"
+            <Button x:Name="AddSurveyButton" Grid.Column="1" Style="{StaticResource WindowRoundButtonStyle}"
                     Margin="0,5,0,5"
                     HorizontalAlignment="Center"
                     HorizontalContentAlignment="Center"
-                    Width="70"
+                    Width="90"
                     Content=" Add survey "
                     Click = "AddSurveyButtonHandler"/>
-            <Button x:Name="CancelButton" Grid.Column="2" Style="{StaticResource DefaultButtonStyle}"
+            <Button x:Name="CancelButton" Grid.Column="2" Style="{StaticResource WindowRoundButtonStyle}"
                     Margin="0,5,0,5"
                     HorizontalAlignment="Center"
                     HorizontalContentAlignment="Center"
@@ -59,10 +59,10 @@
               Margin="5,5,5,5"
               Width="380">
             <Grid.Resources >
-                <Style TargetType="Border" >
-                    <Setter Property="Padding" Value="5,5,5,5" />
-                </Style>
-            </Grid.Resources>
+                    <Style TargetType="Border" >
+                        <Setter Property="Padding" Value="5,5,5,5" />
+                    </Style>
+                </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition x:Name="QuestionErrorRow" Height="Auto"/>
                 <RowDefinition x:Name="QuestionRow" Height="40"/>
@@ -93,7 +93,7 @@
                              Foreground ="{StaticResource LightBlue1}"
                              BorderBrush="Red"
                              GotFocus="RemoveQuestionPlaceholder"
-                             LostFocus="AddQuestionPlaceholder" FontStyle="Normal"
+                             LostFocus="AddQuestionPlaceholder"
                              CaretBrush="{StaticResource LightBlue1}">
                     <TextBox.Background>
                         <ImageBrush/>
@@ -120,7 +120,7 @@
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-            <Button x:Name="AddAnswerButton" Grid.Column="0" Style="{StaticResource DefaultButtonStyle}"
+                <Button x:Name="AddAnswerButton" Grid.Column="0" Style="{StaticResource WindowRoundButtonStyle}"
                     Margin="0,5,0,5"
                     HorizontalAlignment="Left"
                     Width="Auto"

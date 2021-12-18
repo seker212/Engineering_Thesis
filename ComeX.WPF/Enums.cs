@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 namespace ComeX.WPF {
     public enum OptionEnum {
         Logout,
-        ChangePassword
+        ChangePassword,
+        DeleteAccount,
+        Cancel
     }
 }
