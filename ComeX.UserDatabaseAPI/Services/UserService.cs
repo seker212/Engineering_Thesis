@@ -21,22 +21,29 @@ namespace ComeX.UserDatabaseAPI.Services
             _tokenRepository = tokenRepository;
         }
 
-        public Task<User> CreateUser(string username, string password)
+        public Task<(string Reason, User AddedUser)> CreateUser(string username, string password)
         {
-            return Task.Run<User>(() =>
+            return Task.Run<(string, User)>(() =>
             {
                 if (!String.IsNullOrEmpty(username) || !String.IsNullOrEmpty(password))
                 {
-                    var hashingHelper = new UserDatabaseAPI.Helpers.HashingHelper();
-                    var hashedPassword = hashingHelper.GenerateHash(password);
-                    var user = new User(Guid.NewGuid().ToString(), username, hashedPassword, hashingHelper.Salt);
+                    var checkUser = _userRepository.GetByUsername(username);
 
-                    _userRepository.Insert(user);
+                    if (checkUser is not null)
+                        return ("A user with this username already exists", null);
+                    else
+                    {
+                        var hashingHelper = new UserDatabaseAPI.Helpers.HashingHelper();
+                        var hashedPassword = hashingHelper.GenerateHash(password);
+                        var user = new User(Guid.NewGuid().ToString(), username, hashedPassword, hashingHelper.Salt);
 
-                    return _userRepository.Get(user.Id);
+                        _userRepository.Insert(user);
+
+                        return (string.Empty, _userRepository.Get(user.Id));
+                    }
                 }
                 else
-                    return null;
+                    return ("Username or password cannot be empty", null);
             });
         }
         public Task<Lib.Common.UserDatabaseAPI.LoginDataModel> Login(string username, string password)
