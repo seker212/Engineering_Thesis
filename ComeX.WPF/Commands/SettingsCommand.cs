@@ -1,6 +1,7 @@
 ﻿using ComeX.Lib.Common.ServerCommunicationModels;
 using ComeX.WPF.Services;
 using ComeX.WPF.ViewModels;
+using ComeX.WPF.Views;
 using ComeX.WPF.Windows;
 using System;
 using System.Collections.Generic;
@@ -13,9 +14,10 @@ using System.Windows.Input;
 namespace ComeX.WPF.Commands {
     public class SettingsCommand : ICommand {
         private readonly ChatViewModel _viewModel;
-        private readonly ChatService _service;
+        private readonly LoginService _service;
+        private SettingsView _settingsView;
 
-        public SettingsCommand(ChatViewModel viewModel, ChatService service) {
+        public SettingsCommand(ChatViewModel viewModel, LoginService service) {
             _viewModel = viewModel;
             _service = service;
         }
@@ -28,24 +30,8 @@ namespace ComeX.WPF.Commands {
 
         public async void Execute(object parameter) {
             try {
-                OptionEnum option = OpenSettingsWindow();
-                switch (option) {
-                    case OptionEnum.Logout: {
-                            LogoutOption();
-                            break;
-                        }
-                    case OptionEnum.ChangePassword: {
-                            ChangePasswordOption();
-                            break;
-                        }
-                    case OptionEnum.DeleteAccount: {
-                            DeleteAccountOption();
-                            break;
-                        }
-                    case OptionEnum.Cancel: {
-                            break;
-                        }
-                } 
+                OpenSettingsWindow();
+
             } catch (ArgumentException e) {
                 _viewModel.ErrorMessage = e.Message;
             } catch (Exception e) {
@@ -53,30 +39,21 @@ namespace ComeX.WPF.Commands {
             }
         }
 
-        private OptionEnum OpenSettingsWindow() {
-            SettingsWindow settingsWindow = new SettingsWindow();
-            OptionEnum option;
-
-            settingsWindow.Owner = Application.Current.MainWindow;
-            settingsWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+        private void OpenSettingsWindow() {
+            _settingsView = new SettingsView();
+            _settingsView.DataContext = new SettingsViewModel(_service, _viewModel.LoginDM);
+            _settingsView.Owner = Application.Current.MainWindow;
+            _settingsView.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             //Application.Current.MainWindow.IsEnabled = false;
 
-            settingsWindow.ShowDialog();
-            option = settingsWindow.Option;
-
-            return option;
+            _settingsView.Show();
         }
 
+        /*
         private void LogoutOption() {
             _viewModel.ChangeViewToLoginCommand.Execute(null);
         }
 
-        private void ChangePasswordOption() {
-            // todo
-        }
-
-        private void DeleteAccountOption() {
-            // todo
-        }
+        */
     }
 }

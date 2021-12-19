@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -12,58 +14,24 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace ComeX.WPF.Windows {
+namespace ComeX.WPF.Views {
     /// <summary>
     /// Logika interakcji dla klasy SettingsWindow.xaml
     /// </summary>
-    public partial class SettingsWindow : Window {
-        private OptionEnum _option;
-        public OptionEnum Option {
-            get {
-                return _option;
-            }
-            set {
-                _option = value;
-            }
-        }
-
-        public SettingsWindow() {
+    public partial class SettingsView : Window {
+        public SettingsView() {
             InitializeComponent();
         }
 
-        private void LogoutButtonHandler(object sender, RoutedEventArgs e) {
-            // ask if you really want to log out
-            Option = OptionEnum.Logout;
-            this.Close();
-        }
-
-        // todo
-        private void ChangePasswordButtonHandler(object sender, RoutedEventArgs e) {
-            if (true) { // password correct
-                Option = OptionEnum.ChangePassword;
-                this.Close();
-            } else {
-
+        private void OldPasswordChanged(object sender, RoutedEventArgs e) {
+            if (this.DataContext != null) {
+                ((dynamic)this.DataContext).OldPassword = ((PasswordBox)sender).SecurePassword;
             }
         }
 
-        // todo
-        private void DeleteAccountButtonHandler(object sender, RoutedEventArgs e) {
-            if (true) { // password correct
-                Option = OptionEnum.DeleteAccount;
-                this.Close();
-            } else {
-
-            }
-        }
-
-        // todo
-        private void CancelButtonHandler(object sender, RoutedEventArgs e) {
-            if (true) { // password correct
-                Option = OptionEnum.Cancel;
-                this.Close();
-            } else {
-
+        private void NewPasswordChanged(object sender, RoutedEventArgs e) {
+            if (this.DataContext != null) {
+                ((dynamic)this.DataContext).NewPassword = ((PasswordBox)sender).SecurePassword;
             }
         }
 

@@ -25,9 +25,11 @@ namespace ComeX.WPF.ViewModels {
         }
 
         public MainViewModel(HubConnection connection) {
-            ChatViewModel = ChatViewModel.CreatedConnectedModel(new ChatService(connection));
-            LoginViewModel = LoginViewModel.CreatedConnectedModel(new LoginService(connection));
-            RegisterViewModel = RegisterViewModel.CreatedConnectedModel(new LoginService(connection));
+            LoginService loginService = new LoginService(connection);
+            ChatService chatService = new ChatService(connection);
+            LoginViewModel = LoginViewModel.CreatedConnectedModel(loginService);
+            RegisterViewModel = RegisterViewModel.CreatedConnectedModel(loginService);
+            ChatViewModel = ChatViewModel.CreatedConnectedModel(chatService, loginService);
 
             Mediator.Subscribe("ChangeViewToRegister", ChangeViewToRegister);
             Mediator.Subscribe("ChangeViewToLogin", ChangeViewToLogin);

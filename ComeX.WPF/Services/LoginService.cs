@@ -49,5 +49,18 @@ namespace ComeX.WPF.Services {
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<LoginDataModel>(content);
         }
+
+        public async Task<bool> ChangePassword(string login, string oldPassword, string newPassword) {
+            var query = HttpUtility.ParseQueryString(_uriBuilder.Query);
+            query["username"] = login;
+            query["password"] = oldPassword;
+            query["newPassword"] = newPassword;
+            _uriBuilder.Query = query.ToString();
+            string url = _uriBuilder.ToString();
+
+            var response = await _httpClient.PutAsync(url, null);
+            if (response.StatusCode == System.Net.HttpStatusCode.OK) return true;
+            else return true;
+        }
     }
 }

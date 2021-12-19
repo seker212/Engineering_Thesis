@@ -149,12 +149,12 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        public ChatViewModel(ChatService chatService) {
+        public ChatViewModel(ChatService chatService, LoginService loginService) {
             SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
             CreateSurveyCommand = new CreateSurveyCommand(this, chatService);
             GetRoomsListCommand = new GetRoomsListCommand(this, chatService);
             ChangeRoomCommand = new ChangeRoomCommand(this, chatService);
-            SettingsCommand = new SettingsCommand(this, chatService);
+            SettingsCommand = new SettingsCommand(this, loginService);
 
             Mediator.Subscribe("ChangeRoom", ChangeRoom);
 
@@ -170,8 +170,8 @@ namespace ComeX.WPF.ViewModels {
             //CurrentRoomsMessages = new ObservableCollection<BaseMessageViewModel>();
         }
 
-        public static ChatViewModel CreatedConnectedModel(ChatService chatService) {
-            ChatViewModel viewModel = new ChatViewModel(chatService);
+        public static ChatViewModel CreatedConnectedModel(ChatService chatService, LoginService loginService) {
+            ChatViewModel viewModel = new ChatViewModel(chatService, loginService);
 
             chatService.Connect().ContinueWith(task => {
                 if (task.Exception != null) {

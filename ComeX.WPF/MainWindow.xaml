@@ -29,6 +29,9 @@
             <DataTemplate DataType="{x:Type vm:RegisterViewModel}">
                 <views:RegisterView/>
             </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+                <views:SettingsView/>
+            </DataTemplate>
 
             <local:MinusTenConverter x:Key="MinusTenConverter" />
             <local:MinusAnotherValueConverter x:Key="MinusAnotherValueConverter" />
