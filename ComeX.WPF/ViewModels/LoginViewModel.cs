@@ -184,11 +184,13 @@ namespace ComeX.WPF.ViewModels {
             return viewModel;
         }
 
+        /*
         public void ResetViewModel () {
             Username = string.Empty;
             UnsetUsernameErrorMessage();
             UnsetPasswordErrorMessage();
         }
+        */
 
         public void SetUsernameErrorMessage (string errorMessage) {
             if (errorMessage != string.Empty) {

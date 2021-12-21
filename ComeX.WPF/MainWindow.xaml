@@ -11,8 +11,9 @@
         d:DataContext="{d:DesignInstance vm:MainViewModel}"
         mc:Ignorable="d"
         Title="ComeX"
-        MinHeight="400" MinWidth="400"
-        SizeToContent="WidthAndHeight">
+        MinHeight="650" MinWidth="{Binding WindowMinWidth}"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="{Binding WindowResizeMode}">
 
     <Window.Resources>
         <ResourceDictionary>

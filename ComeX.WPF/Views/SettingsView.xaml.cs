@@ -23,6 +23,17 @@ namespace ComeX.WPF.Views {
             InitializeComponent();
         }
 
+        private void CancelButtonHandler(object sender, RoutedEventArgs e) {
+            this.Close();
+        } 
+
+        private void LogoutButtonHandler(object sender, RoutedEventArgs e) {
+            if (this.DataContext != null) {
+                ((dynamic)this.DataContext).LogoutCommand.Execute(null);
+                this.Close();
+            }
+        }
+
         private void OldPasswordChanged(object sender, RoutedEventArgs e) {
             if (this.DataContext != null) {
                 ((dynamic)this.DataContext).OldPassword = ((PasswordBox)sender).SecurePassword;

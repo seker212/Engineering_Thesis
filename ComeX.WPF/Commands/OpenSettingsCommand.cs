@@ -12,12 +12,12 @@ using System.Windows;
 using System.Windows.Input;
 
 namespace ComeX.WPF.Commands {
-    public class SettingsCommand : ICommand {
+    public class OpenSettingsCommand : ICommand {
         private readonly ChatViewModel _viewModel;
         private readonly LoginService _service;
         private SettingsView _settingsView;
 
-        public SettingsCommand(ChatViewModel viewModel, LoginService service) {
+        public OpenSettingsCommand(ChatViewModel viewModel, LoginService service) {
             _viewModel = viewModel;
             _service = service;
         }

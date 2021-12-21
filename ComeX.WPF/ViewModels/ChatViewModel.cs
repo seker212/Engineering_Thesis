@@ -138,7 +138,7 @@ namespace ComeX.WPF.ViewModels {
         public ICommand CreateSurveyCommand { get; }
         public ICommand GetRoomsListCommand { get; }
         public ICommand ChangeRoomCommand { get; }
-        public ICommand SettingsCommand { get; }
+        public ICommand OpenSettingsCommand { get; }
 
         private ICommand _changeViewToLoginCommand;
         public ICommand ChangeViewToLoginCommand {
@@ -154,7 +154,7 @@ namespace ComeX.WPF.ViewModels {
             CreateSurveyCommand = new CreateSurveyCommand(this, chatService);
             GetRoomsListCommand = new GetRoomsListCommand(this, chatService);
             ChangeRoomCommand = new ChangeRoomCommand(this, chatService);
-            SettingsCommand = new SettingsCommand(this, loginService);
+            OpenSettingsCommand = new OpenSettingsCommand(this, loginService);
 
             Mediator.Subscribe("ChangeRoom", ChangeRoom);
 
@@ -185,7 +185,8 @@ namespace ComeX.WPF.ViewModels {
         private void ChangeRoom(object obj) {
             CurrentRoom = RoomsMessages.First(o => o.Key.Name == (string)obj);
             CurrentRoomName = (string)obj;
-            CurrentRoomMessages = CurrentRoom.Value;
+            CurrentRoomMessages = new ObservableCollection<BaseMessageViewModel>();
+            //CurrentRoomMessages = CurrentRoom.Value;
         }
 
         //todo

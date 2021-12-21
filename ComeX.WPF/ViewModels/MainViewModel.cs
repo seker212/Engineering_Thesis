@@ -7,13 +7,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ComeX.WPF.ViewModels {
     public class MainViewModel : BaseViewModel {
-        private ChatViewModel ChatViewModel { get; set; }
-        private LoginViewModel LoginViewModel { get; set; }
-        private RegisterViewModel RegisterViewModel { get; set; }
+        private LoginService _loginService { get; }
+        private ChatService _chatService { get; }
+        private ChatViewModel _chatViewModel { get; set; }
+        private LoginViewModel _loginViewModel { get; set; }
+        private RegisterViewModel _registerViewModel { get; set; }
 
         private BaseViewModel _currentView;
         public BaseViewModel CurrentView {
@@ -24,12 +27,31 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private ResizeMode _windowResizeMode;
+        public ResizeMode WindowResizeMode {
+            get { return _windowResizeMode; }
+            set {
+                _windowResizeMode = value;
+                OnPropertyChanged("WindowResizeMode");
+            }
+        }
+
+        private int _windowMinWidth;
+        public int WindowMinWidth {
+            get { return _windowMinWidth; }
+            set {
+                _windowMinWidth = value;
+                OnPropertyChanged("WindowMinWidth");
+            }
+        }
+
         public MainViewModel(HubConnection connection) {
-            LoginService loginService = new LoginService(connection);
-            ChatService chatService = new ChatService(connection);
-            LoginViewModel = LoginViewModel.CreatedConnectedModel(loginService);
-            RegisterViewModel = RegisterViewModel.CreatedConnectedModel(loginService);
-            ChatViewModel = ChatViewModel.CreatedConnectedModel(chatService, loginService);
+            _loginService = new LoginService(connection);
+            _chatService = new ChatService(connection);
+
+            _loginViewModel = LoginViewModel.CreatedConnectedModel(_loginService);
+            _registerViewModel = RegisterViewModel.CreatedConnectedModel(_loginService);
+            _chatViewModel = ChatViewModel.CreatedConnectedModel(_chatService, _loginService);
 
             Mediator.Subscribe("ChangeViewToRegister", ChangeViewToRegister);
             Mediator.Subscribe("ChangeViewToLogin", ChangeViewToLogin);
@@ -37,25 +59,35 @@ namespace ComeX.WPF.ViewModels {
             Mediator.Subscribe("SetLoginDM", SetLoginDM);
 
             // CurrentView = ChatViewModel;
-            CurrentView = LoginViewModel;
+            CurrentView = _loginViewModel;
         }
 
         private void ChangeViewToLogin(object obj) {
-            LoginViewModel.ResetViewModel();
-            CurrentView = LoginViewModel;
+            _loginViewModel = LoginViewModel.CreatedConnectedModel(_loginService);
+            //LoginViewModel.ResetViewModel();
+            CurrentView = _loginViewModel;
+            WindowResizeMode = ResizeMode.NoResize;
+            WindowMinWidth = 500;
         }
 
         private void ChangeViewToRegister(object obj) {
-            RegisterViewModel.ResetViewModel();
-            CurrentView = RegisterViewModel;
+            _registerViewModel = RegisterViewModel.CreatedConnectedModel(_loginService);
+            //RegisterViewModel.ResetViewModel();
+            CurrentView = _registerViewModel;
+            WindowResizeMode = ResizeMode.NoResize;
+            WindowMinWidth = 500;
         }
 
         private void ChangeViewToChat(object obj) {
-            CurrentView = ChatViewModel;
+            _chatViewModel = ChatViewModel.CreatedConnectedModel(_chatService, _loginService);
+            SetLoginDM(_loginViewModel.LoginDM);
+            CurrentView = _chatViewModel;
+            WindowResizeMode = ResizeMode.CanResize;
+            WindowMinWidth = 850;
         }
 
         private void SetLoginDM(object obj) {
-            ChatViewModel.LoginDM = (LoginDataModel)obj;
+            _chatViewModel.LoginDM = (LoginDataModel)obj;
         }
     }
 }

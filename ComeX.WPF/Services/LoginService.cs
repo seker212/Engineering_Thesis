@@ -60,7 +60,7 @@ namespace ComeX.WPF.Services {
 
             var response = await _httpClient.PutAsync(url, null);
             if (response.StatusCode == System.Net.HttpStatusCode.OK) return true;
-            else return true;
+            else return false;
         }
     }
 }

@@ -152,12 +152,6 @@ namespace ComeX.WPF.ViewModels {
             return viewModel;
         }
 
-        private void CloseWindow(Window window) {
-            if (window != null) {
-                window.Close();
-            }
-        }
-
         public void SetChangePasswordErrorMessage(string errorMessage) {
             ChangePasswordError = errorMessage;
             ChangePasswordErrorVisibility = Visibility.Visible;
