@@ -2,6 +2,7 @@
 using ComeX.Lib.Common.ServerResponseModels;
 using ComeX.Lib.Common.UserDatabaseAPI;
 using ComeX.WPF.Commands;
+using ComeX.WPF.MessageViewModels;
 using ComeX.WPF.Models;
 using ComeX.WPF.Services;
 using System;
@@ -201,7 +202,7 @@ namespace ComeX.WPF.ViewModels {
             CurrentRoomMessages.Add(new ChatMessageViewModel(message));
         }
 
-        private void ChatService_SurveyReceived(Survey survey) {
+        private void ChatService_SurveyReceived(SurveyResponse survey) {
             CurrentRoomMessages.Add(new SurveyViewModel(survey));
         }
 

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ComeX.WPF.ViewModels {
+namespace ComeX.WPF.MessageViewModels {
     public class ChatMessageViewModel : BaseMessageViewModel {
         public Message Message { get; set; }
 

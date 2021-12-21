@@ -12,13 +12,13 @@ namespace ComeX.WPF.Services {
         private readonly HubConnection _connection;
 
         public event Action<Message> ChatMessageReceived;
-        public event Action<Survey> SurveyReceived;
+        public event Action<SurveyResponse> SurveyReceived;
         public event Action<RoomsListResponse> RoomsListReceived;
 
         public ChatService(HubConnection connection) {
             _connection = connection;
             _connection.On<Message>("RecieveChatMessage", (message) => ChatMessageReceived?.Invoke(message));
-            _connection.On<Survey>("RecieveChatSurvey", (survey) => SurveyReceived?.Invoke(survey));
+            _connection.On<SurveyResponse>("RecieveChatSurvey", (survey) => SurveyReceived?.Invoke(survey));
 
             // podmienić metodę
             _connection.On<RoomsListResponse>("ReceiveRoomsList", (roomsList) => RoomsListReceived?.Invoke(roomsList));
