@@ -121,10 +121,12 @@
                         <PasswordBox x:Name="OldPassword" Grid.Column="0" Grid.Row="0"
                              GotFocus="RemoveOldPasswordPlaceholder"
                              LostFocus="AddOldPasswordPlaceholder"
+                             MaxLength="{Binding PasswordMaxLen}"
                              PasswordChanged="OldPasswordChanged"/>
                         <PasswordBox x:Name="NewPassword" Grid.Column="1" Grid.Row="0"
                              GotFocus="RemoveNewPasswordPlaceholder"
                              LostFocus="AddNewPasswordPlaceholder"
+                             MaxLength="{Binding PasswordMaxLen}"
                              PasswordChanged="NewPasswordChanged"/>
                         <Label x:Name="OldPasswordErrorLabel" Grid.Column="0" Grid.Row="1"
                             Margin="0,0,0,0"
@@ -137,10 +139,12 @@
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
+                            <ColumnDefinition Width="Auto"/>
                             <ColumnDefinition/>
                         </Grid.ColumnDefinitions>
                         <Button Content=" Change password " Grid.Column="0" 
+                            VerticalAlignment="Top"
+                            Height="26"
                             Command="{Binding ChangePasswordCommand}"/>
                         <TextBlock x:Name="ChangePasswordErrorLabel" Grid.Column="1" 
                                Foreground="Red"

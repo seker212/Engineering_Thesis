@@ -91,6 +91,12 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        public int PasswordMaxLen {
+            get {
+                return Consts.PASSWORD_MAXLEN;
+            }
+        }
+
         private string _errorMessage = string.Empty;
         public string ErrorMessage {
             get {
@@ -116,7 +122,6 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        // todo close window
         private ICommand _logoutCommand;
         public ICommand LogoutCommand {
             get {

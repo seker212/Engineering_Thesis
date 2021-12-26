@@ -34,23 +34,23 @@ namespace ComeX.WPF.Commands {
 
                 bool isInputCorrect = true;
                 string login = _viewModel.Username;
-                SecureString password = _viewModel.Password;
-                SecureString retypePassword = _viewModel.RetypePassword;
+                string password = _viewModel.PasswordValue;
+                string retypePassword = _viewModel.RetypePasswordValue;
 
                 if (string.IsNullOrWhiteSpace(login)) {
                     _viewModel.SetUsernameErrorMessage("Username cannot be empty");
                     isInputCorrect = false;
                 }
-                if (password == null || password.Length == 0) {
+                if (string.IsNullOrEmpty(password)) {
                     _viewModel.SetPasswordErrorMessage("Password cannot be empty");
                     isInputCorrect = false;
                 }
-                if (retypePassword == null || retypePassword.Length == 0) {
+                if (string.IsNullOrEmpty(retypePassword)) {
                     _viewModel.SetRetypePasswordErrorMessage("Password cannot be empty");
                     isInputCorrect = false;
                 }
                 if (!IsPasswordFormatValid()) {
-                    _viewModel.SetPasswordErrorMessage("Password must be at least 8 characters long"); // TODO message with more conditions
+                    _viewModel.SetPasswordErrorMessage("Password must be at least 8 characters long, contain lower letter, upper letter and a digit");
                     isInputCorrect = false;
                 }
                 else if (!ArePasswordsEqual()) {
@@ -58,7 +58,7 @@ namespace ComeX.WPF.Commands {
                     isInputCorrect = false;
                 }
                 if (isInputCorrect) {
-                    LoginDataModel loginDataModel = await _service.Register(login, _viewModel.SecureStringToString(password));
+                    LoginDataModel loginDataModel = await _service.Register(login, password);
 
                     _viewModel.LoginDM = loginDataModel;
                     _viewModel.SetLoginDMCommand.Execute(null);
@@ -72,41 +72,14 @@ namespace ComeX.WPF.Commands {
         }
 
         private bool ArePasswordsEqual() {
-            SecureString password1 = _viewModel.Password;
-            SecureString password2 = _viewModel.RetypePassword;
-
-            IntPtr bstr1 = IntPtr.Zero;
-            IntPtr bstr2 = IntPtr.Zero;
-            try {
-                bstr1 = Marshal.SecureStringToBSTR(password1);
-                bstr2 = Marshal.SecureStringToBSTR(password2);
-
-                int length1 = Marshal.ReadInt32(bstr1, -4);
-                int length2 = Marshal.ReadInt32(bstr2, -4);
-                if (length1 == length2) {
-                    for (int i = 0; i < length1; ++i) {
-                        byte b1 = Marshal.ReadByte(bstr1, i);
-                        byte b2 = Marshal.ReadByte(bstr2, i);
-                        if (b1 != b2) {
-                            return false;
-                        }
-                    }
-                } else {
-                    return false;
-                }
-                return true;
-            } finally {
-                if (bstr2 != IntPtr.Zero) {
-                    Marshal.ZeroFreeBSTR(bstr2);
-                }
-                if (bstr1 != IntPtr.Zero) {
-                    Marshal.ZeroFreeBSTR(bstr1);
-                }
-            }
+            return (_viewModel.PasswordValue == _viewModel.RetypePasswordValue);
         }
 
-        private bool IsPasswordFormatValid() { // TODO more conditions
-            return (_viewModel.Password.Length > 7);
+        private bool IsPasswordFormatValid() {
+            return (_viewModel.PasswordValue.Length > 7
+                && _viewModel.PasswordValue.Any(char.IsDigit)
+                && _viewModel.PasswordValue.Any(char.IsLower)
+                && _viewModel.PasswordValue.Any(char.IsUpper));
         }
     }
 }

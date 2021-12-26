@@ -5,6 +5,7 @@ using ComeX.WPF.Commands;
 using ComeX.WPF.MessageViewModels;
 using ComeX.WPF.Models;
 using ComeX.WPF.Services;
+using ComeX.WPF;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -107,6 +108,12 @@ namespace ComeX.WPF.ViewModels {
             set {
                 _date = value;
                 OnPropertyChanged(nameof(Date));
+            }
+        }
+
+        public int MessageMaxLen {
+            get {
+                return Consts.MESSAGE_MAXLEN;
             }
         }
 

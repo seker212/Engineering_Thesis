@@ -101,6 +101,18 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        public int UsernameMaxLen {
+            get {
+                return Consts.USERNAME_MAXLEN;
+            }
+        }
+
+        public int PasswordMaxLen {
+            get {
+                return Consts.PASSWORD_MAXLEN;
+            }
+        }
+
         private string _errorMessage = string.Empty;
         public string ErrorMessage {
             get {

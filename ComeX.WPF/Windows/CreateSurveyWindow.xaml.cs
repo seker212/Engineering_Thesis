@@ -32,6 +32,7 @@ namespace ComeX.WPF.Windows {
         public CreateSurveyWindow() {
             InitializeComponent();
             NewSurvey = null;
+            QuestionTextBox.MaxLength = Consts.SURVEYQUESTION_MAXLEN;
         }
 
         private void AddSurveyButtonHandler(object sender, RoutedEventArgs e) {

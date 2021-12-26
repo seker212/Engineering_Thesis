@@ -20,6 +20,7 @@ namespace ComeX.WPF.UserControls {
     public partial class CreateSurveyAnswerUserControl : UserControl {
         public CreateSurveyAnswerUserControl() {
             InitializeComponent();
+            AnswerTextBox.MaxLength = Consts.SURVEYANSWER_MAXLEN;
         }
 
         private void AddAnswerPlaceholder(object sender, RoutedEventArgs e) {

@@ -37,9 +37,9 @@
                      FontSize="16"
                              BorderThickness="0"
                              Foreground ="{StaticResource LightBlue1}"
+                             CaretBrush="{StaticResource LightBlue1}"
                              GotFocus="RemoveAnswerPlaceholder"
-                             LostFocus="AddAnswerPlaceholder" FontStyle="Normal"
-                             CaretBrush="{StaticResource LightBlue1}"/>
+                             LostFocus="AddAnswerPlaceholder" FontStyle="Normal"/>
 
         <Button x:Name="DeleteButton" Grid.Column="1" Style="{StaticResource RoundButtonStyle}"
                 Width="30"

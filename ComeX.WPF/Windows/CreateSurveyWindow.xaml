@@ -92,9 +92,9 @@
                              BorderThickness="0"
                              Foreground ="{StaticResource LightBlue1}"
                              BorderBrush="Red"
+                             CaretBrush="{StaticResource LightBlue1}"
                              GotFocus="RemoveQuestionPlaceholder"
-                             LostFocus="AddQuestionPlaceholder"
-                             CaretBrush="{StaticResource LightBlue1}">
+                             LostFocus="AddQuestionPlaceholder">
                     <TextBox.Background>
                         <ImageBrush/>
                     </TextBox.Background>

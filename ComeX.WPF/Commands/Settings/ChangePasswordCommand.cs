@@ -28,31 +28,41 @@ namespace ComeX.WPF.Commands.Settings {
                 _viewModel.UnsetChangePasswordErrorMessage();
 
                 bool isInputCorrect = true;
+                string oldPassword = _viewModel.OldPasswordValue;
+                string newPassword = _viewModel.NewPasswordValue;
 
-                // todo
-                /*
-                if (string.IsNullOrWhiteSpace(login)) {
-                    _viewModel.SetUsernameErrorMessage("Username cannot be empty");
+                if (string.IsNullOrEmpty(oldPassword) || string.IsNullOrEmpty(newPassword)) {
+                    _viewModel.SetChangePasswordErrorMessage("Password cannot be empty");
                     isInputCorrect = false;
                 }
-                if (password == null || password.Length == 0) {
-                    _viewModel.SetPasswordErrorMessage("Password cannot be empty");
+                if (oldPassword == newPassword) {
+                    _viewModel.SetChangePasswordErrorMessage("New password cannot be same as the old one");
                     isInputCorrect = false;
-                } */
+                }
+                if (!IsPasswordFormatValid()) {
+                    _viewModel.SetChangePasswordErrorMessage("Password must be at least 8 characters long, contain at least one lower letter, one upper letter and a digit");
+                    isInputCorrect = false;
+                }
                 if (isInputCorrect) {
-                    bool result = await _service.ChangePassword(_viewModel.LoginDM.Username, _viewModel.OldPasswordValue, _viewModel.NewPasswordValue);
+                    bool result = await _service.ChangePassword(_viewModel.LoginDM.Username, oldPassword, newPassword);
                     if (result) {
                         _viewModel.SetChangePasswordErrorMessage("Password changed");
                     } else {
                         _viewModel.SetChangePasswordErrorMessage("Couldn't change the password");
                     }
                 }
-                // todo nie wiem czy te exceptiony potrzebne
             } catch (ArgumentException e) {
-                _viewModel.SetChangePasswordErrorMessage("");
+                _viewModel.SetChangePasswordErrorMessage("Couldn't change password");
             } catch (Exception e) {
-                _viewModel.ErrorMessage = "Login failed";
+                _viewModel.ErrorMessage = "Operation failed";
             }
+        }
+
+        private bool IsPasswordFormatValid() {
+            return (_viewModel.NewPasswordValue.Length > 7
+                && _viewModel.NewPasswordValue.Any(char.IsDigit)
+                && _viewModel.NewPasswordValue.Any(char.IsLower)
+                && _viewModel.NewPasswordValue.Any(char.IsUpper));
         }
     }
 }

@@ -32,6 +32,7 @@ namespace ComeX.WPF.ViewModels {
             set {
                 _password = value;
                 OnPropertyChanged(nameof(Password));
+                PasswordValue = SecureStringToString(value);
             }
         }
 
@@ -43,6 +44,27 @@ namespace ComeX.WPF.ViewModels {
             set {
                 _retypePassword = value;
                 OnPropertyChanged(nameof(RetypePassword));
+                RetypePasswordValue = SecureStringToString(value);
+            }
+        }
+
+        private string _passwordValue;
+        public string PasswordValue {
+            get {
+                return _passwordValue;
+            }
+            set {
+                _passwordValue = value;
+            }
+        }
+
+        private string _retypePasswordValue;
+        public string RetypePasswordValue {
+            get {
+                return _retypePasswordValue;
+            }
+            set {
+                _retypePasswordValue = value;
             }
         }
 
@@ -142,6 +164,18 @@ namespace ComeX.WPF.ViewModels {
             set {
                 _retypePasswordBoxBorder = value;
                 OnPropertyChanged(nameof(RetypePasswordBoxBorder));
+            }
+        }
+
+        public int UsernameMaxLen {
+            get {
+                return Consts.USERNAME_MAXLEN;
+            }
+        }
+
+        public int PasswordMaxLen {
+            get {
+                return Consts.PASSWORD_MAXLEN;
             }
         }
 

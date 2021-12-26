@@ -208,6 +208,7 @@
                              TextWrapping="Wrap"
                              FontStyle="Normal"
                              CaretBrush="{StaticResource LightBlue1}"
+                             MaxLength="{Binding MessageMaxLen}"
                              Text="{Binding Content}"/>
                     </StackPanel>
 
