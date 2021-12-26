@@ -63,6 +63,10 @@ CREATE TABLE "blocked_users" (
   "userId" uuid
 );
 
+CREATE TABLE "allowed_users" (
+  "userId" uuid
+);
+
 ALTER TABLE "user_tokens" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
 
 ALTER TABLE "user_to_room" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
@@ -90,3 +94,5 @@ ALTER TABLE "votes" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
 ALTER TABLE "votes" ADD FOREIGN KEY ("answerId") REFERENCES "answers" ("id");
 
 ALTER TABLE "blocked_users" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
+
+ALTER TABLE "allowed_users" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
