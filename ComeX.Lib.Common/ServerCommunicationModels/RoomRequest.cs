@@ -6,18 +6,15 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace ComeX.Lib.Common.ServerCommunicationModels {
+	
     public class RoomRequest {
         public RoomRequest(string name, Guid serverId, bool isArchived) {
             Name = name;
-            ServerId = serverId;
-            IsArchived = isArchived;
         }
 
+        [JsonProperty("RoomId")]
+        public Guid RoomId { get; set; }
         [JsonProperty("Name")]
         public string Name { get; set; }
-        [JsonProperty("ServerId")]
-        public Guid ServerId { get; set; }
-        [JsonProperty("IsArchived")]
-        public bool IsArchived { get; set; }
     }
 }

@@ -17,4 +17,8 @@
     <ProjectReference Include="..\ComeX.Lib.Common\ComeX.Lib.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\ComeX.Lib.Common\ComeX.Lib.Common.csproj" />
+  </ItemGroup>
+
 </Project>
