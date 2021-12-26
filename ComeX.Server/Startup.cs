@@ -52,9 +52,7 @@ namespace ComeX.Server
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
-                endpoints.MapHub<ComeXChatHub>("/ComeXChat");
-                endpoints.MapHub<ComeXLoginHub>("/ComeXLogin");
-                endpoints.MapHub<ComeXInfoHub>("/ComeXInfo");
+                endpoints.MapHub<ComeXHub>("/ComeXLogin");
             });
         }
     }

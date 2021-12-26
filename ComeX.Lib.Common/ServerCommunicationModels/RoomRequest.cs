@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace ComeX.Lib.Common.ServerCommunicationModels {
-    public class Room {
-        public Room(string name, Guid serverId, bool isArchived) {
+    public class RoomRequest {
+        public RoomRequest(string name, Guid serverId, bool isArchived) {
             Name = name;
             ServerId = serverId;
             IsArchived = isArchived;

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace ComeX.Lib.Common.ServerCommunicationModels {
-    public class Survey {
-        public Survey(string token, Guid roomId, string question, bool isMultipleChoice) {
+    public class SurveyMessage {
+        public SurveyMessage(string token, Guid roomId, string question, bool isMultipleChoice) {
             Token = token;
             RoomId = roomId;
             Question = question;

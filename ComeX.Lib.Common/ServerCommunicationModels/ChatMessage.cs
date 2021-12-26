@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 
 namespace ComeX.Lib.Common.ServerCommunicationModels {
-    public class Message {
-        public Message(string token, Guid roomId, Guid parentId, string content, bool hasFile) {
+    public class ChatMessage {
+        public ChatMessage(string token, Guid roomId, Guid parentId, string content, bool hasFile) {
             Token = token;
             RoomId = roomId;
             ParentId = parentId;
