@@ -7,15 +7,17 @@ using Newtonsoft.Json;
 
 namespace ComeX.Lib.Common.ServerResponseModels {
     public class MessageResponse {
-        public MessageResponse(string username, Guid roomId, Guid parentId, string content, bool hasFile, Dictionary<string, int> emojiList) {
+        public MessageResponse(Guid id, string username, Guid roomId, Guid parentId, string content, Dictionary<string, int> emojiList) {
+            Id = id;
             Username = username;
             RoomId = roomId;
             ParentId = parentId;
             Content = content;
-            HasFile = hasFile;
             EmojiList = emojiList;
         }
 
+        [JsonProperty("Id")]
+        public Guid Id { get; set; }
         [JsonProperty("Username")]
         public string Username { get; set; }
         [JsonProperty("RoomId")]
@@ -24,8 +26,6 @@ namespace ComeX.Lib.Common.ServerResponseModels {
         public Guid ParentId { get; set; }
         [JsonProperty("Content")]
         public string Content { get; set; }
-        [JsonProperty("HasFile")]
-        public bool HasFile { get; set; }
         [JsonProperty("EmojiList")]
         public Dictionary<string, int> EmojiList { get; set; }
     }

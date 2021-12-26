@@ -6,8 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ComeX.Lib.Common.ServerCommunicationModels {
-    public class Reaction {
-        public Reaction(string token, Guid messageId, string emoji) {
+    public class ReactionMessage {
+        public ReactionMessage(string token, Guid messageId, string emoji) {
             Token = token;
             MessageId = messageId;
             Emoji = emoji;

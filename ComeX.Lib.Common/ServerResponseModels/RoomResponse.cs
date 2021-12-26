@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace ComeX.Lib.Common.ServerResponseModels {
     public class RoomResponse {
-        public RoomResponse(Guid roomId, string name, bool isArchived, List<MessageResponse> messageList) {
+        public RoomResponse(Guid roomId, string name, bool isArchived) {
             RoomId = roomId;
             Name = name;
             IsArchived = isArchived;
-            MessageList = messageList;
         }
 
         [JsonProperty("RoomId")]
@@ -20,7 +19,5 @@ namespace ComeX.Lib.Common.ServerResponseModels {
         public string Name { get; set; }
         [JsonProperty("IsArchived")]
         public bool IsArchived { get; set; }
-        [JsonProperty("MessageList")]
-        public List<MessageResponse> MessageList { get; set; }
     }
 }

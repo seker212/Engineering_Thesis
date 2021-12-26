@@ -7,12 +7,11 @@ using Newtonsoft.Json;
 
 namespace ComeX.Lib.Common.ServerCommunicationModels {
     public class ChatMessage {
-        public ChatMessage(string token, Guid roomId, Guid parentId, string content, bool hasFile) {
+        public ChatMessage(string token, Guid roomId, Guid parentId, string content) {
             Token = token;
             RoomId = roomId;
             ParentId = parentId;
             Content = content;
-            HasFile = hasFile;
         }
 
         [JsonProperty("Token")]
@@ -23,7 +22,5 @@ namespace ComeX.Lib.Common.ServerCommunicationModels {
         public Guid ParentId { get; set; }
         [JsonProperty("Content")]
         public string Content { get; set; }
-        [JsonProperty("HasFile")]
-        public bool HasFile { get; set; }
     }
 }
