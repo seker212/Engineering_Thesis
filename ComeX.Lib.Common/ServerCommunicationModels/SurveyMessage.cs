@@ -16,7 +16,7 @@ namespace ComeX.Lib.Common.ServerCommunicationModels {
             AnswerList = answerList;
         }
 
-        public Survey() { }
+        public SurveyMessage() { }
 
         [JsonProperty("Token")]
         public string Token { get; set; }

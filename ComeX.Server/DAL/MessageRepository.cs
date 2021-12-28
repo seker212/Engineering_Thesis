@@ -15,5 +15,6 @@ namespace ComeX.Server.DAL
 
         public Message GetMessage(Guid id) => Query().Where("id", id).First<Message>();
         public IEnumerable<Message> GetRoomMessages(Guid roomId, string sendTime) => Query().Where("roomId", roomId).WhereDate("sendTime", sendTime).Get<Message>();
+        public Message InsertMessage(Message msg) => Query().Insert(GenerateDataDictionary(msg, 0)) == 1 ? msg : throw new Exception();
     }
 }

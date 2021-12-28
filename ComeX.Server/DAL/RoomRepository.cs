@@ -14,5 +14,6 @@ namespace ComeX.Server.DAL
         }
 
         public Room GetRoom(Guid id) => Query().Where("id", id).First<Room>();
+        public IEnumerable<Room> GetRooms() => Query().Get<Room>();
     }
 }

@@ -50,7 +50,7 @@ namespace ComeX.Server.DAL
         public virtual T Get(object primaryKey) => Query().Where(_columnNames[0], primaryKey).First<T>();
         public virtual T Insert(T entity) => Query().Insert(GenerateDataDictionary(entity, 0)) == 1 ? entity : throw new Exception(); // zrobić lepszy exception bo się nie połapiemy
         public virtual T Update(T entity) => Query().Where(_columnNames[0], entity.Data[0]).Update(GenerateDataDictionary(entity, 1)) == 1 ? entity : throw new Exception(); // jak wyżej
-        public virtual bool Delete(T entity) => Query().Where(_columnNames[0], entity.Data[0]).Delete() == 1 ? true : throw new Exception()); // jak wyżej znowu
+        public virtual bool Delete(T entity) => Query().Where(_columnNames[0], entity.Data[0]).Delete() == 1 ? true : throw new Exception(); // jak wyżej znowu
 
     }
 }

@@ -8,5 +8,6 @@ namespace ComeX.Server.DAL
     {
         Message GetMessage(Guid id);
         IEnumerable<Message> GetRoomMessages(Guid roomId, string sendTime);
+        public Message InsertMessage(Message msg);
     }
 }
