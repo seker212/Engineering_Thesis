@@ -1,4 +1,5 @@
 ﻿using ComeX.Lib.Common.ServerCommunicationModels;
+using ComeX.Lib.Common.ServerResponseModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace ComeX.WPF.MessageViewModels {
     public class ChatMessageViewModel : BaseMessageViewModel {
-        public Message Message { get; set; }
+        public MessageResponse Message { get; set; }
 
         public string MessageAuthor {
             get {
-                return Message.Token;
+                return Message.Username;
             }
         }
 
@@ -27,7 +28,7 @@ namespace ComeX.WPF.MessageViewModels {
             }
         }
 
-        public ChatMessageViewModel(Message message) {
+        public ChatMessageViewModel(MessageResponse message) {
             Message = message;
             SurveyAnswersVisibility = System.Windows.Visibility.Collapsed;
         }

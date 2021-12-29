@@ -13,7 +13,6 @@ namespace ComeX.Lib.Common.ServerCommunicationModels {
             RoomId = roomId;
             Question = question;
             IsMultipleChoice = isMultipleChoice;
-            AnswerList = answerList;
         }
 
         public SurveyMessage() { }

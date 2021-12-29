@@ -1,4 +1,5 @@
-﻿using ComeX.WPF.Services;
+﻿using ComeX.Lib.Common.ServerResponseModels;
+using ComeX.WPF.Services;
 using ComeX.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,9 @@ using System.Windows.Input;
 namespace ComeX.WPF.Commands {
     public class GetRoomsListCommand : ICommand {
         private readonly ChatViewModel _viewModel;
-        private readonly ChatService _chatService;
 
-        public GetRoomsListCommand(ChatViewModel viewModel, ChatService chatService) {
+        public GetRoomsListCommand(ChatViewModel viewModel) {
             _viewModel = viewModel;
-            _chatService = chatService;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -25,7 +24,7 @@ namespace ComeX.WPF.Commands {
 
         public async void Execute(object parameter) {
             try {
-                await _chatService.GetRoomsList();
+                await _viewModel.CurrentServer.Service.GetRoomsList();
             } catch (ArgumentException e) {
                 _viewModel.ErrorMessage = e.Message;
             } catch (Exception e) { // TODO handling server problems

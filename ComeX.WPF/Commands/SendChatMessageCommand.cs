@@ -12,11 +12,9 @@ using System.Windows.Input;
 namespace ComeX.WPF.Commands {
     public class SendChatMessageCommand : ICommand {
         private readonly ChatViewModel _viewModel;
-        private readonly ChatService _chatService;
 
-        public SendChatMessageCommand(ChatViewModel viewModel, ChatService chatService) {
+        public SendChatMessageCommand(ChatViewModel viewModel) {
             _viewModel = viewModel;
-            _chatService = chatService;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -29,8 +27,11 @@ namespace ComeX.WPF.Commands {
             try {
                 string content = _viewModel.Content;
                 if (string.IsNullOrWhiteSpace(content)) throw new ArgumentException("Empty message");
-                Message message = new Message(_viewModel.LoginDM.Username, Guid.Empty, Guid.Empty, _viewModel.Content, false);
-                await _chatService.SendChatMessage(message);
+                ChatMessage message = new ChatMessage(_viewModel.LoginDM.Token, Guid.Empty, Guid.Empty, _viewModel.Content);
+                
+                //await _viewModel.CurrentServer.Service.SendChatMessage(message);
+                await _viewModel.Servers[0].Service.SendChatMessage(message); // TODO - it's only temp solution
+
                 _viewModel.ErrorMessage = string.Empty;
                 _viewModel.Content = string.Empty;
             } catch (ArgumentException e) {

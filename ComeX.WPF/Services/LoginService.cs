@@ -17,7 +17,7 @@ namespace ComeX.WPF.Services {
 
         public event Action<TokenDataModel> LoginTokenReceived;
 
-        public LoginService(HubConnection connection) {
+        public LoginService() {
             _httpClient.Timeout = new TimeSpan(0, 0, 30);
             _httpClient.DefaultRequestHeaders.Clear();
 

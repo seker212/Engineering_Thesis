@@ -32,22 +32,32 @@
                     <RowDefinition Height="150"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <WrapPanel Grid.Row="0" x:Name="ServersWrapP" ItemWidth="70" Orientation="Vertical" VerticalAlignment="Top" Width="70">
-                    <WrapPanel.Resources>
-                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource RoundButtonStyle}">
-                            <Setter Property="Margin" Value="0,5,0,5" />
-                            <Setter Property="Width" Value="60" />
-                            <Setter Property="Height" Value="60" />
-                            <Setter Property="HorizontalAlignment" Value="Center" />
-                            <Setter Property="VerticalAlignment" Value="Stretch" />
+                <WrapPanel Grid.Row="0" x:Name="ServersWrapP" ItemWidth="90" Orientation="Vertical" VerticalAlignment="Top" Width="70">
+                <ListView Grid.Row="0" Grid.ColumnSpan="2" x:Name="ServerListView"
+                          Margin="5"
+                          ItemsSource="{Binding ServersNames}"
+                          Background="{x:Null}"
+                          BorderBrush="{x:Null}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
                         </Style>
-
-                    </WrapPanel.Resources>
-                <Button x:Name="AddServer"
-                    Content="+">
-
-                </Button>
-                </WrapPanel>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <WrapPanel>
+                                <uc:ServerUserControl/>
+                            </WrapPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </WrapPanel>
 
                 <WrapPanel Grid.Row="1" x:Name="UserWrapP" Orientation="Vertical" Margin="5,0,5,10" ItemWidth="70" Width="70">
                     <WrapPanel.Resources>

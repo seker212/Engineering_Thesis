@@ -15,12 +15,8 @@ namespace ComeX.WPF {
     /// </summary>
     public partial class App : Application {
         protected override void OnStartup(StartupEventArgs e) {
-            HubConnection connection = new HubConnectionBuilder()
-                .WithUrl("http://localhost:5000/ComeXChat")
-                .Build();
-
             MainWindow window = new MainWindow() {
-                DataContext = new MainViewModel(connection)
+                DataContext = new MainViewModel()
         };
             window.Show();
         }

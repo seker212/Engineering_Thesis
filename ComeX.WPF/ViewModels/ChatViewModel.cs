@@ -14,6 +14,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace ComeX.WPF.ViewModels {
     public class ChatViewModel : BaseViewModel {
@@ -28,31 +29,54 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        private Dictionary<RoomClientModel, ObservableCollection<BaseMessageViewModel>> _roomsMessages;
-        public Dictionary<RoomClientModel, ObservableCollection<BaseMessageViewModel>> RoomsMessages {
+        private List<ServerClientModel> _servers;
+        public List<ServerClientModel> Servers {
             get {
-                return _roomsMessages;
+                return _servers;
             }
             set {
-                _roomsMessages = value;
-                OnPropertyChanged(nameof(RoomsMessages));
+                _servers = value;
+                OnPropertyChanged(nameof(Servers));
             }
         }
 
-        public List<string> RoomsNames {
+        private ServerClientModel _currentServer;
+        public ServerClientModel CurrentServer {
             get {
-                return RoomsMessages.Keys.Select(o => o.Name).ToList();
+                return _currentServer;
+            }
+            set {
+                _currentServer = value;
             }
         }
 
-        private KeyValuePair<RoomClientModel, ObservableCollection<BaseMessageViewModel>> _currentRoom;
-        public KeyValuePair<RoomClientModel, ObservableCollection<BaseMessageViewModel>> CurrentRoom {
+        public List<string> ServersNames {
+            get {
+                List<string> names = new List<string>();
+                foreach (var server in Servers)
+                    names.Add(server.Name);
+                return names;
+            }
+        }
+
+        private List<RoomClientModel> _rooms;
+        public List<RoomClientModel> Rooms {
+            get {
+                return _rooms;
+            }
+            set {
+                _rooms = value;
+                OnPropertyChanged(nameof(Rooms));
+            }
+        }
+
+        private RoomClientModel _currentRoom;
+        public RoomClientModel CurrentRoom {
             get {
                 return _currentRoom;
             }
             set {
                 _currentRoom = value;
-                OnPropertyChanged(nameof(CurrentRoom));
             }
         }
 
@@ -64,6 +88,18 @@ namespace ComeX.WPF.ViewModels {
             set {
                 _currentRoomName = value;
                 OnPropertyChanged(nameof(CurrentRoomName));
+            }
+        }
+
+        public List<string> RoomsNames {
+            get {
+                List<string> names = new List<string>();
+                // todo
+                /*
+                foreach (var room in CurrentServer.RoomList)
+                    names.Add(room.Name);
+                */
+                return names;
             }
         }
 
@@ -157,66 +193,97 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        public ChatViewModel(ChatService chatService, LoginService loginService) {
-            SendChatMessageCommand = new SendChatMessageCommand(this, chatService);
-            CreateSurveyCommand = new CreateSurveyCommand(this, chatService);
-            GetRoomsListCommand = new GetRoomsListCommand(this, chatService);
-            ChangeRoomCommand = new ChangeRoomCommand(this, chatService);
+        public ChatViewModel(LoginService loginService, LoginDataModel loginDM) {
+            if (loginDM != null) {
+                LoginDM = loginDM;
+                Servers = new List<ServerClientModel>();
+                // TODO get server list
+                ServerClientModel newServer = new ServerClientModel("http://localhost:5000");
+                newServer.Name = "Server1";
+                Servers.Add(newServer);
+            } else {
+                Servers = new List<ServerClientModel>();
+            }
+
+            ConnectToServers();
+
+            SendChatMessageCommand = new SendChatMessageCommand(this);
+            // CreateSurveyCommand = new CreateSurveyCommand(this, chatService);    // TODO
+            GetRoomsListCommand = new GetRoomsListCommand(this);
+            // ChangeRoomCommand = new ChangeRoomCommand(this, chatService);        // TODO
             OpenSettingsCommand = new OpenSettingsCommand(this, loginService);
 
             Mediator.Subscribe("ChangeRoom", ChangeRoom);
 
-            chatService.ChatMessageReceived += ChatService_ChatMessageReceived;
-            chatService.SurveyReceived += ChatService_SurveyReceived;
-            chatService.RoomsListReceived += ChatService_RoomsListReceived;
+            foreach (var server in Servers)
+                GetRooms(server);
 
-            GetRooms();
+            if (Servers.Count > 0)
+                CurrentServer = Servers.First();
 
+            /*
             CurrentRoom = RoomsMessages.First();
             CurrentRoomName = CurrentRoom.Key.Name;
             CurrentRoomMessages = CurrentRoom.Value;
+            */
+
             //CurrentRoomsMessages = new ObservableCollection<BaseMessageViewModel>();
+
+            // todo load recent messages
         }
 
-        public static ChatViewModel CreatedConnectedModel(ChatService chatService, LoginService loginService) {
-            ChatViewModel viewModel = new ChatViewModel(chatService, loginService);
-
-            chatService.Connect().ContinueWith(task => {
-                if (task.Exception != null) {
-                    viewModel.ErrorMessage = "Unable to connect to chat server";
-                }
-            });
-
+        public static ChatViewModel CreatedConnectedModel(LoginService loginService, LoginDataModel loginDM) {
+            ChatViewModel viewModel = new ChatViewModel(loginService, loginDM);
             return viewModel;
         }
 
+        private void ConnectToServers() {
+            try {
+                foreach (var server in Servers) {
+                    server.LoginToServer(LoginDM);
+                    server.Service.ChatMessageReceived += ChatService_ChatMessageReceived;
+                    server.Service.SurveyReceived += ChatService_SurveyReceived;
+                    server.Service.RoomsListReceived += ChatService_RoomsListReceived;
+                }
+            } catch (Exception e) {
+                ErrorMessage = "Could not connect to server";
+            }
+        }
+
+        //todo
+        private async void GetRooms(ServerClientModel server) {
+            await server.Service.GetRoomsList();
+
+            /*
+            RoomsMessages = new Dictionary<RoomClientModel, ObservableCollection<BaseMessageViewModel>>();
+            RoomsMessages.Add(new RoomClientModel(Guid.Empty, "Room1", false), new ObservableCollection<BaseMessageViewModel>());
+            RoomsMessages.Add(new RoomClientModel(Guid.Empty, "Room2", false), new ObservableCollection<BaseMessageViewModel>());
+            RoomsMessages.Add(new RoomClientModel(Guid.Empty, "Room3", false), new ObservableCollection<BaseMessageViewModel>());
+            */
+        }
+
         private void ChangeRoom(object obj) {
-            CurrentRoom = RoomsMessages.First(o => o.Key.Name == (string)obj);
+            CurrentRoom = Rooms.First(o => o.Name == (string)obj);
             CurrentRoomName = (string)obj;
             CurrentRoomMessages = new ObservableCollection<BaseMessageViewModel>();
             //CurrentRoomMessages = CurrentRoom.Value;
         }
 
-        //todo
-        private void GetRooms() {
-            RoomsMessages = new Dictionary<RoomClientModel, ObservableCollection<BaseMessageViewModel>>();
-            RoomsMessages.Add(new RoomClientModel(Guid.Empty, "Room1", false), new ObservableCollection<BaseMessageViewModel>());
-            RoomsMessages.Add(new RoomClientModel(Guid.Empty, "Room2", false), new ObservableCollection<BaseMessageViewModel>());
-            RoomsMessages.Add(new RoomClientModel(Guid.Empty, "Room3", false), new ObservableCollection<BaseMessageViewModel>());
-        }
-
-        private void ChatService_ChatMessageReceived(Message message) {
+        // fix
+        private void ChatService_ChatMessageReceived(MessageResponse message) {
             CurrentRoomMessages.Add(new ChatMessageViewModel(message));
         }
 
+        // fix
         private void ChatService_SurveyReceived(SurveyResponse survey) {
             CurrentRoomMessages.Add(new SurveyViewModel(survey));
         }
 
+        // todo
         private void ChatService_RoomsListReceived(RoomsListResponse response) {
             foreach (var room in response.RoomsList) {
-                RoomsMessages.Add(new RoomClientModel(room.RoomId, room.Name, room.IsArchived),
-                    new ObservableCollection<BaseMessageViewModel>());
+
+                Rooms.Add(new RoomClientModel(room.RoomId, room.Name, room.IsArchived));
             }
         }
     }

@@ -25,7 +25,7 @@ namespace ComeX.WPF.Commands {
 
         public void Execute(object parameter) {
             try {
-                _viewModel.CurrentRoom = _viewModel.RoomsMessages.First();
+                _viewModel.CurrentRoom = _viewModel.Rooms.First();
             } catch (ArgumentException e) {
                 _viewModel.ErrorMessage = e.Message;
             } catch (Exception e) {

@@ -29,7 +29,7 @@ namespace ComeX.WPF.MessageViewModels {
             }
         }
 
-        public Dictionary<string, int> SurveyAnswers {
+        public Dictionary<SurveyAnswerResponse, int> SurveyAnswers {
             get {
                 return Survey.AnswerList;
             }

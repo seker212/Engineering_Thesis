@@ -1,5 +1,6 @@
 ﻿using ComeX.Lib.Common.UserDatabaseAPI;
 using ComeX.WPF.Commands;
+using ComeX.WPF.Models;
 using ComeX.WPF.Services;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
@@ -45,26 +46,23 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        public MainViewModel(HubConnection connection) {
-            _loginService = new LoginService(connection);
-            _chatService = new ChatService(connection);
+        public MainViewModel() {
+            _loginService = new LoginService();
 
             _loginViewModel = LoginViewModel.CreatedConnectedModel(_loginService);
             _registerViewModel = RegisterViewModel.CreatedConnectedModel(_loginService);
-            _chatViewModel = ChatViewModel.CreatedConnectedModel(_chatService, _loginService);
+            _chatViewModel = ChatViewModel.CreatedConnectedModel(_loginService, null);
 
             Mediator.Subscribe("ChangeViewToRegister", ChangeViewToRegister);
             Mediator.Subscribe("ChangeViewToLogin", ChangeViewToLogin);
             Mediator.Subscribe("ChangeViewToChat", ChangeViewToChat);
             Mediator.Subscribe("SetLoginDM", SetLoginDM);
 
-            // CurrentView = ChatViewModel;
             CurrentView = _loginViewModel;
         }
 
         private void ChangeViewToLogin(object obj) {
             _loginViewModel = LoginViewModel.CreatedConnectedModel(_loginService);
-            //LoginViewModel.ResetViewModel();
             CurrentView = _loginViewModel;
             WindowResizeMode = ResizeMode.NoResize;
             WindowMinWidth = 500;
@@ -72,15 +70,14 @@ namespace ComeX.WPF.ViewModels {
 
         private void ChangeViewToRegister(object obj) {
             _registerViewModel = RegisterViewModel.CreatedConnectedModel(_loginService);
-            //RegisterViewModel.ResetViewModel();
             CurrentView = _registerViewModel;
             WindowResizeMode = ResizeMode.NoResize;
             WindowMinWidth = 500;
         }
 
         private void ChangeViewToChat(object obj) {
-            _chatViewModel = ChatViewModel.CreatedConnectedModel(_chatService, _loginService);
-            SetLoginDM(_loginViewModel.LoginDM);
+            _chatViewModel = ChatViewModel.CreatedConnectedModel(_loginService, _loginViewModel.LoginDM);
+            //SetLoginDM(_loginViewModel.LoginDM);
             CurrentView = _chatViewModel;
             WindowResizeMode = ResizeMode.CanResize;
             WindowMinWidth = 850;
@@ -88,6 +85,11 @@ namespace ComeX.WPF.ViewModels {
 
         private void SetLoginDM(object obj) {
             _chatViewModel.LoginDM = (LoginDataModel)obj;
+
+            // TODO get server list
+            ServerClientModel server = new ServerClientModel("http://localhost:5000/ComeXLogin");
+            server.Name = "Server1";
+            _chatViewModel.Servers.Add(server);
         }
     }
 }

@@ -19,8 +19,8 @@ namespace ComeX.WPF.Windows {
     /// Logika interakcji dla klasy CreateSurveyWindow.xaml
     /// </summary>
     public partial class CreateSurveyWindow : Window {
-        private Survey _newSurvey;
-        public Survey NewSurvey {
+        private SurveyMessage _newSurvey;
+        public SurveyMessage NewSurvey {
             get {
                 return _newSurvey;
             }
@@ -56,7 +56,7 @@ namespace ComeX.WPF.Windows {
             }
 
             if (isInputCorrect) {
-                Survey newSurvey = new Survey();
+                SurveyMessage newSurvey = new SurveyMessage();
                 newSurvey.IsMultipleChoice = (bool)MultipleChoiceCheckBox.IsChecked;
                 newSurvey.Question = QuestionTextBox.Text;
                 newSurvey.AnswerList = answerList;

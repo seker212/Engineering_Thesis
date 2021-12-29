@@ -28,7 +28,7 @@ namespace ComeX.WPF.Commands {
 
         public async void Execute(object parameter) {
             try {
-                Survey newSurvey = OpenSurveyWindow();
+                SurveyMessage newSurvey = OpenSurveyWindow();
                 if (newSurvey != null) {
                     newSurvey.Token = _viewModel.LoginDM.Username;
 
@@ -42,9 +42,9 @@ namespace ComeX.WPF.Commands {
             }
         }
 
-        private Survey OpenSurveyWindow() {
+        private SurveyMessage OpenSurveyWindow() {
             CreateSurveyWindow surveyWindow = new CreateSurveyWindow();
-            Survey newSurvey;
+            SurveyMessage newSurvey;
 
             surveyWindow.Owner = Application.Current.MainWindow;
             surveyWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
