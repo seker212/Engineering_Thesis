@@ -97,7 +97,7 @@ namespace ComeX.Server.Hubs
                     
                 }
 
-                MessageResponse rsp = new MessageResponse(createdMsg.Id, usrName, createdMsg.RoomId, createdMsg.ParentId, createdMsg.Content, emojiList);
+                MessageResponse rsp = new MessageResponse(createdMsg.Id, usrName, createdMsg.SendTime, createdMsg.RoomId, createdMsg.ParentId, createdMsg.Content, emojiList);
                 
                 await Clients.Caller.SendAsync("Message_created", rsp);
 
