@@ -39,7 +39,7 @@ namespace ComeX.UserDatabaseAPI.Services
 
                         _userRepository.Insert(user);
 
-                        return (string.Empty, _userRepository.Get(user.Id));
+                        return (string.Empty, _userRepository.GetByUsername(user.Username));
                     }
                 }
                 else

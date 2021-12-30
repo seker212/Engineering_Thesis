@@ -9,9 +9,8 @@ namespace ComeX.UserDatabaseAPI.Models
 {
     public class UserToServer : IDatabaseModel
     {
-        public UserToServer(string id, string userId, string serverId)
+        public UserToServer(string userId, string serverId)
         {
-            Id = id;
             UserId = userId;
             ServerId = serverId;
         }

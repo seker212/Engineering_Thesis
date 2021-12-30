@@ -10,9 +10,8 @@ namespace ComeX.UserDatabaseAPI.Models
 {
     public class Server : IDatabaseModel
     {
-        public Server(string id, string name, string url)
+        public Server(string name, string url)
         {
-            Id = id;
             Name = name;
             Url = url;
         }
