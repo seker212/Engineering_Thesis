@@ -60,7 +60,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetServers([FromHeader] string username)
+        public async Task<IActionResult> GetServers([FromQuery] string username)
         {
             var result = await _serverService.GetServers(username);
 
