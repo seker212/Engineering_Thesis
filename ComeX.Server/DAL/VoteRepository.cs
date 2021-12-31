@@ -14,5 +14,6 @@ namespace ComeX.Server.DAL
         }
 
         public IEnumerable<Vote> GetVotes(Guid answerId) => Query().Where("answerId", answerId).Get<Vote>();
+        public Vote InsertVote(Vote vot) => Query().Insert(GenerateDataDictionary(vot, 0)) == 1 ? vot : throw new Exception();
     }
 }
