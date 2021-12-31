@@ -78,7 +78,9 @@ namespace ComeX.WPF.Services {
         }
 
         public async Task<IEnumerable<ServerDataModel>> GetServers(string login) {
-            _httpClient.DefaultRequestHeaders.Add("username", login);
+            var query = HttpUtility.ParseQueryString(_uriBuilderServer.Query);
+            query["username"] = login;
+            _uriBuilderServer.Query = query.ToString();
             string url = _uriBuilderServer.ToString();
 
             var response = await _httpClient.GetAsync(url);

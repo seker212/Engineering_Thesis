@@ -91,7 +91,7 @@ namespace ComeX.WPF.ViewModels {
         }
 
         private void SetServerDM(object obj) {
-            _chatViewModel.ServerDMs = (IEnumerable<ServerDataModel>)obj;
+            _chatViewModel.ServerDMs = (List<ServerDataModel>)obj;
         }
     }
 }

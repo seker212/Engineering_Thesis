@@ -150,8 +150,8 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        private IEnumerable<ServerDataModel> _serverDMs;
-        public IEnumerable<ServerDataModel> ServerDMs {
+        private List<ServerDataModel> _serverDMs;
+        public List<ServerDataModel> ServerDMs {
             get {
                 return _serverDMs;
             }
@@ -200,6 +200,7 @@ namespace ComeX.WPF.ViewModels {
         private Brush _defaultBorderBrush;
 
         public LoginViewModel(LoginService loginService) {
+            ServerDMs = new List<ServerDataModel>();
             LoginCommand = new LoginCommand(this, loginService);
 
             UsernameErrorVisibility = Visibility.Collapsed;

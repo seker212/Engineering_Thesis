@@ -29,8 +29,8 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        private IEnumerable<ServerDataModel> _serverDMs;
-        public IEnumerable<ServerDataModel> ServerDMs {
+        private List<ServerDataModel> _serverDMs;
+        public List<ServerDataModel> ServerDMs {
             get {
                 return _serverDMs;
             }
@@ -40,14 +40,15 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        private List<ServerClientModel> _servers;
-        public List<ServerClientModel> Servers {
+        private ObservableCollection<ServerClientModel> _servers;
+        public ObservableCollection<ServerClientModel> Servers {
             get {
                 return _servers;
             }
             set {
                 _servers = value;
                 OnPropertyChanged(nameof(Servers));
+                OnPropertyChanged(nameof(ServersNames));
             }
         }
 
@@ -61,9 +62,9 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        public List<string> ServersNames {
+        public ObservableCollection<string> ServersNames {
             get {
-                List<string> names = new List<string>();
+                ObservableCollection<string> names = new ObservableCollection<string>();
                 foreach (var server in Servers)
                     names.Add(server.Name);
                 return names;
@@ -191,6 +192,7 @@ namespace ComeX.WPF.ViewModels {
 
         public ICommand SendChatMessageCommand { get; }
         public ICommand CreateSurveyCommand { get; }
+        public ICommand GetServersListCommand { get; }
         public ICommand GetRoomsListCommand { get; }
         public ICommand ChangeRoomCommand { get; }
         public ICommand OpenSettingsCommand { get; }
@@ -204,8 +206,9 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        public ChatViewModel(LoginService loginService, LoginDataModel loginDM, IEnumerable<ServerDataModel> serverDMs) {
-            Servers = new List<ServerClientModel>();
+        public ChatViewModel(LoginService loginService, LoginDataModel loginDM, List<ServerDataModel> serverDMs) {
+            ServerDMs = new List<ServerDataModel>();
+            Servers = new ObservableCollection<ServerClientModel>();
 
             if (loginDM != null) {
                 LoginDM = loginDM;
@@ -226,6 +229,7 @@ namespace ComeX.WPF.ViewModels {
             SendChatMessageCommand = new SendChatMessageCommand(this);
             CreateSurveyCommand = new CreateSurveyCommand(this);
             GetRoomsListCommand = new GetRoomsListCommand(this);
+            GetServersListCommand = new GetServersListCommand(this, loginService);
             // ChangeRoomCommand = new ChangeRoomCommand(this, chatService);        // TODO
             OpenSettingsCommand = new OpenSettingsCommand(this, loginService);
 
@@ -248,12 +252,12 @@ namespace ComeX.WPF.ViewModels {
             // todo load recent messages
         }
 
-        public static ChatViewModel CreatedConnectedModel(LoginService loginService, LoginDataModel loginDM, IEnumerable<ServerDataModel> serverDMs) {
+        public static ChatViewModel CreatedConnectedModel(LoginService loginService, LoginDataModel loginDM, List<ServerDataModel> serverDMs) {
             ChatViewModel viewModel = new ChatViewModel(loginService, loginDM, serverDMs);
             return viewModel;
         }
 
-        private void ConnectToServers() {
+        public void ConnectToServers() {
             try {
                 foreach (var server in Servers) {
                     server.LoginToServer(LoginDM);

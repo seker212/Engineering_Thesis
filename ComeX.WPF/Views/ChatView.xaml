@@ -30,13 +30,15 @@
                 <ColumnDefinition MinWidth="360" Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Grid x:Name="ServersUserGrid" Width="80" Background="{StaticResource DarkBlue3}">
+            <Grid x:Name="ServersUserGrid"
+                  Width="80"
+                  Background="{StaticResource DarkBlue3}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="80"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <WrapPanel Grid.Row="0" x:Name="ServersWrapP" ItemWidth="90" Orientation="Vertical" VerticalAlignment="Top" Width="70">
+            <WrapPanel Grid.Row="0" x:Name="ServersWrapP" ItemWidth="90" Orientation="Vertical" VerticalAlignment="Top" Width="70">
                 <ListView Grid.Row="0" Grid.ColumnSpan="2" x:Name="ServerListView"
                           Margin="5"
                           ItemsSource="{Binding ServersNames}"
@@ -61,9 +63,17 @@
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
+                <Button x:Name="RefreshServersButton"
+                        Style="{StaticResource RoundButtonStyle}"
+                        Margin="5"
+                        Width="60"
+                        Height="60"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Stretch"
+                        Command="{Binding GetServersListCommand}"/>
             </WrapPanel>
 
-                <WrapPanel Grid.Row="1" x:Name="UserWrapP" Orientation="Vertical" Margin="5,0,5,10" ItemWidth="70" Width="70">
+            <WrapPanel Grid.Row="1" x:Name="UserWrapP" Orientation="Vertical" Margin="5,0,5,10" ItemWidth="70" Width="70">
                 <WrapPanel.Resources>
                     <Style TargetType="{x:Type Button}" BasedOn="{StaticResource RoundButtonStyle}">
                         <Setter Property="Margin" Value="0,5,0,5" />

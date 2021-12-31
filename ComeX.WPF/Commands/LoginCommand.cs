@@ -48,7 +48,8 @@ namespace ComeX.WPF.Commands {
                     LoginDataModel loginDataModel = await _loginService.Login(login, _viewModel.SecureStringToString(password));
                     IEnumerable<ServerDataModel> serverDataModels = await _loginService.GetServers(login);
                     _viewModel.LoginDM = loginDataModel;
-                    _viewModel.ServerDMs = serverDataModels;
+                    foreach (var serverDM in serverDataModels)
+                        _viewModel.ServerDMs.Add(serverDM);
                     _viewModel.SetLoginDMCommand.Execute(null);
                     _viewModel.ChangeViewToChatCommand.Execute(null);
                    // _viewModel.ErrorMessage = string.Empty;

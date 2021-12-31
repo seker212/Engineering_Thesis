@@ -38,6 +38,7 @@ namespace ComeX.Server.Hubs
 
         public async Task SendLoginMessage(LoginMessage msg)
         {
+            Console.WriteLine("Witam");
             //Klient wysyła mi tu token i ja sobie pobieram dane o nim
             _loginManager.Login(Context.ConnectionId, msg.Token);
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
