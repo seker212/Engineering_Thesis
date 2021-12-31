@@ -9,6 +9,8 @@ namespace ComeX.UserDatabaseAPI.Models
     {
         public string UsersCollectionName { get; set; }
         public string TokensCollectionName { get; set; }
+        public string ServersCollectionName { get; set; }
+        public string UsersToServersCollectionName { get; set; }
         public string ConnectionString { get; set; }
         public string DatabaseName { get; set; }
     }

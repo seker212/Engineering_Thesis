@@ -8,6 +8,5 @@ namespace ComeX.UserDatabaseAPI.Models
 {
     public interface IDatabaseModel
     {
-        public IEnumerable<ValidationResult> Validate(ValidationContext validationContext);
     }
 }

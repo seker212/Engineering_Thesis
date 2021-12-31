@@ -27,7 +27,7 @@ namespace ComeX.UserDatabaseAPI.Controllers
             var result = await _userService.CreateUser(username, password);
 
             if (result.AddedUser is not null)
-                return Ok(result.AddedUser);
+                return Ok();
             else
                 return BadRequest(result.Reason);
         }
