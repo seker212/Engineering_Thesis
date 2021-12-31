@@ -1,4 +1,5 @@
 ﻿using ComeX.Lib.Common.UserDatabaseAPI;
+using ComeX.WPF.Models;
 using ComeX.WPF.Services;
 using ComeX.WPF.ViewModels;
 using System;
@@ -45,7 +46,9 @@ namespace ComeX.WPF.Commands {
                 }
                 if (isInputCorrect) {
                     LoginDataModel loginDataModel = await _loginService.Login(login, _viewModel.SecureStringToString(password));
+                    IEnumerable<ServerDataModel> serverDataModels = await _loginService.GetServers(login);
                     _viewModel.LoginDM = loginDataModel;
+                    _viewModel.ServerDMs = serverDataModels;
                     _viewModel.SetLoginDMCommand.Execute(null);
                     _viewModel.ChangeViewToChatCommand.Execute(null);
                    // _viewModel.ErrorMessage = string.Empty;

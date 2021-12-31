@@ -29,6 +29,17 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private IEnumerable<ServerDataModel> _serverDMs;
+        public IEnumerable<ServerDataModel> ServerDMs {
+            get {
+                return _serverDMs;
+            }
+            set {
+                _serverDMs = value;
+                OnPropertyChanged(nameof(ServerDMs));
+            }
+        }
+
         private List<ServerClientModel> _servers;
         public List<ServerClientModel> Servers {
             get {
@@ -193,14 +204,17 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        public ChatViewModel(LoginService loginService, LoginDataModel loginDM) {
+        public ChatViewModel(LoginService loginService, LoginDataModel loginDM, IEnumerable<ServerDataModel> serverDMs) {
             if (loginDM != null) {
                 LoginDM = loginDM;
+                ServerDMs = serverDMs;
+
                 Servers = new List<ServerClientModel>();
-                // TODO get server list
-                ServerClientModel newServer = new ServerClientModel("http://localhost:5000");
-                newServer.Name = "Server1";
-                Servers.Add(newServer);
+                foreach (var serverDM in ServerDMs) {
+                    ServerClientModel newServer = new ServerClientModel(serverDM.Url);
+                    newServer.Name = serverDM.Name;
+                    Servers.Add(newServer);
+                }
             } else {
                 Servers = new List<ServerClientModel>();
             }
@@ -208,7 +222,7 @@ namespace ComeX.WPF.ViewModels {
             ConnectToServers();
 
             SendChatMessageCommand = new SendChatMessageCommand(this);
-            // CreateSurveyCommand = new CreateSurveyCommand(this, chatService);    // TODO
+            CreateSurveyCommand = new CreateSurveyCommand(this);
             GetRoomsListCommand = new GetRoomsListCommand(this);
             // ChangeRoomCommand = new ChangeRoomCommand(this, chatService);        // TODO
             OpenSettingsCommand = new OpenSettingsCommand(this, loginService);
@@ -232,8 +246,8 @@ namespace ComeX.WPF.ViewModels {
             // todo load recent messages
         }
 
-        public static ChatViewModel CreatedConnectedModel(LoginService loginService, LoginDataModel loginDM) {
-            ChatViewModel viewModel = new ChatViewModel(loginService, loginDM);
+        public static ChatViewModel CreatedConnectedModel(LoginService loginService, LoginDataModel loginDM, IEnumerable<ServerDataModel> serverDMs) {
+            ChatViewModel viewModel = new ChatViewModel(loginService, loginDM, serverDMs);
             return viewModel;
         }
 

@@ -14,7 +14,11 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
-    
+
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding RegisterCommand}" Gesture="Enter" />
+    </UserControl.InputBindings>
+
     <Grid Margin="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

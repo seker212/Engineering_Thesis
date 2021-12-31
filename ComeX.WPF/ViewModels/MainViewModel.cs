@@ -51,12 +51,13 @@ namespace ComeX.WPF.ViewModels {
 
             _loginViewModel = LoginViewModel.CreatedConnectedModel(_loginService);
             _registerViewModel = RegisterViewModel.CreatedConnectedModel(_loginService);
-            _chatViewModel = ChatViewModel.CreatedConnectedModel(_loginService, null);
+            _chatViewModel = ChatViewModel.CreatedConnectedModel(_loginService, null, null);
 
             Mediator.Subscribe("ChangeViewToRegister", ChangeViewToRegister);
             Mediator.Subscribe("ChangeViewToLogin", ChangeViewToLogin);
             Mediator.Subscribe("ChangeViewToChat", ChangeViewToChat);
             Mediator.Subscribe("SetLoginDM", SetLoginDM);
+            Mediator.Subscribe("SetServerDM", SetServerDM);
 
             CurrentView = _loginViewModel;
         }
@@ -76,7 +77,7 @@ namespace ComeX.WPF.ViewModels {
         }
 
         private void ChangeViewToChat(object obj) {
-            _chatViewModel = ChatViewModel.CreatedConnectedModel(_loginService, _loginViewModel.LoginDM);
+            _chatViewModel = ChatViewModel.CreatedConnectedModel(_loginService, _loginViewModel.LoginDM, _loginViewModel.ServerDMs);
             //SetLoginDM(_loginViewModel.LoginDM);
             CurrentView = _chatViewModel;
             WindowResizeMode = ResizeMode.CanResize;
@@ -85,11 +86,10 @@ namespace ComeX.WPF.ViewModels {
 
         private void SetLoginDM(object obj) {
             _chatViewModel.LoginDM = (LoginDataModel)obj;
+        }
 
-            // TODO get server list
-            ServerClientModel server = new ServerClientModel("http://localhost:5000/ComeXLogin");
-            server.Name = "Server1";
-            _chatViewModel.Servers.Add(server);
+        private void SetServerDM(object obj) {
+            _chatViewModel.ServerDMs = (IEnumerable<ServerDataModel>)obj;
         }
     }
 }

@@ -17,6 +17,10 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding SendChatMessageCommand}" Gesture="Enter" />
+    </UserControl.InputBindings>
+
     <Grid x:Name="MainGrid"
           Height="{Binding ActualHeight, ElementName=ChatViewUserControl}"
           Width="{Binding ActualWidth, ElementName=ChatViewUserControl}">
@@ -29,7 +33,7 @@
             <Grid x:Name="ServersUserGrid" Width="80" Background="{StaticResource DarkBlue3}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"></RowDefinition>
-                    <RowDefinition Height="150"></RowDefinition>
+                    <RowDefinition Height="80"></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <WrapPanel Grid.Row="0" x:Name="ServersWrapP" ItemWidth="90" Orientation="Vertical" VerticalAlignment="Top" Width="70">
@@ -60,24 +64,22 @@
             </WrapPanel>
 
                 <WrapPanel Grid.Row="1" x:Name="UserWrapP" Orientation="Vertical" Margin="5,0,5,10" ItemWidth="70" Width="70">
-                    <WrapPanel.Resources>
-                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource RoundButtonStyle}">
-                            <Setter Property="Margin" Value="0,5,0,5" />
-                            <Setter Property="Width" Value="60" />
-                            <Setter Property="Height" Value="60" />
-                            <Setter Property="HorizontalAlignment" Value="Center" />
-                            <Setter Property="VerticalAlignment" Value="Stretch" />
+                <WrapPanel.Resources>
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource RoundButtonStyle}">
+                        <Setter Property="Margin" Value="0,5,0,5" />
+                        <Setter Property="Width" Value="60" />
+                        <Setter Property="Height" Value="60" />
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Stretch" />
 
-                        </Style>
-                        <Style TargetType="{x:Type TextBox}">
-                            <Setter Property="Background" Value="{x:Null}" />
-                            <Setter Property="BorderBrush" Value="{x:Null}" />
-                            <Setter Property="Foreground" Value="{StaticResource LightBlue1}" />
-                            <Setter Property="FontSize" Value="14" />
-                        </Style>
-                    </WrapPanel.Resources>
-
-                    <Button x:Name="UserAvatar" />
+                    </Style>
+                    <Style TargetType="{x:Type TextBox}">
+                        <Setter Property="Background" Value="{x:Null}" />
+                        <Setter Property="BorderBrush" Value="{x:Null}" />
+                        <Setter Property="Foreground" Value="{StaticResource LightBlue1}" />
+                        <Setter Property="FontSize" Value="14" />
+                    </Style>
+                </WrapPanel.Resources>
 
                 <Button x:Name="Settings"
                         Width="60"
@@ -234,7 +236,7 @@
                         </WrapPanel.Resources>
                         <Button x:Name="SendButton" Width="40" Command="{Binding SendChatMessageCommand}" />
                         <Button x:Name="SurveyButton" Command="{Binding CreateSurveyCommand}"></Button>
-                        <Button x:Name="PictureButton"></Button>
+                        <Button x:Name="EmojiButton"></Button>
                     </WrapPanel>
                 </Grid>
             </Grid>

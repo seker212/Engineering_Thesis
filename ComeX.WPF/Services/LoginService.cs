@@ -1,4 +1,5 @@
 ﻿using ComeX.Lib.Common.UserDatabaseAPI;
+using ComeX.WPF.Models;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ using System.Web;
 namespace ComeX.WPF.Services {
     public class LoginService {
         private static readonly HttpClient _httpClient = new HttpClient();
-        private UriBuilder _uriBuilder;
+        private UriBuilder _uriBuilderUser;
+        private UriBuilder _uriBuilderServer;
 
         public event Action<TokenDataModel> LoginTokenReceived;
 
@@ -21,15 +23,16 @@ namespace ComeX.WPF.Services {
             _httpClient.Timeout = new TimeSpan(0, 0, 30);
             _httpClient.DefaultRequestHeaders.Clear();
 
-            _uriBuilder = new UriBuilder("https://localhost:44327/api/user/");
+            _uriBuilderUser = new UriBuilder("https://localhost:44327/api/user/");
+            _uriBuilderServer = new UriBuilder("https://localhost:44327/api/server/");
         }
 
         public async Task<LoginDataModel> Login(string login, string password) {
-            var query = HttpUtility.ParseQueryString(_uriBuilder.Query);
+            var query = HttpUtility.ParseQueryString(_uriBuilderUser.Query);
             query["username"] = login;
             query["password"] = password;
-            _uriBuilder.Query = query.ToString();
-            string url = _uriBuilder.ToString();
+            _uriBuilderUser.Query = query.ToString();
+            string url = _uriBuilderUser.ToString();
 
             var response = await _httpClient.GetAsync(url);
             if (response.StatusCode != System.Net.HttpStatusCode.OK) throw new ArgumentException();
@@ -38,11 +41,11 @@ namespace ComeX.WPF.Services {
         }
 
         public async Task<LoginDataModel> Register(string login, string password) {
-            var query = HttpUtility.ParseQueryString(_uriBuilder.Query);
+            var query = HttpUtility.ParseQueryString(_uriBuilderUser.Query);
             query["username"] = login;
             query["password"] = password;
-            _uriBuilder.Query = query.ToString();
-            string url = _uriBuilder.ToString();
+            _uriBuilderUser.Query = query.ToString();
+            string url = _uriBuilderUser.ToString();
 
             var response = await _httpClient.PostAsync(url, null);
             if (response.StatusCode != System.Net.HttpStatusCode.OK) throw new ArgumentException();
@@ -51,16 +54,26 @@ namespace ComeX.WPF.Services {
         }
 
         public async Task<bool> ChangePassword(string login, string oldPassword, string newPassword) {
-            var query = HttpUtility.ParseQueryString(_uriBuilder.Query);
+            var query = HttpUtility.ParseQueryString(_uriBuilderUser.Query);
             query["username"] = login;
             query["password"] = oldPassword;
             query["newPassword"] = newPassword;
-            _uriBuilder.Query = query.ToString();
-            string url = _uriBuilder.ToString();
+            _uriBuilderUser.Query = query.ToString();
+            string url = _uriBuilderUser.ToString();
 
             var response = await _httpClient.PutAsync(url, null);
             if (response.StatusCode == System.Net.HttpStatusCode.OK) return true;
             else return false;
+        }
+
+        public async Task<IEnumerable<ServerDataModel>> GetServers(string login) {
+            _httpClient.DefaultRequestHeaders.Add("username", login);
+            string url = _uriBuilderServer.ToString();
+
+            var response = await _httpClient.GetAsync(url);
+            if (response.StatusCode != System.Net.HttpStatusCode.OK) throw new ArgumentException();
+            var content = await response.Content.ReadAsStringAsync();
+            return JsonSerializer.Deserialize<IEnumerable<ServerDataModel>>(content);
         }
     }
 }

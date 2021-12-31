@@ -10,6 +10,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Security;
 using ComeX.Lib.Common.UserDatabaseAPI;
+using ComeX.WPF.Models;
 
 namespace ComeX.WPF.ViewModels {
     public class LoginViewModel : BaseViewModel {
@@ -149,6 +150,17 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private IEnumerable<ServerDataModel> _serverDMs;
+        public IEnumerable<ServerDataModel> ServerDMs {
+            get {
+                return _serverDMs;
+            }
+            set {
+                _serverDMs = value;
+                OnPropertyChanged(nameof(ServerDMs));
+            }
+        }
+
         public ICommand LoginCommand { get; }
 
         private ICommand _changeViewToRegisterCommand;
@@ -172,6 +184,15 @@ namespace ComeX.WPF.ViewModels {
             get {
                 return _setLoginDMCommand ?? (_setLoginDMCommand = new RelayCommand(x => {
                     Mediator.Notify("SetLoginDM", LoginDM);
+                }));
+            }
+        }
+
+        private ICommand _setServerDMCommand;
+        public ICommand SetServernDMCommand {
+            get {
+                return _setServerDMCommand ?? (_setServerDMCommand = new RelayCommand(x => {
+                    Mediator.Notify("SetServerDM", ServerDMs);
                 }));
             }
         }

@@ -13,11 +13,9 @@ using System.Windows.Input;
 namespace ComeX.WPF.Commands {
     public class CreateSurveyCommand : ICommand {
         private readonly ChatViewModel _viewModel;
-        private readonly ChatService _service;
 
-        public CreateSurveyCommand(ChatViewModel viewModel, ChatService service) {
+        public CreateSurveyCommand(ChatViewModel viewModel) {
             _viewModel = viewModel;
-            _service = service;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -32,7 +30,7 @@ namespace ComeX.WPF.Commands {
                 if (newSurvey != null) {
                     newSurvey.Token = _viewModel.LoginDM.Username;
 
-                    await _service.SendChatSurvey(newSurvey);
+                    await _viewModel.CurrentServer.Service.SendChatSurvey(newSurvey);
                     _viewModel.ErrorMessage = string.Empty;
                 }
             } catch (ArgumentException e) {

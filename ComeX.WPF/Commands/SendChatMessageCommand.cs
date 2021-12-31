@@ -29,9 +29,7 @@ namespace ComeX.WPF.Commands {
                 if (string.IsNullOrWhiteSpace(content)) throw new ArgumentException("Empty message");
                 ChatMessage message = new ChatMessage(_viewModel.LoginDM.Token, Guid.Empty, Guid.Empty, _viewModel.Content);
                 
-                //await _viewModel.CurrentServer.Service.SendChatMessage(message);
-                await _viewModel.Servers[0].Service.SendChatMessage(message); // TODO - it's only temp solution
-
+                await _viewModel.CurrentServer.Service.SendChatMessage(message);
                 _viewModel.ErrorMessage = string.Empty;
                 _viewModel.Content = string.Empty;
             } catch (ArgumentException e) {

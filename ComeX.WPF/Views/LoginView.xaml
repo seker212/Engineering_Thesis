@@ -15,6 +15,10 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding LoginCommand}" Gesture="Enter" />
+    </UserControl.InputBindings>
+
     <Grid Margin="30">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>

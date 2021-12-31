@@ -7,13 +7,19 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ExampleImages\**" />
+    <EmbeddedResource Remove="ExampleImages\**" />
+    <None Remove="ExampleImages\**" />
+    <Page Remove="ExampleImages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Resource Include="Resources\Images\Placeholders\messagePlaceholder.jpg" />
     <Resource Include="Resources\Images\Placeholders\answerPlaceholder.jpg" />
     <Resource Include="Resources\Images\Placeholders\questionPlaceholder.jpg" />
     <Resource Include="Resources\Images\Placeholders\oldPasswordPlaceholder.jpg" />
     <Resource Include="Resources\Images\Placeholders\newPasswordPlaceholder.jpg" />
     <Resource Include="Resources\Fonts\Nunito-Medium.ttf" />
-    <Resource Include="ExampleImages\put.jpg" />
     <Resource Include="Resources\Images\logo1.png" />
     <Resource Include="Resources\Images\logo2.png" />
   </ItemGroup>
