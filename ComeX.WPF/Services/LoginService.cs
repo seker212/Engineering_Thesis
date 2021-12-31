@@ -40,7 +40,7 @@ namespace ComeX.WPF.Services {
             return JsonSerializer.Deserialize<LoginDataModel>(content);
         }
 
-        public async Task<LoginDataModel> Register(string login, string password) {
+        public async Task<bool> Register(string login, string password) {
             var query = HttpUtility.ParseQueryString(_uriBuilderUser.Query);
             query["username"] = login;
             query["password"] = password;
@@ -49,8 +49,7 @@ namespace ComeX.WPF.Services {
 
             var response = await _httpClient.PostAsync(url, null);
             if (response.StatusCode != System.Net.HttpStatusCode.OK) throw new ArgumentException();
-            var content = await response.Content.ReadAsStringAsync();
-            return JsonSerializer.Deserialize<LoginDataModel>(content);
+            return true;
         }
 
         public async Task<bool> ChangePassword(string login, string oldPassword, string newPassword) {
@@ -64,6 +63,18 @@ namespace ComeX.WPF.Services {
             var response = await _httpClient.PutAsync(url, null);
             if (response.StatusCode == System.Net.HttpStatusCode.OK) return true;
             else return false;
+        }
+
+        public async Task<bool> DeleteAccount(string login, string password) {
+            var query = HttpUtility.ParseQueryString(_uriBuilderUser.Query);
+            query["username"] = login;
+            query["password"] = password;
+            _uriBuilderUser.Query = query.ToString();
+            string url = _uriBuilderUser.ToString();
+
+            var response = await _httpClient.DeleteAsync(url);
+            if (response.StatusCode != System.Net.HttpStatusCode.OK) return false;
+            else return true;
         }
 
         public async Task<IEnumerable<ServerDataModel>> GetServers(string login) {

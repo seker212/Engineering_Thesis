@@ -205,18 +205,20 @@ namespace ComeX.WPF.ViewModels {
         }
 
         public ChatViewModel(LoginService loginService, LoginDataModel loginDM, IEnumerable<ServerDataModel> serverDMs) {
+            Servers = new List<ServerClientModel>();
+
             if (loginDM != null) {
                 LoginDM = loginDM;
-                ServerDMs = serverDMs;
 
-                Servers = new List<ServerClientModel>();
-                foreach (var serverDM in ServerDMs) {
-                    ServerClientModel newServer = new ServerClientModel(serverDM.Url);
-                    newServer.Name = serverDM.Name;
-                    Servers.Add(newServer);
+                if (serverDMs != null) {
+                    ServerDMs = serverDMs;
+
+                    foreach (var serverDM in ServerDMs) {
+                        ServerClientModel newServer = new ServerClientModel(serverDM.Url);
+                        newServer.Name = serverDM.Name;
+                        Servers.Add(newServer);
+                    }
                 }
-            } else {
-                Servers = new List<ServerClientModel>();
             }
 
             ConnectToServers();

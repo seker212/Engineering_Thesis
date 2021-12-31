@@ -58,11 +58,13 @@ namespace ComeX.WPF.Commands {
                     isInputCorrect = false;
                 }
                 if (isInputCorrect) {
-                    LoginDataModel loginDataModel = await _service.Register(login, password);
-
-                    _viewModel.LoginDM = loginDataModel;
-                    _viewModel.SetLoginDMCommand.Execute(null);
-                    _viewModel.ChangeViewToChatCommand.Execute(null);
+                    bool result = await _service.Register(login, password);
+                    if (result) {
+                        LoginDataModel loginDataModel = await _service.Login(login, password);
+                        _viewModel.LoginDM = loginDataModel;
+                        _viewModel.SetLoginDMCommand.Execute(null);
+                        _viewModel.ChangeViewToChatCommand.Execute(null);
+                    }
                 }
             } catch (ArgumentException e) {
                 _viewModel.SetUsernameErrorMessage("This username is already taken");

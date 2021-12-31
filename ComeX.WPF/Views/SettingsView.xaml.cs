@@ -25,12 +25,18 @@ namespace ComeX.WPF.Views {
 
         private void CancelButtonHandler(object sender, RoutedEventArgs e) {
             this.Close();
-        } 
+        }
 
         private void LogoutButtonHandler(object sender, RoutedEventArgs e) {
             if (this.DataContext != null) {
                 ((dynamic)this.DataContext).LogoutCommand.Execute(null);
                 this.Close();
+            }
+        }
+
+        private void DeleteAccountButtonHandler(object sender, RoutedEventArgs e) {
+            if (this.DataContext != null) {
+                ((dynamic)this.DataContext).DeleteAccountCommand.Execute(this);
             }
         }
 
@@ -43,6 +49,12 @@ namespace ComeX.WPF.Views {
         private void NewPasswordChanged(object sender, RoutedEventArgs e) {
             if (this.DataContext != null) {
                 ((dynamic)this.DataContext).NewPassword = ((PasswordBox)sender).SecurePassword;
+            }
+        }
+
+        private void DeletePasswordChanged(object sender, RoutedEventArgs e) {
+            if (this.DataContext != null) {
+                ((dynamic)this.DataContext).DeletePassword = ((PasswordBox)sender).SecurePassword;
             }
         }
 
@@ -64,6 +76,16 @@ namespace ComeX.WPF.Views {
 
         private void RemoveNewPasswordPlaceholder(object sender, RoutedEventArgs e) {
             NewPasswordPlaceholder.Visibility = Visibility.Hidden;
+        }
+
+        private void AddDeletePasswordPlaceholder(object sender, RoutedEventArgs e) {
+            PasswordBox textbox = sender as PasswordBox;
+            if (textbox.Password.Length == 0)
+                DeletePasswordPlaceholder.Visibility = Visibility.Visible;
+        }
+
+        private void RemoveDeletePasswordPlaceholder(object sender, RoutedEventArgs e) {
+            DeletePasswordPlaceholder.Visibility = Visibility.Hidden;
         }
     }
 }

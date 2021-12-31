@@ -49,6 +49,18 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private SecureString _deletePassword;
+        public SecureString DeletePassword {
+            get {
+                return _deletePassword;
+            }
+            set {
+                _deletePassword = value;
+                OnPropertyChanged(nameof(DeletePassword));
+                DeletePasswordValue = SecureStringToString(value);
+            }
+        }
+
         private string _oldPasswordValue;
         public string OldPasswordValue {
             get {
@@ -69,6 +81,16 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private string _deletePasswordValue;
+        public string DeletePasswordValue {
+            get {
+                return _deletePasswordValue;
+            }
+            set {
+                _deletePasswordValue = value;
+            }
+        }
+
         private string _changePasswordError;
         public string ChangePasswordError {
             get {
@@ -80,6 +102,17 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private string _deleteAccountError;
+        public string DeleteAccountError {
+            get {
+                return _deleteAccountError;
+            }
+            set {
+                _deleteAccountError = value;
+                OnPropertyChanged(nameof(DeleteAccountError));
+            }
+        }
+
         private Visibility _changePasswordErrorVisibility;
         public Visibility ChangePasswordErrorVisibility {
             get {
@@ -88,6 +121,17 @@ namespace ComeX.WPF.ViewModels {
             set {
                 _changePasswordErrorVisibility = value;
                 OnPropertyChanged(nameof(ChangePasswordErrorVisibility));
+            }
+        }
+
+        private Visibility _deleteAccountErrorVisibility;
+        public Visibility DeleteAccountErrorVisibility {
+            get {
+                return _deleteAccountErrorVisibility;
+            }
+            set {
+                _deleteAccountErrorVisibility = value;
+                OnPropertyChanged(nameof(DeleteAccountErrorVisibility));
             }
         }
 
@@ -125,7 +169,6 @@ namespace ComeX.WPF.ViewModels {
         private ICommand _logoutCommand;
         public ICommand LogoutCommand {
             get {
-
                 return _logoutCommand ?? (_logoutCommand = new RelayCommand(x => {
                     Mediator.Notify("ChangeViewToLogin", "");
                 }));
@@ -145,15 +188,17 @@ namespace ComeX.WPF.ViewModels {
             LoginDM = loginDM;
             OldPasswordValue = string.Empty;
             NewPasswordValue = string.Empty;
+            DeletePasswordValue = string.Empty;
 
             ChangePasswordCommand = new ChangePasswordCommand(this, loginService);
+            DeleteAccountCommand = new DeleteAccountCommand(this, loginService);
             
             ChangePasswordErrorVisibility = Visibility.Collapsed;
+            DeleteAccountErrorVisibility = Visibility.Collapsed;
         }
 
         public static SettingsViewModel CreatedConnectedModel(LoginService loginService, LoginDataModel loginDM) {
             SettingsViewModel viewModel = new SettingsViewModel(loginService, loginDM);
-
             return viewModel;
         }
 
@@ -164,6 +209,15 @@ namespace ComeX.WPF.ViewModels {
 
         public void UnsetChangePasswordErrorMessage() {
             ChangePasswordErrorVisibility = Visibility.Collapsed;
+        }
+
+        public void SetDeleteAccountErrorMessage(string errorMessage) {
+            DeleteAccountError = errorMessage;
+            DeleteAccountErrorVisibility = Visibility.Visible;
+        }
+
+        public void UnsetDeleteAccountErrorMessage() {
+            DeleteAccountErrorVisibility = Visibility.Collapsed;
         }
     }
 }

@@ -88,7 +88,7 @@
                     <Label Content="Change password" />
                     <TextBlock
                            Text="New password must contain at least: 8 characters, 1 upper letter, 1 lower letter, 1 number" />
-                    <Grid Margin="10,0,10,0">
+                    <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition/>
                             <ColumnDefinition/>
@@ -119,11 +119,13 @@
                             </Rectangle.Fill>
                         </Rectangle>
                         <PasswordBox x:Name="OldPassword" Grid.Column="0" Grid.Row="0"
+                             Width="155"
                              GotFocus="RemoveOldPasswordPlaceholder"
                              LostFocus="AddOldPasswordPlaceholder"
                              MaxLength="{Binding PasswordMaxLen}"
                              PasswordChanged="OldPasswordChanged"/>
                         <PasswordBox x:Name="NewPassword" Grid.Column="1" Grid.Row="0"
+                             Width="155"
                              GotFocus="RemoveNewPasswordPlaceholder"
                              LostFocus="AddNewPasswordPlaceholder"
                              MaxLength="{Binding PasswordMaxLen}"
@@ -154,8 +156,31 @@
 
                     <Label Content="Delete account" />
                     <TextBlock Text="Deleted account cannot be retrieved" />
+                    <Grid>
+                    <Rectangle x:Name="DeletePasswordPlaceholder"
+                       Margin="18,5,0,5"
+                               Height="23"
+                               Width="101"
+                               HorizontalAlignment="Left"
+                               VerticalAlignment="Top">
+                        <Rectangle.Fill>
+                            <ImageBrush ImageSource="../Resources/Images/Placeholders/passwordPlaceholder.jpg"/>
+                        </Rectangle.Fill>
+                    </Rectangle>
+                    <PasswordBox x:Name="DeletePassword"
+                             Width="155"
+                             HorizontalAlignment="Left"
+                             GotFocus="RemoveDeletePasswordPlaceholder"
+                             LostFocus="AddDeletePasswordPlaceholder"
+                             MaxLength="{Binding PasswordMaxLen}"
+                             PasswordChanged="DeletePasswordChanged"/>
+                    </Grid>
+                    <TextBlock x:Name="DeleteAccountErrorLabel"
+                               Foreground="Red"
+                               Visibility="{Binding DeleteAccountErrorVisibility}"
+                               Text="{Binding DeleteAccountError}"/>
                     <Button Content=" Delete account "
-                            Command="{Binding DeleteAccountCommand}"/>
+                            Click="DeleteAccountButtonHandler"/>
                 </StackPanel>
             </Grid>
         </Grid>

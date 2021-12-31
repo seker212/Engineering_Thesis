@@ -77,7 +77,9 @@ namespace ComeX.WPF.ViewModels {
         }
 
         private void ChangeViewToChat(object obj) {
-            _chatViewModel = ChatViewModel.CreatedConnectedModel(_loginService, _loginViewModel.LoginDM, _loginViewModel.ServerDMs);
+            if (CurrentView == _loginViewModel)
+                _chatViewModel = ChatViewModel.CreatedConnectedModel(_loginService, _loginViewModel.LoginDM, _loginViewModel.ServerDMs);
+            else _chatViewModel = ChatViewModel.CreatedConnectedModel(_loginService, _registerViewModel.LoginDM, null);
             //SetLoginDM(_loginViewModel.LoginDM);
             CurrentView = _chatViewModel;
             WindowResizeMode = ResizeMode.CanResize;
