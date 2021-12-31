@@ -139,10 +139,9 @@ namespace ComeX.UserDatabaseAPI.Services
                             var token = _tokenRepository.GetByUserId(user.Id);
                             if (token is not null)
                                 _tokenRepository.Delete(token);
+                            _userRepository.Delete(user);
+                            return true;
                         }
-
-                        _userRepository.Delete(user);
-                        return true;
                     }
                 }
                 return false;
