@@ -41,7 +41,7 @@
             </Style>
         </Grid.Resources>
         <Grid.RowDefinitions>
-            <RowDefinition x:Name="ReplyRow"></RowDefinition>
+            <RowDefinition x:Name="ReplyRow" ></RowDefinition>
             <RowDefinition x:Name="AuthorDateRow" Height="20"></RowDefinition>
             <RowDefinition x:Name="ContentRow"></RowDefinition>
             <RowDefinition x:Name="EmojiRow"></RowDefinition>
@@ -49,6 +49,7 @@
 
         <WrapPanel Grid.Row="0" x:Name="ReplyWrapPanel"
                                    Orientation="Horizontal"
+                   Margin="15,0,0,0"
                                    Visibility="{Binding ReplyParentVisibility}">
             <WrapPanel.Resources>
                 <Style TargetType="{x:Type Label}">
@@ -101,7 +102,7 @@
             </WrapPanel>
         </Grid>
         <TextBlock x:Name="ContentText" Grid.Row="2"
-                       Margin="5,0,0,5"
+                       Margin="5,0,0,15"
                        Text="{Binding MessageContent}">
         </TextBlock>
     </Grid>
