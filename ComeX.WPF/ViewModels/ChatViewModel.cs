@@ -310,14 +310,33 @@ namespace ComeX.WPF.ViewModels {
 
             CurrentRoomMessages = new ObservableCollection<BaseMessageViewModel>();
 
-            ChatMessageViewModel msgVM = new ChatMessageViewModel(new MessageResponse(Guid.NewGuid(), "Anonim", "Today", Guid.Empty, Guid.Empty, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", new Dictionary<string, int>()), this);
-            CurrentRoomMessages.Add(msgVM);
+            Guid g = Guid.NewGuid();
+            MessageResponse m1 = new MessageResponse(g, "Anonim", "Today", Guid.Empty, Guid.Empty, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", new Dictionary<string, int>());
+            MessageResponse m2 = new MessageResponse(Guid.NewGuid(), "Anonim2", "Today", Guid.Empty, Guid.Empty, "Test message 123", new Dictionary<string, int>());
+            MessageResponse m3 = new MessageResponse(Guid.NewGuid(), "Anonim3", "Today", Guid.Empty, g, "Elo Witam", new Dictionary<string, int>());
 
-            ChatMessageViewModel msgVM2 = new ChatMessageViewModel(new MessageResponse(Guid.NewGuid(), "Anonim2", "Today", Guid.Empty, Guid.Empty, "Test message 123", new Dictionary<string, int>()), this);
-            CurrentRoomMessages.Add(msgVM2);
+            AddMessage(m1);
+            AddMessage(m2);
+            AddMessage(m3);
 
             // todo load recent messages
         }
+
+        // fix - add not to CurrentRoomMessages
+        public void AddMessage (MessageResponse msg) {
+            ChatMessageViewModel newMsgVM;
+            if (msg.ParentId != Guid.Empty) {
+                MessageResponse parentMsg = new MessageResponse();
+                foreach (var msgVM in CurrentRoomMessages) {
+                    if (msgVM.GetType()==typeof(ChatMessageViewModel) && ((ChatMessageViewModel)msgVM).Message.Id == msg.ParentId) {
+                        parentMsg = ((ChatMessageViewModel)msgVM).Message;
+                    }
+                }
+                // if parentMsg not found - get parentMsg by msg.parentId from server
+                newMsgVM = new ChatMessageViewModel(msg, this, parentMsg);
+            } else newMsgVM = new ChatMessageViewModel(msg, this);
+            CurrentRoomMessages.Add(newMsgVM);
+        } 
 
         public static ChatViewModel CreatedConnectedModel(LoginService loginService, LoginDataModel loginDM, List<ServerDataModel> serverDMs) {
             ChatViewModel viewModel = new ChatViewModel(loginService, loginDM, serverDMs);
@@ -356,9 +375,8 @@ namespace ComeX.WPF.ViewModels {
             //CurrentRoomMessages = CurrentRoom.Value;
         }
 
-        // fix
         private void ChatService_ChatMessageReceived(MessageResponse message) {
-            CurrentRoomMessages.Add(new ChatMessageViewModel(message, this));
+            AddMessage(message);
         }
 
         // fix
