@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Microsoft.AspNetCore.SignalR.Client;
+using System.Windows;
 
 namespace ComeX.WPF.ViewModels {
     public class ChatViewModel : BaseViewModel {
@@ -159,6 +160,62 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private Guid _replyParentId;
+        public Guid ReplyParentId {
+            get {
+                return _replyParentId;
+            }
+            set {
+                _replyParentId = value;
+                if (value == Guid.Empty) {
+                    ReplyParentAuthor = string.Empty;
+                    ReplyParentContent = string.Empty;
+                    ReplyParentVisibility = Visibility.Collapsed;
+                }
+                OnPropertyChanged(nameof(ReplyParentId));
+            }
+        }
+
+        private string _replyParentAuthor;
+        public string ReplyParentAuthor {
+            get {
+                return _replyParentAuthor;
+            }
+            set {
+                _replyParentAuthor = value;
+                OnPropertyChanged(nameof(ReplyParentAuthor));
+            }
+        }
+
+        private string _replyParentContent;
+        public string ReplyParentContent {
+            get {
+                return _replyParentContent;
+            }
+            set {
+                _replyParentContent = value;
+                OnPropertyChanged(nameof(ReplyParentContent));
+                OnPropertyChanged(nameof(ReplyParentContentPrint));
+            }
+        }
+        public string ReplyParentContentPrint {
+            get {
+                if (ReplyParentContent == null || ReplyParentContent.Length < 21) return ReplyParentContent;
+                else return ReplyParentContent.Substring(0, 20) + "...";
+            }
+        }
+
+        private Visibility _replyParentVisibility;
+        public Visibility ReplyParentVisibility {
+            get {
+                return _replyParentVisibility;
+            }
+            set {
+                _replyParentVisibility = value;
+                OnPropertyChanged(nameof(ReplyParentVisibility));
+            }
+        }
+
         public int MessageMaxLen {
             get {
                 return Consts.MESSAGE_MAXLEN;
@@ -196,6 +253,7 @@ namespace ComeX.WPF.ViewModels {
         public ICommand GetRoomsListCommand { get; }
         public ICommand ChangeRoomCommand { get; }
         public ICommand OpenSettingsCommand { get; }
+        public ICommand UnsetReplyCommand { get; }
 
         private ICommand _changeViewToLoginCommand;
         public ICommand ChangeViewToLoginCommand {
@@ -207,6 +265,8 @@ namespace ComeX.WPF.ViewModels {
         }
 
         public ChatViewModel(LoginService loginService, LoginDataModel loginDM, List<ServerDataModel> serverDMs) {
+            ReplyParentVisibility = Visibility.Collapsed;
+
             ServerDMs = new List<ServerDataModel>();
             Servers = new ObservableCollection<ServerClientModel>();
 
@@ -232,6 +292,7 @@ namespace ComeX.WPF.ViewModels {
             GetServersListCommand = new GetServersListCommand(this, loginService);
             // ChangeRoomCommand = new ChangeRoomCommand(this, chatService);        // TODO
             OpenSettingsCommand = new OpenSettingsCommand(this, loginService);
+            UnsetReplyCommand = new UnsetReplyCommand(this);
 
             Mediator.Subscribe("ChangeRoom", ChangeRoom);
 
@@ -247,7 +308,13 @@ namespace ComeX.WPF.ViewModels {
             CurrentRoomMessages = CurrentRoom.Value;
             */
 
-            //CurrentRoomsMessages = new ObservableCollection<BaseMessageViewModel>();
+            CurrentRoomMessages = new ObservableCollection<BaseMessageViewModel>();
+
+            ChatMessageViewModel msgVM = new ChatMessageViewModel(new MessageResponse(Guid.NewGuid(), "Anonim", "Today", Guid.Empty, Guid.Empty, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", new Dictionary<string, int>()), this);
+            CurrentRoomMessages.Add(msgVM);
+
+            ChatMessageViewModel msgVM2 = new ChatMessageViewModel(new MessageResponse(Guid.NewGuid(), "Anonim2", "Today", Guid.Empty, Guid.Empty, "Test message 123", new Dictionary<string, int>()), this);
+            CurrentRoomMessages.Add(msgVM2);
 
             // todo load recent messages
         }
@@ -291,7 +358,7 @@ namespace ComeX.WPF.ViewModels {
 
         // fix
         private void ChatService_ChatMessageReceived(MessageResponse message) {
-            CurrentRoomMessages.Add(new ChatMessageViewModel(message));
+            CurrentRoomMessages.Add(new ChatMessageViewModel(message, this));
         }
 
         // fix
