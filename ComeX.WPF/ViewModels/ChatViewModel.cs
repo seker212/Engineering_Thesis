@@ -315,9 +315,13 @@ namespace ComeX.WPF.ViewModels {
             MessageResponse m2 = new MessageResponse(Guid.NewGuid(), "Anonim2", "Today", Guid.Empty, Guid.Empty, "Test message 123", new Dictionary<string, int>());
             MessageResponse m3 = new MessageResponse(Guid.NewGuid(), "Anonim3", "Today", Guid.Empty, g, "Elo Witam", new Dictionary<string, int>());
 
+            List<string> ans = new List<string>(new string[] { "Yes", "No", "Perhaps" });
+            SurveyMessage s1 = new SurveyMessage("token", Guid.Empty, "Do you like pizza", false, ans);
+
             AddMessage(m1);
             AddMessage(m2);
             AddMessage(m3);
+            AddSurvey(s1);
 
             // todo load recent messages
         }
@@ -336,7 +340,23 @@ namespace ComeX.WPF.ViewModels {
                 newMsgVM = new ChatMessageViewModel(msg, this, parentMsg);
             } else newMsgVM = new ChatMessageViewModel(msg, this);
             CurrentRoomMessages.Add(newMsgVM);
-        } 
+        }
+
+        // temp
+        public void AddSurvey(SurveyMessage survey) {
+            SurveyResponse newSurvey = new SurveyResponse();
+            newSurvey.Username = "Anonim4";
+            newSurvey.SendTime = "Today";
+            newSurvey.RoomId = Guid.Empty;
+            newSurvey.Question = survey.Question;
+            newSurvey.IsMultipleChoice = survey.IsMultipleChoice;
+            Dictionary<SurveyAnswerResponse, int> answers = new Dictionary<SurveyAnswerResponse, int>();
+            foreach (var answer in survey.AnswerList) {
+                answers.Add(new SurveyAnswerResponse(Guid.NewGuid(), answer), 0);
+            }
+            newSurvey.AnswerList = answers;
+            CurrentRoomMessages.Add(new SurveyViewModel(newSurvey, this));
+        }
 
         public static ChatViewModel CreatedConnectedModel(LoginService loginService, LoginDataModel loginDM, List<ServerDataModel> serverDMs) {
             ChatViewModel viewModel = new ChatViewModel(loginService, loginDM, serverDMs);
@@ -381,7 +401,7 @@ namespace ComeX.WPF.ViewModels {
 
         // fix
         private void ChatService_SurveyReceived(SurveyResponse survey) {
-            CurrentRoomMessages.Add(new SurveyViewModel(survey));
+            CurrentRoomMessages.Add(new SurveyViewModel(survey, this));
         }
 
         // todo

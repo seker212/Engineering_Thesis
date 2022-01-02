@@ -229,6 +229,7 @@
                              Foreground ="{StaticResource LightBlue1}"
                              TextWrapping="Wrap"
                              FontStyle="Normal"
+                             Height="70"
                              CaretBrush="{StaticResource LightBlue1}"
                              MaxLength="{Binding MessageMaxLen}"
                              Text="{Binding Content}"/>

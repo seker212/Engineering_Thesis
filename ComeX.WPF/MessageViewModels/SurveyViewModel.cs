@@ -1,14 +1,18 @@
 ﻿using ComeX.Lib.Common.ServerCommunicationModels;
 using ComeX.Lib.Common.ServerResponseModels;
+using ComeX.WPF.Commands;
+using ComeX.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace ComeX.WPF.MessageViewModels {
     public class SurveyViewModel : BaseMessageViewModel {
+        private ChatViewModel _chatVM;
         public SurveyResponse Survey { get; set; }
 
         public string MessageAuthor {
@@ -29,12 +33,6 @@ namespace ComeX.WPF.MessageViewModels {
             }
         }
 
-        public Dictionary<SurveyAnswerResponse, int> SurveyAnswers {
-            get {
-                return Survey.AnswerList;
-            }
-        }
-
         /*
         public Dictionary<SurveyAnswerResponse, int> SurveyAnswers {
             get {
@@ -43,13 +41,16 @@ namespace ComeX.WPF.MessageViewModels {
         }
         */
 
-        /*
-        public List<string> SurveyAnswersContent {
+        public Dictionary<string, int> SurveyAnswers {
             get {
-                return SurveyAnswers.Select(a => a.Content).ToList();
+                Dictionary<string, int> answers = new Dictionary<string, int>();
+                foreach(var answer in Survey.AnswerList) {
+                    answers.Add(answer.Key.Content, answer.Value);
+                }
+                return answers;
             }
         }
-        */
+        
 
         public bool SurveyIsMultipleChoice {
             get {
@@ -57,9 +58,13 @@ namespace ComeX.WPF.MessageViewModels {
             }
         }
 
-        public SurveyViewModel(SurveyResponse survey) {
+        public ICommand SendSurveyVoteCommand { get; }
+
+        public SurveyViewModel(SurveyResponse survey, ChatViewModel chatVM) {
+            SendSurveyVoteCommand = new SendSurveyVoteCommand(this, chatVM);
+
+            _chatVM = chatVM;
             Survey = survey;
-            SurveyAnswersVisibility = System.Windows.Visibility.Visible;
         }
     }
 }
