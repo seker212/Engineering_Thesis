@@ -6,18 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ComeX.Lib.Common.ServerCommunicationModels {
-    public class LoadChatRequest {
-        public LoadChatRequest(string token, Guid roomId, string date) {
+    public class LoadMessageRequest {
+        public LoadMessageRequest(string token, Guid id) {
             Token = token;
-            RoomId = roomId;
-            Date = date;
+            Id = id;
         }
 
         [JsonProperty("Token")]
         public string Token { get; set; }
-        [JsonProperty("RoomId")]
-        public Guid RoomId { get; set; }
-        [JsonProperty("Date")]
-        public string Date { get; set; }
+        [JsonProperty("Id")]
+        public Guid Id { get; set; }
     }
 }

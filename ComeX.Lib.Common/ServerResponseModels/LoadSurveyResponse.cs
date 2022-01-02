@@ -14,8 +14,7 @@ namespace ComeX.Lib.Common.ServerResponseModels {
 
         [JsonProperty("RoomId")]
         public Guid RoomId { get; set; }
-        [JsonProperty("MessageList")]
+        [JsonProperty("SurveyList")]
         public List<SurveyResponse> SurveyList { get; set; }
     }
-}
 }
