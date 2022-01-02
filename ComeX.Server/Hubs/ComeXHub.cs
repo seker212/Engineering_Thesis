@@ -178,8 +178,44 @@ namespace ComeX.Server.Hubs
         }
 
         // otrzymano głos do ankiety
-        public async Task SendChatSurveyVote()
+        public async Task SendChatSurveyVote(SurveyVoteMessage msg)
         {
+            Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
+
+            try
+            {
+                foreach(Guid ansId in msg.AnswerId)
+                {
+                    Vote insertVote = new Vote(Guid.NewGuid(), usrId, ansId);
+                    Vote createdVote = votRepo.Insert(insertVote);
+                }
+
+                Survey srv = srvRepo.GetSurvey(msg.SurveyId);
+                User usr = usrRepo.GetUser(srv.AuthorId);
+
+                IEnumerable<Answer> answers = ansRepo.GetAnswers(msg.SurveyId);
+                Dictionary<SurveyAnswerResponse, int> ansList = new Dictionary<SurveyAnswerResponse, int>();
+
+                foreach (Answer ans in answers)
+                {
+                    SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content);
+
+                    IEnumerable<Vote> votes = votRepo.GetVotes(ans.Id);
+                    int amount = votes.Count();
+
+                    ansList.Add(rsp, amount);
+                }
+
+                SurveyResponse response = new SurveyResponse(usr.Username, srv.SendTime, srv.RoomId, srv.Question, srv.IsMultipleChoice, ansList);
+
+                await Clients.Caller.SendAsync("ACK");
+                await Clients.All.SendAsync("Survey_updated", response);
+
+            } catch (Exception e)
+            {
+                await Clients.Caller.SendAsync("ReceiveChatSurveyVote");
+            }
+
             await Clients.Caller.SendAsync("ReceiveChatSurveyVote");
         }
     }
