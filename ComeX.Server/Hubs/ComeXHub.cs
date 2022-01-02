@@ -115,16 +115,23 @@ namespace ComeX.Server.Hubs
             
         }
 
+        // otrzymano żądanie wczytania konkretnej wiadomości
+        public async Task LoadSpecificMessage(LoadMessageRequest msg)
+        {
+            Message response = msgRepo.GetMessage(msg.messageId);
+            await Clients.Caller.SendAsync("ReceiveLoadSpecificMessage");
+        }
+
         // otrzymano żądanie wczytania wiadomości
-        public async Task LoadChatHistory()
+        public async Task LoadChatHistory(LoadChatRequest msg)
         {
             await Clients.Caller.SendAsync("ReceiveLoadChatHistory");
         }
 
         // otrzymano żądanie wczytania ankiet
-        public async Task LoadSurveyHistory()
+        public async Task LoadSurveyHistory(LoadSurveyRequest msg)
         {
-            await Clients.Caller.SendAsync("ReceiveLoadChatHistory");
+            await Clients.Caller.SendAsync("ReceiveLoadSurveyHistory");
         }
 
         // otrzymano ankietę (zawiera dopuszczalne odpowiedzi)
