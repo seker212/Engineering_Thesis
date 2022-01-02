@@ -11,14 +11,6 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="../Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            <Style x:Key="HoverWrapPStyle" TargetType="WrapPanel">
-                <Setter Property="Visibility" Value="Hidden" />
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=WrapPanel}, Path=IsMouseOver}" Value="True" >
-                        <Setter Property="Visibility" Value="Visible" />
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
 
             <Style x:Key="HoverBackgroundStyle" TargetType="Grid">
                 <Setter Property="Background" Value="{StaticResource DarkBlue3}" />
@@ -28,6 +20,16 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
+
+            <Style x:Key="HoverButtonStyle" TargetType="Button">
+                <Setter Property="Visibility" Value="Hidden"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding ElementName=MessageGrid, Path=IsMouseOver}" Value="True">
+                        <Setter Property="Visibility" Value="Visible" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+
         </ResourceDictionary>
     </UserControl.Resources>
 
@@ -86,7 +88,6 @@
                        Text="{Binding MessageDateTime}"/>
         </WrapPanel>
             <WrapPanel x:Name="MessageToolsWrapP" Grid.Column="1"
-                       Style="{StaticResource HoverWrapPStyle}"
                        Orientation="Horizontal"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Right">
@@ -97,8 +98,11 @@
                     </Style>
                 </WrapPanel.Resources>
 
-                <Button x:Name="ReplyButton" Content="R" Command="{Binding SetReplyCommand}"/>
-                <Button x:Name="EmojiButton" Content="E"/>
+                <Button x:Name="ReplyButton" Style="{StaticResource HoverButtonStyle}"
+                        Content="R"
+                        Command="{Binding SetReplyCommand}"/>
+                <Button x:Name="EmojiButton" Style="{StaticResource HoverButtonStyle}"
+                        Content="E"/>
             </WrapPanel>
         </Grid>
         <TextBlock x:Name="ContentText" Grid.Row="2"
