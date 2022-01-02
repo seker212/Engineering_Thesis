@@ -89,6 +89,8 @@ namespace ComeX.Server.Hubs
                 Message insertMsg = new Message(Guid.NewGuid(), usrId, false, msg.RoomId, DateTime.Now.ToString(), msg.ParentId, msg.Content);
                 Message createdMsg = msgRepo.InsertMessage(insertMsg);
 
+                await Clients.Caller.SendAsync("ACK");
+
                 IEnumerable<Reaction> reactions = reactRepo.GetReactions(createdMsg.Id);
                 Dictionary<string, int> emojiList = new Dictionary<string, int>();
                 foreach (Reaction r in reactions)
@@ -105,7 +107,6 @@ namespace ComeX.Server.Hubs
 
                 MessageResponse rsp = new MessageResponse(createdMsg.Id, usrName, createdMsg.SendTime, createdMsg.RoomId, createdMsg.ParentId, createdMsg.Content, emojiList);
 
-                await Clients.Caller.SendAsync("ACK");
                 await Clients.All.SendAsync("Message_created", rsp);
 
             } catch (Exception e)
@@ -118,20 +119,118 @@ namespace ComeX.Server.Hubs
         // otrzymano żądanie wczytania konkretnej wiadomości
         public async Task LoadSpecificMessage(LoadMessageRequest msg)
         {
-            Message response = msgRepo.GetMessage(msg.messageId);
-            await Clients.Caller.SendAsync("ReceiveLoadSpecificMessage");
+            try
+            {
+                Message message = msgRepo.GetMessage(msg.Id);
+                User creator = usrRepo.GetUser(message.AuthorId);
+
+                IEnumerable<Reaction> reactions = reactRepo.GetReactions(message.Id);
+                Dictionary<string, int> emojiList = new Dictionary<string, int>();
+                foreach (Reaction r in reactions)
+                {
+                    try
+                    {
+                        emojiList.Add(r.Emoji, 1);
+                    }
+                    catch (ArgumentException)
+                    {
+                        emojiList[r.Emoji] += 1;
+                    }
+
+                }
+
+                MessageResponse rsp = new MessageResponse(message.Id, creator.Username, message.SendTime, message.RoomId, message.ParentId, message.Content, emojiList);
+                LoadMessageResponse response = new LoadMessageResponse(rsp);
+
+                await Clients.Caller.SendAsync("Load_message", response);
+            } catch (Exception e)
+            {
+                await Clients.Caller.SendAsync("Load_message_error");
+            }
+            
         }
 
         // otrzymano żądanie wczytania wiadomości
         public async Task LoadChatHistory(LoadChatRequest msg)
         {
-            await Clients.Caller.SendAsync("ReceiveLoadChatHistory");
+            try
+            {
+
+                List<MessageResponse> messageResponse = new List<MessageResponse>();
+                IEnumerable<Message> messages = msgRepo.GetRoomMessages(msg.RoomId, msg.Date);
+                
+                foreach (Message m in messages)
+                {
+                    User creator = usrRepo.GetUser(m.AuthorId);
+
+                    IEnumerable<Reaction> reactions = reactRepo.GetReactions(m.Id);
+                    Dictionary<string, int> emojiList = new Dictionary<string, int>();
+                    foreach (Reaction r in reactions)
+                    {
+                        try
+                        {
+                            emojiList.Add(r.Emoji, 1);
+                        }
+                        catch (ArgumentException)
+                        {
+                            emojiList[r.Emoji] += 1;
+                        }
+
+                    }
+
+                    MessageResponse rsp = new MessageResponse(m.Id, creator.Username, m.SendTime, m.RoomId, m.ParentId, m.Content, emojiList);
+                    messageResponse.Add(rsp);
+                }
+
+                LoadChatResponse response = new LoadChatResponse(msg.RoomId, messageResponse);
+                await Clients.Caller.SendAsync("Send_chat_history", response);
+
+            } catch (Exception e)
+            {
+                await Clients.Caller.SendAsync("Load_chat_error");
+            }
+            
         }
 
         // otrzymano żądanie wczytania ankiet
         public async Task LoadSurveyHistory(LoadSurveyRequest msg)
         {
-            await Clients.Caller.SendAsync("ReceiveLoadSurveyHistory");
+            try
+            {
+
+                List<SurveyResponse> surveyList = new List<SurveyResponse>();
+                IEnumerable<Survey> surveys = srvRepo.GetSurveys(msg.RoomId, msg.Date);
+
+                foreach(Survey s in surveys)
+                {
+                    User usr = usrRepo.GetUser(s.AuthorId);
+
+                    IEnumerable<Answer> answers = ansRepo.GetAnswers(s.Id);
+                    Dictionary<SurveyAnswerResponse, int> ansList = new Dictionary<SurveyAnswerResponse, int>();
+
+                    foreach (Answer ans in answers)
+                    {
+                        SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content);
+
+                        IEnumerable<Vote> votes = votRepo.GetVotes(ans.Id);
+                        int amount = votes.Count();
+
+                        ansList.Add(rsp, amount);
+                    }
+
+                    SurveyResponse response = new SurveyResponse(usr.Username, s.SendTime, s.RoomId, s.Question, s.IsMultipleChoice, ansList);
+                    surveyList.Add(response);
+                }
+
+                LoadSurveyResponse surveyResponse = new LoadSurveyResponse(msg.RoomId, surveyList);
+
+                await Clients.Caller.SendAsync("Send_survey_history", surveyResponse);
+
+            } catch (Exception e)
+            {
+                await Clients.Caller.SendAsync("Load_survey_error");
+            }
+            
         }
 
         // otrzymano ankietę (zawiera dopuszczalne odpowiedzi)
@@ -144,6 +243,8 @@ namespace ComeX.Server.Hubs
             {
                 Survey insertSrv = new Survey(Guid.NewGuid(), usrId, msg.RoomId, DateTime.Now.ToString(), msg.Question, msg.IsMultipleChoice);
                 Survey createdSrv = srvRepo.Insert(insertSrv);
+
+                await Clients.Caller.SendAsync("ACK");
 
                 foreach (string s in msg.AnswerList)
                 {
@@ -174,7 +275,6 @@ namespace ComeX.Server.Hubs
 
                 SurveyResponse response = new SurveyResponse(usrName, createdSrv.SendTime, createdSrv.RoomId, createdSrv.Question, createdSrv.IsMultipleChoice, ansList);
 
-                await Clients.Caller.SendAsync("ACK");
                 await Clients.All.SendAsync("Survey_created", response);
 
             } catch (Exception e)
@@ -197,6 +297,8 @@ namespace ComeX.Server.Hubs
                     Vote createdVote = votRepo.Insert(insertVote);
                 }
 
+                await Clients.Caller.SendAsync("ACK");
+
                 Survey srv = srvRepo.GetSurvey(msg.SurveyId);
                 User usr = usrRepo.GetUser(srv.AuthorId);
 
@@ -215,7 +317,6 @@ namespace ComeX.Server.Hubs
 
                 SurveyResponse response = new SurveyResponse(usr.Username, srv.SendTime, srv.RoomId, srv.Question, srv.IsMultipleChoice, ansList);
 
-                await Clients.Caller.SendAsync("ACK");
                 await Clients.All.SendAsync("Survey_updated", response);
 
             } catch (Exception e)
