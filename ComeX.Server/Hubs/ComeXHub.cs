@@ -27,13 +27,13 @@ namespace ComeX.Server.Hubs
         {
             _loginManager = loginManager;
             _connectionCache = connectionCache;
-            usrRepo = new UserRepository("Server = 127.0.0.1; Port = 5432; Database = postgres; User Id = postgres; Password = mysecretpassword;");
-            roomRepo = new RoomRepository("Server = 127.0.0.1; Port = 5432; Database = postgres; User Id = postgres; Password = mysecretpassword;");
-            msgRepo = new MessageRepository("Server = 127.0.0.1; Port = 5432; Database = postgres; User Id = postgres; Password = mysecretpassword;");
-            reactRepo = new ReactionRepository("Server = 127.0.0.1; Port = 5432; Database = postgres; User Id = postgres; Password = mysecretpassword;");
-            srvRepo = new SurveyRepository("Server = 127.0.0.1; Port = 5432; Database = postgres; User Id = postgres; Password = mysecretpassword;");
-            ansRepo = new AnswerRepository("Server = 127.0.0.1; Port = 5432; Database = postgres; User Id = postgres; Password = mysecretpassword;");
-            votRepo = new VoteRepository("Server = 127.0.0.1; Port = 5432; Database = postgres; User Id = postgres; Password = mysecretpassword;");
+            usrRepo = new UserRepository(Startup.SELF_DATABASE_URL);
+            roomRepo = new RoomRepository(Startup.SELF_DATABASE_URL);
+            msgRepo = new MessageRepository(Startup.SELF_DATABASE_URL);
+            reactRepo = new ReactionRepository(Startup.SELF_DATABASE_URL);
+            srvRepo = new SurveyRepository(Startup.SELF_DATABASE_URL);
+            ansRepo = new AnswerRepository(Startup.SELF_DATABASE_URL);
+            votRepo = new VoteRepository(Startup.SELF_DATABASE_URL);
         }
 
         public async Task SendLoginMessage(LoginMessage msg)
