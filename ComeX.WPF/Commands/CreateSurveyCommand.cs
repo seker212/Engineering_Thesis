@@ -28,7 +28,7 @@ namespace ComeX.WPF.Commands {
             try {
                 SurveyMessage newSurvey = OpenSurveyWindow();
                 if (newSurvey != null) {
-                    newSurvey.Token = _viewModel.LoginDM.Username;
+                    newSurvey.Token = _viewModel.LoginDM.Token;
 
                     await _viewModel.CurrentServer.Service.SendChatSurvey(newSurvey);
                     _viewModel.ErrorMessage = string.Empty;

@@ -86,9 +86,11 @@ namespace ComeX.WPF.MessageViewModels {
         }
 
         public ICommand SetReplyCommand { get; }
+        public ICommand ReactionCommand { get; }
 
         public ChatMessageViewModel(MessageResponse message, ChatViewModel chatVM, MessageResponse parentMessage = null) {
             SetReplyCommand = new SetReplyCommand(this, chatVM);
+            ReactionCommand = new ReactionCommand(this, chatVM);
 
             _chatVM = chatVM;
             Message = message;

@@ -12,6 +12,7 @@ namespace ComeX.Lib.Common.ServerCommunicationModels {
             MessageId = messageId;
             Emoji = emoji;
         }
+        public ReactionMessage() { }
 
         [JsonProperty("Token")]
         public string Token { get; set; }

@@ -21,7 +21,7 @@
 
     <Border x:Name="BorderMainGrid" Style="{StaticResource WindowBorderStyle}">
         <Grid x:Name="CreateSurveyMainGrid" Background="{StaticResource DarkBlue3}"
-          Margin="5,5,5,5">
+          Margin="5">
             <Grid.RowDefinitions>
             <RowDefinition Height="40"></RowDefinition>
             <RowDefinition MinHeight="350"></RowDefinition>

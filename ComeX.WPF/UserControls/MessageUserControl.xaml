@@ -92,17 +92,18 @@
                        VerticalAlignment="Center"
                        HorizontalAlignment="Right">
                 <WrapPanel.Resources>
-                    <Style TargetType="{x:Type Button}">
+                    <Style TargetType="{x:Type Button}" BasedOn="{StaticResource HoverButtonStyle}">
                         <Setter Property="Margin" Value="0,0,10,0" />
                         <Setter Property="VerticalAlignment" Value="Center" />
                     </Style>
                 </WrapPanel.Resources>
 
-                <Button x:Name="ReplyButton" Style="{StaticResource HoverButtonStyle}"
+                <Button x:Name="ReplyButton"
                         Content="R"
                         Command="{Binding SetReplyCommand}"/>
-                <Button x:Name="EmojiButton" Style="{StaticResource HoverButtonStyle}"
-                        Content="E"/>
+                <Button x:Name="EmojiButton"
+                        Content="E"
+                        Command="{Binding ReactionCommand}"/>
             </WrapPanel>
         </Grid>
         <TextBlock x:Name="ContentText" Grid.Row="2"
