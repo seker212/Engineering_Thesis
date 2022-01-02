@@ -104,8 +104,9 @@ namespace ComeX.Server.Hubs
                 }
 
                 MessageResponse rsp = new MessageResponse(createdMsg.Id, usrName, createdMsg.SendTime, createdMsg.RoomId, createdMsg.ParentId, createdMsg.Content, emojiList);
-                
-                await Clients.Caller.SendAsync("Message_created", rsp);
+
+                await Clients.Caller.SendAsync("ACK");
+                await Clients.All.SendAsync("Message_created", rsp);
 
             } catch (Exception e)
             {
@@ -166,7 +167,8 @@ namespace ComeX.Server.Hubs
 
                 SurveyResponse response = new SurveyResponse(usrName, createdSrv.SendTime, createdSrv.RoomId, createdSrv.Question, createdSrv.IsMultipleChoice, ansList);
 
-                await Clients.Caller.SendAsync("Survey_created", response);
+                await Clients.Caller.SendAsync("ACK");
+                await Clients.All.SendAsync("Survey_created", response);
 
             } catch (Exception e)
             {
