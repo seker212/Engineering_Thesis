@@ -23,6 +23,8 @@ namespace ComeX.Server.Hubs
         AnswerRepository ansRepo;
         VoteRepository votRepo;
 
+        readonly string dateFormat = "yyyy-mm-dd hh:mm:ss";
+
         public ComeXHub(ILoginManager loginManager, IConnectionCache connectionCache)
         {
             _loginManager = loginManager;
@@ -87,7 +89,7 @@ namespace ComeX.Server.Hubs
 
             try
             {
-                Message insertMsg = new Message(Guid.NewGuid(), usrId, false, msg.RoomId, DateTime.Now.ToString(), msg.ParentId, msg.Content);
+                Message insertMsg = new Message(Guid.NewGuid(), usrId, false, msg.RoomId, DateTime.Now.ToString(dateFormat), msg.ParentId, msg.Content);
                 Message createdMsg = msgRepo.InsertMessage(insertMsg);
 
                 await Clients.Caller.SendAsync("ACK");
@@ -242,7 +244,7 @@ namespace ComeX.Server.Hubs
 
             try
             {
-                Survey insertSrv = new Survey(Guid.NewGuid(), usrId, msg.RoomId, DateTime.Now.ToString(), msg.Question, msg.IsMultipleChoice);
+                Survey insertSrv = new Survey(Guid.NewGuid(), usrId, msg.RoomId, DateTime.Now.ToString(dateFormat), msg.Question, msg.IsMultipleChoice);
                 Survey createdSrv = srvRepo.Insert(insertSrv);
 
                 await Clients.Caller.SendAsync("ACK");
