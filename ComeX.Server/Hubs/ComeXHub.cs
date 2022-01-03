@@ -220,7 +220,7 @@ namespace ComeX.Server.Hubs
                         ansList.Add(rsp, amount);
                     }
 
-                    SurveyResponse response = new SurveyResponse(usr.Username, s.SendTime, s.RoomId, s.Question, s.IsMultipleChoice, ansList);
+                    SurveyResponse response = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, s.IsMultipleChoice, ansList);
                     surveyList.Add(response);
                 }
 
@@ -275,7 +275,7 @@ namespace ComeX.Server.Hubs
                     ansList.Add(rsp, amount);
                 }
 
-                SurveyResponse response = new SurveyResponse(usrName, createdSrv.SendTime, createdSrv.RoomId, createdSrv.Question, createdSrv.IsMultipleChoice, ansList);
+                SurveyResponse response = new SurveyResponse(createdSrv.Id, usrName, createdSrv.SendTime, createdSrv.RoomId, createdSrv.Question, createdSrv.IsMultipleChoice, ansList);
 
                 await Clients.All.SendAsync("Survey_created", response);
 
@@ -295,11 +295,20 @@ namespace ComeX.Server.Hubs
             {
                 foreach(Guid ansId in msg.AnswerId)
                 {
-                    Vote insertVote = new Vote(Guid.NewGuid(), usrId, ansId);
-                    Vote createdVote = votRepo.Insert(insertVote);
-                }
+                    Vote checkVote = votRepo.GetVote(usrId, ansId);
+                    if (checkVote == null)
+                    {
+                        Vote insertVote = new Vote(Guid.NewGuid(), usrId, ansId);
+                        Vote createdVote = votRepo.Insert(insertVote);
 
-                await Clients.Caller.SendAsync("ACK");
+                        await Clients.Caller.SendAsync("ACK");
+
+                    } else
+                    {
+                        await Clients.Caller.SendAsync("Vote_duplicate", msg.SurveyId);
+                    }
+                    
+                }
 
                 Survey srv = srvRepo.GetSurvey(msg.SurveyId);
                 User usr = usrRepo.GetUser(srv.AuthorId);
@@ -317,7 +326,7 @@ namespace ComeX.Server.Hubs
                     ansList.Add(rsp, amount);
                 }
 
-                SurveyResponse response = new SurveyResponse(usr.Username, srv.SendTime, srv.RoomId, srv.Question, srv.IsMultipleChoice, ansList);
+                SurveyResponse response = new SurveyResponse(srv.Id, usr.Username, srv.SendTime, srv.RoomId, srv.Question, srv.IsMultipleChoice, ansList);
 
                 await Clients.All.SendAsync("Survey_updated", response);
 
