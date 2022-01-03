@@ -38,6 +38,10 @@ namespace ComeX.WPF.Services {
             await _connection.SendAsync("SendChatSurvey", survey);
         }
 
+        public async Task SendChatSurveyVote(SurveyVoteMessage vote) {
+            await _connection.SendAsync("SendChatSurveyVote", vote);
+        }
+
         public async Task GetRoomsList() {
             await _connection.SendAsync("GetRoomsList");
         }

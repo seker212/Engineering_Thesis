@@ -1,4 +1,5 @@
 ﻿using ComeX.Lib.Common.ServerCommunicationModels;
+using ComeX.Lib.Common.ServerResponseModels;
 using ComeX.WPF.MessageViewModels;
 using ComeX.WPF.ViewModels;
 using System;
@@ -26,11 +27,16 @@ namespace ComeX.WPF.Commands {
 
         public async void Execute(object parameter) {
             try {
-                SurveyVoteMessage vote = new SurveyVoteMessage();
-                //vote.AnswerId = GetAnswers();
+                SurveyVoteMessage voteMessage = new SurveyVoteMessage();
+                voteMessage.Token = _chatViewModel.LoginDM.Token;
+                voteMessage.SurveyId = _surveyViewModel.Survey.Id;
 
-                // await _chatViewModel.CurrentServer.Service.SendVote(vote);
+                List<SurveyAnswerResponse> checkedAnswers = _surveyViewModel.GetCheckedAnswers();
+                voteMessage.AnswerId = checkedAnswers.Select(o => o.AnswerId).ToList();
 
+                await _chatViewModel.CurrentServer.Service.SendChatSurveyVote(voteMessage);
+
+                _surveyViewModel.AlreadyAnswered = true;
             } catch (ArgumentException e) {
                 _chatViewModel.ErrorMessage = e.Message;
             } catch (Exception e) {

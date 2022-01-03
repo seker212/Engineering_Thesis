@@ -14,6 +14,7 @@ namespace ComeX.WPF.MessageViewModels {
     public class SurveyViewModel : BaseMessageViewModel {
         private ChatViewModel _chatVM;
         public SurveyResponse Survey { get; set; }
+        public bool AlreadyAnswered { get; set; }
 
         public string MessageAuthor {
             get {
@@ -41,16 +42,7 @@ namespace ComeX.WPF.MessageViewModels {
         }
         */
 
-        public Dictionary<string, int> SurveyAnswers {
-            get {
-                Dictionary<string, int> answers = new Dictionary<string, int>();
-                foreach(var answer in Survey.AnswerList) {
-                    answers.Add(answer.Key.Content, answer.Value);
-                }
-                return answers;
-            }
-        }
-        
+        public List<SurveyAnswerViewModel> SurveyAnswers { get; set; }
 
         public bool SurveyIsMultipleChoice {
             get {
@@ -58,13 +50,39 @@ namespace ComeX.WPF.MessageViewModels {
             }
         }
 
+        public bool ButtonEnabled {
+            get {
+                return (!AlreadyAnswered && AnyAnswerChecked());
+            }
+        }
+
         public ICommand SendSurveyVoteCommand { get; }
+        public ICommand CheckedAnswerCommand { get; }
 
         public SurveyViewModel(SurveyResponse survey, ChatViewModel chatVM) {
             SendSurveyVoteCommand = new SendSurveyVoteCommand(this, chatVM);
+            CheckedAnswerCommand = new CheckedAnswerCommand(this);
 
             _chatVM = chatVM;
             Survey = survey;
+            AlreadyAnswered = false;
+
+            SurveyAnswers = new List<SurveyAnswerViewModel>();
+            foreach (var answer in Survey.AnswerList) {
+                SurveyAnswers.Add(new SurveyAnswerViewModel(answer.Key, answer.Value, false));
+            }
+        }
+
+        public List<SurveyAnswerResponse> GetCheckedAnswers() {
+            List<SurveyAnswerResponse> checkedAnswers = new List<SurveyAnswerResponse>();
+            foreach (var answer in SurveyAnswers) {
+                if (answer.IsChecked) checkedAnswers.Add(answer.AnswerResponse);
+            }
+            return checkedAnswers;
+        }
+
+        private bool AnyAnswerChecked() {
+            return GetCheckedAnswers().Count > 0;
         }
     }
 }

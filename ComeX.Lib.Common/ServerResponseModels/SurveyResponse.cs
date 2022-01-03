@@ -7,7 +7,8 @@ using Newtonsoft.Json;
 
 namespace ComeX.Lib.Common.ServerResponseModels {
     public class SurveyResponse {
-        public SurveyResponse(string username, string sendTime, Guid roomId, string question, bool isMultipleChoice, Dictionary<SurveyAnswerResponse, int> answerList) {
+        public SurveyResponse(Guid id, string username, string sendTime, Guid roomId, string question, bool isMultipleChoice, Dictionary<SurveyAnswerResponse, int> answerList) {
+            Id = id;
             Username = username;
             SendTime = sendTime;
             RoomId = roomId;
@@ -18,6 +19,8 @@ namespace ComeX.Lib.Common.ServerResponseModels {
 
         public SurveyResponse() { }
 
+        [JsonProperty("Id")]
+        public Guid Id { get; set; }
         [JsonProperty("Username")]
         public string Username { get; set; }
         [JsonProperty("SendTime")]
