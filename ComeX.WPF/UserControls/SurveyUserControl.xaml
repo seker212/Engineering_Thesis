@@ -29,8 +29,8 @@
         </Grid.RowDefinitions>
 
         <WrapPanel x:Name="MessageNickDateWrapP" Grid.Row="0"
-                                               Orientation="Horizontal" 
-                                               VerticalAlignment="Center">
+                   Orientation="Horizontal" 
+                   VerticalAlignment="Center">
             <WrapPanel.Resources>
                 <Style TargetType="{x:Type TextBlock}">
                     <Setter Property="Margin" Value="0,0,10,0" />
@@ -38,25 +38,30 @@
                 </Style>
             </WrapPanel.Resources>
             <TextBlock x:Name="AuthorText"
-                                                   FontSize="16"
-                                                   Foreground="{StaticResource LightBlue1}"
-                                                   Text="{Binding MessageAuthor}"/>
+                       FontSize="16"
+                       Foreground="{StaticResource LightBlue1}"
+                       Text="{Binding MessageAuthor}"/>
             <TextBlock x:Name="DateText"                                                
-                                                   FontSize="12"
-                                                   Foreground="{StaticResource LightBlue2}"
-                                                   Text="{Binding MessageDateTime}"/>
+                       FontSize="12"
+                       Foreground="{StaticResource LightBlue2}"
+                       Text="{Binding MessageDateTime}"/>
         </WrapPanel>
         <TextBlock x:Name="ContentText" Grid.Row="1"
-                                                   Margin="5,0,0,5"
-                                            Text="{Binding MessageContent}">
+                   Margin="5,0,0,5"
+                   Text="{Binding MessageContent}">
             </TextBlock>
 
-        <Border x:Name="BorderAnswerListView" Grid.Row="2" Style="{StaticResource DefaultBorderStyle}" Visibility="{Binding SurveyAnswersVisibility}">
-            <ListView x:Name="AnswersListView"
-                                              BorderThickness="0"
-                                              Background="{StaticResource DarkBlue2}"
-                                              Visibility="{Binding SurveyAnswersVisibility}"
-                                              ItemsSource="{Binding SurveyAnswers}">
+        <Border x:Name="BorderAnswerListView" Grid.Row="2" Style="{StaticResource DefaultBorderStyle}">
+            <Grid x:Name="AnswersGrid"
+                  Background="{StaticResource DarkBlue2}">
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <ListView x:Name="AnswersListView" Grid.Row="0"
+                      BorderThickness="0"
+                      Background="{StaticResource DarkBlue2}"
+                      ItemsSource="{Binding SurveyAnswers}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="Template">
@@ -72,9 +77,8 @@
                     <DataTemplate>
                         <Grid x:Name="SurveyAnswer">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition x:Name="AnswerButtonCol" Width="30"></ColumnDefinition>
-                                <ColumnDefinition x:Name="AnswerTextCol" Width="200"></ColumnDefinition>
-                                <ColumnDefinition x:Name="AnswerVotesCounterCol" Width="50"></ColumnDefinition>
+                                    <ColumnDefinition x:Name="AnswerButtonCol" Width="230"></ColumnDefinition>
+                                    <ColumnDefinition x:Name="AnswerVotesCounterCol" Width="50"></ColumnDefinition>
                             </Grid.ColumnDefinitions>
                             <Grid.Resources>
                                 <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource DefaultTextBlockStyle}">
@@ -83,21 +87,25 @@
                                     <Setter Property="Foreground" Value="{StaticResource LightBlue1}"/>
                                 </Style>
                             </Grid.Resources>
-                            <Button x:Name="AnswerButton" Grid.Column="0" Style="{StaticResource RoundButtonStyle}"
-                                                            Width="25"
-                                                            Height="25"
-                                                            VerticalAlignment="Top"/>
-                            <StackPanel Grid.Column="1" Orientation="Vertical">
-                                <TextBlock x:Name="AnswerText"
-                                                               TextWrapping="Wrap"
-                                                               Text="{Binding Key}"/>
-                            </StackPanel>
-                            <TextBlock x:Name="AnswerVotesCounter" Grid.Column="2"
-                                                               HorizontalAlignment="Right" Text="{Binding Value}"/>
+                                <CheckBox x:Name="AnswerButton" Grid.Column="0"
+                                    VerticalAlignment="Top"
+                                    Foreground="{StaticResource LightBlue1}"
+                                    Content="{Binding Content}"
+                                    IsChecked="{Binding IsChecked}"
+                                    Command="{Binding DataContext.CheckedAnswerCommand, RelativeSource={RelativeSource AncestorType=local:SurveyUserControl}}"/>
+                                <TextBlock x:Name="AnswerVotesCounter" Grid.Column="1"
+                                       HorizontalAlignment="Right"
+                                       Text="{Binding Votes}"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+                <Button x:Name="VoteButton" Grid.Row="1"
+                        IsEnabled="{Binding ButtonEnabled}"
+                        Template="{StaticResource RoundedButtonTemplate}"
+                        Width="80"
+                        Content="Vote"/>
+            </Grid>
         </Border>
     </Grid>
 </UserControl>
