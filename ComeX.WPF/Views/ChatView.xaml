@@ -25,25 +25,25 @@
           Height="{Binding ActualHeight, ElementName=ChatViewUserControl}"
           Width="{Binding ActualWidth, ElementName=ChatViewUserControl}">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="80"></ColumnDefinition>
+                <ColumnDefinition Width="100"></ColumnDefinition>
                 <ColumnDefinition Width="160"></ColumnDefinition>
                 <ColumnDefinition MinWidth="360" Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <Grid x:Name="ServersUserGrid"
-                  Width="80"
+                  Width="100"
                   Background="{StaticResource DarkBlue3}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"></RowDefinition>
                     <RowDefinition Height="80"></RowDefinition>
                 </Grid.RowDefinitions>
 
-            <WrapPanel Grid.Row="0" x:Name="ServersWrapP" ItemWidth="90" Orientation="Vertical" VerticalAlignment="Top" Width="70">
+            <WrapPanel Grid.Row="0" x:Name="ServersWrapP" ItemWidth="100" Orientation="Vertical" VerticalAlignment="Top" Width="100">
                 <ListView Grid.Row="0" Grid.ColumnSpan="2" x:Name="ServerListView"
-                          Margin="5"
                           ItemsSource="{Binding ServersNames}"
                           Background="{x:Null}"
-                          BorderBrush="{x:Null}">
+                          BorderBrush="{x:Null}"
+                          Margin="0,0,0,5">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Template">
@@ -265,9 +265,8 @@
                         </WrapPanel>
                         <WrapPanel Grid.Column="1" x:Name="TypeToolsWrapPanel" Orientation="Horizontal" FlowDirection="RightToLeft">
                             <Button x:Name="SendButton" Width="40" Command="{Binding SendChatMessageCommand}" />
-                        <Button x:Name="SurveyButton" Command="{Binding CreateSurveyCommand}"></Button>
-                        <Button x:Name="EmojiButton"></Button>
-                    </WrapPanel>
+                            <Button x:Name="SurveyButton" Command="{Binding CreateSurveyCommand}"/>
+                        </WrapPanel>
                     </Grid>
                 </Grid>
             </Grid>
