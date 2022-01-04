@@ -8,6 +8,7 @@ namespace ComeX.Server.DAL
     {
         Message GetMessage(Guid id);
         IEnumerable<Message> GetRoomMessages(Guid roomId, string sendTime);
+        public IEnumerable<Message> FindMessages(Guid roomId, string search);
         public Message InsertMessage(Message msg);
     }
 }

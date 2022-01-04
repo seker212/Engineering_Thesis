@@ -332,10 +332,14 @@ namespace ComeX.Server.Hubs
 
             } catch (Exception e)
             {
-                await Clients.Caller.SendAsync("ReceiveChatSurveyVote");
+                await Clients.Caller.SendAsync("Vote_error");
             }
 
-            await Clients.Caller.SendAsync("ReceiveChatSurveyVote");
+        }
+
+        public async Task SearchMessage()
+        {
+            await Clients.Caller.SendAsync("ReceiveSearchMessage");
         }
     }
 }
