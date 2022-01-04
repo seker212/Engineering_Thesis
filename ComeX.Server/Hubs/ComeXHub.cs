@@ -38,6 +38,7 @@ namespace ComeX.Server.Hubs
             votRepo = new VoteRepository(Startup.SELF_DATABASE_URL);
         }
 
+        // logowanie do serwera
         public async Task SendLoginMessage(LoginMessage msg)
         {
             //Klient wysyła mi tu token i ja sobie pobieram dane o nim
@@ -118,7 +119,7 @@ namespace ComeX.Server.Hubs
             
         }
 
-        // otrzymano żądanie wczytania konkretnej wiadomości
+        // otrzymano zadanie wczytania konkretnej wiadomosci
         public async Task LoadSpecificMessage(LoadMessageRequest msg)
         {
             try
@@ -152,7 +153,7 @@ namespace ComeX.Server.Hubs
             
         }
 
-        // otrzymano żądanie wczytania wiadomości
+        // otrzymano zadanie wczytania wiadomosci
         public async Task LoadChatHistory(LoadChatRequest msg)
         {
             try
@@ -194,7 +195,7 @@ namespace ComeX.Server.Hubs
             
         }
 
-        // otrzymano żądanie wczytania ankiet
+        // otrzymano zadanie otrzytania ankiet
         public async Task LoadSurveyHistory(LoadSurveyRequest msg)
         {
             try
@@ -235,7 +236,7 @@ namespace ComeX.Server.Hubs
             
         }
 
-        // otrzymano ankietę (zawiera dopuszczalne odpowiedzi)
+        // otrzymano ankiete (zawiera dopuszczalne odpowiedzi)
         public async Task SendChatSurvey(SurveyMessage msg)
         {
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
@@ -286,7 +287,7 @@ namespace ComeX.Server.Hubs
 
         }
 
-        // otrzymano głos do ankiety
+        // otrzymano glos do ankiety
         public async Task SendChatSurveyVote(SurveyVoteMessage msg)
         {
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
@@ -337,9 +338,46 @@ namespace ComeX.Server.Hubs
 
         }
 
-        public async Task SearchMessage()
+        // szukanie wiadomosci po ciagu znakow
+        public async Task SearchMessage(SearchMessageRequest msg)
         {
-            await Clients.Caller.SendAsync("ReceiveSearchMessage");
+            try
+            {
+
+                List<MessageResponse> messageResponse = new List<MessageResponse>();
+                IEnumerable<Message> messages = msgRepo.FindMessages(msg.RoomId, msg.Search);
+
+                foreach (Message m in messages)
+                {
+                    User creator = usrRepo.GetUser(m.AuthorId);
+
+                    IEnumerable<Reaction> reactions = reactRepo.GetReactions(m.Id);
+                    Dictionary<string, int> emojiList = new Dictionary<string, int>();
+                    foreach (Reaction r in reactions)
+                    {
+                        try
+                        {
+                            emojiList.Add(r.Emoji, 1);
+                        }
+                        catch (ArgumentException)
+                        {
+                            emojiList[r.Emoji] += 1;
+                        }
+
+                    }
+
+                    MessageResponse rsp = new MessageResponse(m.Id, creator.Username, m.SendTime, m.RoomId, m.ParentId, m.Content, emojiList);
+                    messageResponse.Add(rsp);
+                }
+
+                LoadChatResponse response = new LoadChatResponse(msg.RoomId, messageResponse);
+                await Clients.Caller.SendAsync("Send_chat_history", response);
+
+            } catch (Exception e)
+            {
+                await Clients.Caller.SendAsync("Search_error");
+            }
+
         }
     }
 }
