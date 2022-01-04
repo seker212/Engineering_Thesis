@@ -14,6 +14,7 @@ namespace ComeX.WPF.Commands {
     public class ReactionCommand : ICommand {
         private readonly ChatMessageViewModel _msgViewModel;
         private readonly ChatViewModel _chatViewModel;
+        private ReactionWindow _reactionView;
 
         public ReactionCommand(ChatMessageViewModel msgViewModel, ChatViewModel chatViewModel) {
             _msgViewModel = msgViewModel;
@@ -44,15 +45,16 @@ namespace ComeX.WPF.Commands {
         }
 
         private ReactionMessage OpenReactionWindow() {
-            ReactionWindow reactionWindow = new ReactionWindow();
             ReactionMessage newReaction;
 
-            reactionWindow.Owner = Application.Current.MainWindow;
-            reactionWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            _reactionView = new ReactionWindow();
+            _reactionView.DataContext = new ReactionViewModel(_chatViewModel);
+            _reactionView.Owner = Application.Current.MainWindow;
+            _reactionView.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             //Application.Current.MainWindow.IsEnabled = false;
 
-            reactionWindow.ShowDialog();
-            newReaction = reactionWindow.Reaction;
+            _reactionView.ShowDialog();
+            newReaction = _reactionView.Reaction;
 
             return newReaction;
         }

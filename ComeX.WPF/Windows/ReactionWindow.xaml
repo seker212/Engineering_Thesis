@@ -10,7 +10,7 @@
         Title="ReactionWindow"
         WindowStyle="None"
         ResizeMode="NoResize"
-        Height="60" Width="200">
+        Height="80" Width="350">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -20,35 +20,32 @@
     </Window.Resources>
 
     <Border x:Name="BorderMainGrid" Style="{StaticResource WindowBorderStyle}">
-        <Grid x:Name="ReactionMainGrid" Background="{StaticResource DarkBlue3}"
+        <Grid x:Name="ReactionMainGrid"
               Margin="5">
-            <StackPanel x:Name="EmojiStackP" Orientation="Horizontal">
-                <StackPanel.Resources>
-                    <Style TargetType="{x:Type Button}">
-                        <Setter Property="Margin" Value="5" />
-                        <Setter Property="Width" Value="20" />
-                        <Setter Property="Height" Value="20" />
-                    </Style>
-                </StackPanel.Resources>
-                <Button x:Name="Reaction1"
-                        Click="AddReactionButtonHandler">
-                    <Button.Background>
-                        <ImageBrush ImageSource="/Resources/Images/Emojis/1.png"/>
-                    </Button.Background>
-                </Button>
-                <Button x:Name="Reaction2"
-                        Click="AddReactionButtonHandler">
-                    <Button.Background>
-                        <ImageBrush ImageSource="/Resources/Images/Emojis/2.png"/>
-                    </Button.Background>
-                </Button>
-                <Button x:Name="Reaction3"
-                        Click="AddReactionButtonHandler">
-                    <Button.Background>
-                        <ImageBrush ImageSource="/Resources/Images/Emojis/3.png"/>
-                    </Button.Background>
-                </Button>
-            </StackPanel>
+            <ListView x:Name="AnswersListView" Grid.Row="0"
+                      BorderThickness="0"
+                      HorizontalAlignment="Center"
+                      Background="{StaticResource DarkBlue3}"
+                      ItemsSource="{Binding ReactionList}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"></StackPanel>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="{Binding Name}" Style="{StaticResource DefaultButtonStyle}"
+                                Height="40"
+                                Width="40">
+                                <Button.Background>
+                                    <ImageBrush ImageSource="{Binding Filename}"/>
+                                </Button.Background>
+                            </Button>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </Grid>
     </Border>
 </Window>

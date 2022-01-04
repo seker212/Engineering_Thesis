@@ -39,12 +39,10 @@ namespace ComeX.WPF.Windows {
         }
 
         private void AddReactionButtonHandler(object sender, RoutedEventArgs e) {
-            ReactionMessage newReaction = new ReactionMessage();
-            newReaction.Emoji = ((Button)sender).Name;
-
-            Reaction = newReaction;
-
-            this.Visibility = Visibility.Hidden;
+            string buttonName = ((Button)sender).Content.ToString();
+            if (this.DataContext != null) {
+                ((dynamic)this.DataContext).ChooseReactionCommand.Execute(buttonName);
+            }
         }
     }
 }
