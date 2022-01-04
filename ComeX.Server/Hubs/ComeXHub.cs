@@ -38,6 +38,7 @@ namespace ComeX.Server.Hubs
             votRepo = new VoteRepository(Startup.SELF_DATABASE_URL);
         }
 
+        // logowanie do serwera
         public async Task SendLoginMessage(LoginMessage msg)
         {
             Console.WriteLine("Witam");
@@ -119,7 +120,7 @@ namespace ComeX.Server.Hubs
             
         }
 
-        // otrzymano żądanie wczytania konkretnej wiadomości
+        // otrzymano zadanie wczytania konkretnej wiadomosci
         public async Task LoadSpecificMessage(LoadMessageRequest msg)
         {
             try
@@ -153,7 +154,7 @@ namespace ComeX.Server.Hubs
             
         }
 
-        // otrzymano żądanie wczytania wiadomości
+        // otrzymano zadanie wczytania wiadomosci
         public async Task LoadChatHistory(LoadChatRequest msg)
         {
             try
@@ -195,7 +196,7 @@ namespace ComeX.Server.Hubs
             
         }
 
-        // otrzymano żądanie wczytania ankiet
+        // otrzymano zadanie otrzytania ankiet
         public async Task LoadSurveyHistory(LoadSurveyRequest msg)
         {
             try
@@ -221,7 +222,7 @@ namespace ComeX.Server.Hubs
                         ansList.Add(rsp, amount);
                     }
 
-                    SurveyResponse response = new SurveyResponse(usr.Username, s.SendTime, s.RoomId, s.Question, s.IsMultipleChoice, ansList);
+                    SurveyResponse response = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, s.IsMultipleChoice, ansList);
                     surveyList.Add(response);
                 }
 
@@ -236,7 +237,7 @@ namespace ComeX.Server.Hubs
             
         }
 
-        // otrzymano ankietę (zawiera dopuszczalne odpowiedzi)
+        // otrzymano ankiete (zawiera dopuszczalne odpowiedzi)
         public async Task SendChatSurvey(SurveyMessage msg)
         {
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
@@ -276,7 +277,7 @@ namespace ComeX.Server.Hubs
                     ansList.Add(rsp, amount);
                 }
 
-                SurveyResponse response = new SurveyResponse(usrName, createdSrv.SendTime, createdSrv.RoomId, createdSrv.Question, createdSrv.IsMultipleChoice, ansList);
+                SurveyResponse response = new SurveyResponse(createdSrv.Id, usrName, createdSrv.SendTime, createdSrv.RoomId, createdSrv.Question, createdSrv.IsMultipleChoice, ansList);
 
                 await Clients.All.SendAsync("Survey_created", response);
 
@@ -287,7 +288,7 @@ namespace ComeX.Server.Hubs
 
         }
 
-        // otrzymano głos do ankiety
+        // otrzymano glos do ankiety
         public async Task SendChatSurveyVote(SurveyVoteMessage msg)
         {
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
@@ -296,11 +297,20 @@ namespace ComeX.Server.Hubs
             {
                 foreach(Guid ansId in msg.AnswerId)
                 {
-                    Vote insertVote = new Vote(Guid.NewGuid(), usrId, ansId);
-                    Vote createdVote = votRepo.Insert(insertVote);
-                }
+                    Vote checkVote = votRepo.GetVote(usrId, ansId);
+                    if (checkVote == null)
+                    {
+                        Vote insertVote = new Vote(Guid.NewGuid(), usrId, ansId);
+                        Vote createdVote = votRepo.Insert(insertVote);
 
-                await Clients.Caller.SendAsync("ACK");
+                        await Clients.Caller.SendAsync("ACK");
+
+                    } else
+                    {
+                        await Clients.Caller.SendAsync("Vote_duplicate", msg.SurveyId);
+                    }
+                    
+                }
 
                 Survey srv = srvRepo.GetSurvey(msg.SurveyId);
                 User usr = usrRepo.GetUser(srv.AuthorId);
@@ -318,16 +328,57 @@ namespace ComeX.Server.Hubs
                     ansList.Add(rsp, amount);
                 }
 
-                SurveyResponse response = new SurveyResponse(usr.Username, srv.SendTime, srv.RoomId, srv.Question, srv.IsMultipleChoice, ansList);
+                SurveyResponse response = new SurveyResponse(srv.Id, usr.Username, srv.SendTime, srv.RoomId, srv.Question, srv.IsMultipleChoice, ansList);
 
                 await Clients.All.SendAsync("Survey_updated", response);
 
             } catch (Exception e)
             {
-                await Clients.Caller.SendAsync("ReceiveChatSurveyVote");
+                await Clients.Caller.SendAsync("Vote_error");
             }
 
-            await Clients.Caller.SendAsync("ReceiveChatSurveyVote");
+        }
+
+        // szukanie wiadomosci po ciagu znakow
+        public async Task SearchMessage(SearchMessageRequest msg)
+        {
+            try
+            {
+
+                List<MessageResponse> messageResponse = new List<MessageResponse>();
+                IEnumerable<Message> messages = msgRepo.FindMessages(msg.RoomId, msg.Search);
+
+                foreach (Message m in messages)
+                {
+                    User creator = usrRepo.GetUser(m.AuthorId);
+
+                    IEnumerable<Reaction> reactions = reactRepo.GetReactions(m.Id);
+                    Dictionary<string, int> emojiList = new Dictionary<string, int>();
+                    foreach (Reaction r in reactions)
+                    {
+                        try
+                        {
+                            emojiList.Add(r.Emoji, 1);
+                        }
+                        catch (ArgumentException)
+                        {
+                            emojiList[r.Emoji] += 1;
+                        }
+
+                    }
+
+                    MessageResponse rsp = new MessageResponse(m.Id, creator.Username, m.SendTime, m.RoomId, m.ParentId, m.Content, emojiList);
+                    messageResponse.Add(rsp);
+                }
+
+                LoadChatResponse response = new LoadChatResponse(msg.RoomId, messageResponse);
+                await Clients.Caller.SendAsync("Send_chat_history", response);
+
+            } catch (Exception e)
+            {
+                await Clients.Caller.SendAsync("Search_error");
+            }
+
         }
     }
 }
