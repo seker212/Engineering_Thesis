@@ -397,7 +397,7 @@ namespace ComeX.Server.Hubs
                     await Clients.Caller.SendAsync("ACK");
                 } else
                 {
-                    await Clients.Caller.SendAsync("React_duplicate");
+                    await Clients.Caller.SendAsync("React_duplicate", msg.MessageId);
                 }
 
                 Message message = msgRepo.GetMessage(msg.MessageId);
