@@ -372,13 +372,63 @@ namespace ComeX.Server.Hubs
                 }
 
                 LoadChatResponse response = new LoadChatResponse(msg.RoomId, messageResponse);
-                await Clients.Caller.SendAsync("Send_chat_history", response);
+                await Clients.Caller.SendAsync("Send_search", response);
 
             } catch (Exception e)
             {
                 await Clients.Caller.SendAsync("Search_error");
             }
 
+        }
+
+        // dodawanie rekacji
+        public async Task AddReaction(ReactionMessage msg)
+        {
+            Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
+
+            try
+            {
+                Reaction checkRection = reactRepo.GetReaction(usrId, msg.MessageId, msg.Emoji);
+
+                if (checkRection == null)
+                {
+                    Reaction insert = new Reaction(Guid.NewGuid(), usrId, msg.MessageId, msg.Emoji);
+                    Reaction created = reactRepo.InsertReaction(insert);
+
+                    await Clients.Caller.SendAsync("ACK");
+                } else
+                {
+                    await Clients.Caller.SendAsync("React_duplicate");
+                }
+
+                Message message = msgRepo.GetMessage(msg.MessageId);
+                User creator = usrRepo.GetUser(message.AuthorId);
+
+                IEnumerable<Reaction> reactions = reactRepo.GetReactions(message.Id);
+                Dictionary<string, int> emojiList = new Dictionary<string, int>();
+                foreach (Reaction r in reactions)
+                {
+                    try
+                    {
+                        emojiList.Add(r.Emoji, 1);
+                    }
+                    catch (ArgumentException)
+                    {
+                        emojiList[r.Emoji] += 1;
+                    }
+
+                }
+
+                MessageResponse rsp = new MessageResponse(message.Id, creator.Username, message.SendTime, message.RoomId, message.ParentId, message.Content, emojiList);
+                LoadMessageResponse response = new LoadMessageResponse(rsp);
+
+                await Clients.Caller.SendAsync("Load_message", response);
+
+            } catch (Exception e)
+            {
+                await Clients.Caller.SendAsync("React_error");
+            }
+            
         }
     }
 }
