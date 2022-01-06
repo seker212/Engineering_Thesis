@@ -8,13 +8,11 @@ using Newtonsoft.Json;
 namespace ComeX.Lib.Common.ServerCommunicationModels {
 	
     public class RoomRequest {
-        public RoomRequest(string name, Guid serverId, bool isArchived) {
-            Name = name;
+        public RoomRequest(string token) {
+            Token = token;
         }
 
-        [JsonProperty("RoomId")]
-        public Guid RoomId { get; set; }
-        [JsonProperty("Name")]
-        public string Name { get; set; }
+        [JsonProperty("Token")]
+        public string Token { get; set; }
     }
 }
