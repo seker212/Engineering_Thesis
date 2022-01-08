@@ -14,12 +14,26 @@ namespace ComeX.WPF.Services {
         public event Action<MessageResponse> ChatMessageReceived;
         public event Action<SurveyResponse> SurveyReceived;
         public event Action<RoomsListResponse> RoomsListReceived;
+        public event Action<LoadMessageResponse> SpecificMessageReceived;
+        public event Action<LoadChatResponse> ChatHistoryReceived;
+        public event Action<LoadSurveyResponse> SurveyHistoryReceived;
+        public event Action<Guid> SurveyVoteDuplicateReceived;
+        public event Action<SurveyResponse> UpdatedSurveyReceived;
+        public event Action<LoadChatResponse> SearchMessageReceived;
+        public event Action<Guid> MessageReactionDuplicateReceived;
 
         public ChatService(HubConnection connection) {
             _connection = connection;
             _connection.On<MessageResponse>("Message_created", (message) => ChatMessageReceived?.Invoke(message));
-            _connection.On<SurveyResponse>("ReceiveChatSurvey", (survey) => SurveyReceived?.Invoke(survey));
+            _connection.On<SurveyResponse>("Survey_created", (survey) => SurveyReceived?.Invoke(survey));
             _connection.On<RoomsListResponse>("Sending_rooms", (roomsList) => RoomsListReceived?.Invoke(roomsList));
+            _connection.On<LoadMessageResponse>("Load_message", (message) => SpecificMessageReceived?.Invoke(message));
+            _connection.On<LoadChatResponse>("Send_chat_history", (chatHistory) => ChatHistoryReceived?.Invoke(chatHistory));
+            _connection.On<LoadSurveyResponse>("Send_survey_history", (surveyHistory) => SurveyHistoryReceived?.Invoke(surveyHistory));
+            _connection.On<Guid>("Vote_duplicate", (surveyId) => SurveyVoteDuplicateReceived?.Invoke(surveyId));
+            _connection.On<SurveyResponse>("Survey_updated", (survey) => UpdatedSurveyReceived?.Invoke(survey));
+            _connection.On<LoadChatResponse>("Send_search", (searchChat) => SearchMessageReceived?.Invoke(searchChat));
+            _connection.On<Guid>("React_duplicate", (messageId) => MessageReactionDuplicateReceived?.Invoke(messageId));
         }
 
         public async Task Connect() {
@@ -42,8 +56,28 @@ namespace ComeX.WPF.Services {
             await _connection.SendAsync("SendChatSurveyVote", vote);
         }
 
-        public async Task GetRoomsList() {
-            await _connection.SendAsync("GetRoomsList");
+        public async Task GetRoomsList(RoomRequest request) {
+            await _connection.SendAsync("GetRoomsList", request);
+        }
+
+        public async Task LoadSpecificMessage(LoadMessageRequest request) {
+            await _connection.SendAsync("LoadSpecificMessage", request);
+        }
+
+        public async Task LoadChatHistory(LoadChatRequest request) {
+            await _connection.SendAsync("LoadChatHistory", request);
+        }
+
+        public async Task LoadSurveyHistory(LoadSurveyRequest request) {
+            await _connection.SendAsync("LoadSurveyHistory", request);
+        }
+
+        public async Task SearchMessage(SearchMessageRequest request) {
+            await _connection.SendAsync("SearchMessage", request);
+        }
+
+        public async Task AddReaction(ReactionMessage request) {
+            await _connection.SendAsync("AddReaction", request);
         }
     }
 }

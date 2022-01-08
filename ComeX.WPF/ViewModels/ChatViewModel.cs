@@ -277,7 +277,7 @@ namespace ComeX.WPF.ViewModels {
                     ServerDMs = serverDMs;
 
                     foreach (var serverDM in ServerDMs) {
-                        ServerClientModel newServer = new ServerClientModel(serverDM.Url);
+                        ServerClientModel newServer = new ServerClientModel(serverDM.Url, this);
                         newServer.Name = serverDM.Name;
                         Servers.Add(newServer);
                     }
@@ -367,9 +367,18 @@ namespace ComeX.WPF.ViewModels {
             try {
                 foreach (var server in Servers) {
                     server.LoginToServer(LoginDM);
+                    /*
                     server.Service.ChatMessageReceived += ChatService_ChatMessageReceived;
                     server.Service.SurveyReceived += ChatService_SurveyReceived;
                     server.Service.RoomsListReceived += ChatService_RoomsListReceived;
+
+                    server.Service.SpecificMessageReceived += 
+                    _connection.On<LoadChatResponse>("Send_chat_history", (chatHistory) => ChatHistoryReceived?.Invoke(chatHistory));
+                    _connection.On<LoadSurveyResponse>("Send_survey_history", (surveyHistory) => SurveyHistoryReceived?.Invoke(surveyHistory));
+                    _connection.On<Guid>("Vote_duplicate", (surveyId) => SurveyVoteDuplicateReceived?.Invoke(surveyId));
+                    _connection.On<SurveyResponse>("Survey_updated", (survey) => UpdatedSurveyReceived?.Invoke(survey));
+                    _connection.On<LoadChatResponse>("Send_search", (searchChat) => SearchMessageReceived?.Invoke(searchChat));
+                    _connection.On<Guid>("React_duplicate", (messageId) => MessageReactionDuplicateReceived?.Invoke(messageId));*/
                 }
             } catch (Exception e) {
                 ErrorMessage = "Could not connect to server";
@@ -378,7 +387,7 @@ namespace ComeX.WPF.ViewModels {
 
         //todo
         private async void GetRooms(ServerClientModel server) {
-            await server.Service.GetRoomsList();
+            //await server.Service.GetRoomsList();
 
             /*
             RoomsMessages = new Dictionary<RoomClientModel, ObservableCollection<BaseMessageViewModel>>();
@@ -393,23 +402,6 @@ namespace ComeX.WPF.ViewModels {
             CurrentRoomName = (string)obj;
             CurrentRoomMessages = new ObservableCollection<BaseMessageViewModel>();
             //CurrentRoomMessages = CurrentRoom.Value;
-        }
-
-        private void ChatService_ChatMessageReceived(MessageResponse message) {
-            AddMessage(message);
-        }
-
-        // fix
-        private void ChatService_SurveyReceived(SurveyResponse survey) {
-            CurrentRoomMessages.Add(new SurveyViewModel(survey, this));
-        }
-
-        // todo
-        private void ChatService_RoomsListReceived(RoomsListResponse response) {
-            foreach (var room in response.RoomsList) {
-
-                Rooms.Add(new RoomClientModel(room.RoomId, room.Name, room.IsArchived));
-            }
         }
     }
 }
