@@ -1,11 +1,11 @@
-﻿using ComeX.Server.DatabaseModels;
+﻿using ComeX.Lib.Common.ServerDAL.DatabaseModels;
 using SqlKata.Execution;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ComeX.Server.DAL
+namespace ComeX.Lib.Common.ServerDAL
 {
     public class Allowed_userRepository : ObjectRepository<Allowed_user>, IAllowed_userRepository
     {

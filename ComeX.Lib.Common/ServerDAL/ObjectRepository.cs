@@ -1,10 +1,10 @@
-﻿using ComeX.Server.DatabaseModels;
+﻿using ComeX.Lib.Common.ServerDAL.DatabaseModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ComeX.Server.DAL
+namespace ComeX.Lib.Common.ServerDAL
 {
     public class ObjectRepository<T> : Repository<T>, IObjectRepository<T> where T : IDbModel
     {

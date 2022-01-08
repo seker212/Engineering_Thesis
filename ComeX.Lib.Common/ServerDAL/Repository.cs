@@ -1,4 +1,4 @@
-﻿using ComeX.Server.DatabaseModels;
+﻿using ComeX.Lib.Common.ServerDAL.DatabaseModels;
 using Npgsql;
 using SqlKata;
 using SqlKata.Compilers;
@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ComeX.Server.DAL
+namespace ComeX.Lib.Common.ServerDAL
 {
     public abstract class Repository<T> : IDisposable, IRepository<T> where T : IDbModel
     {

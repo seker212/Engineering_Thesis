@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace ComeX.Server.DatabaseModels
+namespace ComeX.Lib.Common.ServerDAL.DatabaseModels
 {
     public class Room : IDbModel
     {
