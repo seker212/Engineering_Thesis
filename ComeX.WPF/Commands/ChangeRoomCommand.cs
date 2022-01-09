@@ -1,9 +1,11 @@
 ﻿using ComeX.Lib.Common.ServerCommunicationModels;
 using ComeX.WPF;
+using ComeX.WPF.MessageViewModels;
 using ComeX.WPF.Services;
 using ComeX.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,8 +30,9 @@ namespace ComeX.WPF.Commands {
         public async void Execute(object parameter) {
             try {
                 _chatViewModel.CurrentRoom = _roomViewModel;
-                // load messages
-                //await _chatViewModel.CurrentServer.Service.LoadChatHistory(new LoadChatRequest(_chatViewModel.LoginDM.Token, _roomViewModel.RoomId, DateTime.UtcNow.ToString(Consts.DATEFORMAT)));
+                _chatViewModel.CurrentRoomMessages = new ObservableCollection<BaseMessageViewModel>();
+
+                await _chatViewModel.CurrentServer.Service.LoadChatHistory(new LoadChatRequest(_chatViewModel.LoginDM.Token, _roomViewModel.RoomId, DateTime.UtcNow.ToString(Consts.DATEFORMAT)));
                 _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoom));
                 _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoomMessages));
             } catch (ArgumentException e) {

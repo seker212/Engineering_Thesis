@@ -94,6 +94,7 @@ namespace ComeX.WPF.ViewModels {
                 }
                 OnPropertyChanged(nameof(CurrentRoom));
                 OnPropertyChanged(nameof(CurrentRoomName));
+                OnPropertyChanged(nameof(CurrentRoomMessages));
                 OnPropertyChanged(nameof(SendMessageEnabled));
             }
         }

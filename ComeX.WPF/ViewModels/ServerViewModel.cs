@@ -91,9 +91,8 @@ namespace ComeX.WPF.ViewModels {
             // _connection.On<Guid>("React_duplicate", (messageId) => MessageReactionDuplicateReceived?.Invoke(messageId));
         }
 
-        // todo
         private void ChatService_ChatMessageReceived(MessageResponse message) {
-            // AddMessage(message);
+            _chatViewModel.AddMessage(message);
         }
 
         // fix

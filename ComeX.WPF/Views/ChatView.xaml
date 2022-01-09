@@ -178,7 +178,7 @@
                          CaretBrush="{StaticResource LightBlue1}"
                          Background="{StaticResource DarkBlue3}"
                          Text="{Binding SearchPhrase}"/>
-                <Button x:Name="SearchButton" />
+                <Button x:Name="SearchButton" Command="{Binding SearchCommand}"/>
                 </WrapPanel>
             <Grid Grid.Column="0" Grid.Row="1" x:Name="RoomMessagesGrid"
                   Background="{StaticResource DarkBlue3}">
