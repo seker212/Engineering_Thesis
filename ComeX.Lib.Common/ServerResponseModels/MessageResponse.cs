@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 namespace ComeX.Lib.Common.ServerResponseModels {
     public class MessageResponse {
         public MessageResponse() { }
-        public MessageResponse(Guid id, string username, string sendTime, Guid roomId, Guid parentId, string content, Dictionary<string, int> emojiList) {
+        public MessageResponse(Guid id, string username, string sendTime, Guid roomId, Nullable<Guid> parentId, string content, Dictionary<string, int> emojiList) {
             Id = id;
             Username = username;
             SendTime = sendTime;
@@ -27,7 +27,7 @@ namespace ComeX.Lib.Common.ServerResponseModels {
         [JsonProperty("RoomId")]
         public Guid RoomId { get; set; }
         [JsonProperty("ParentId")]
-        public Guid ParentId { get; set; }
+        public Nullable<Guid> ParentId { get; set; }
         [JsonProperty("Content")]
         public string Content { get; set; }
         [JsonProperty("EmojiList")]

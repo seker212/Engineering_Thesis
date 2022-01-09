@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 
 namespace ComeX.Lib.Common.ServerCommunicationModels {
     public class ChatMessage {
-        public ChatMessage(string token, Guid roomId, Guid parentId, string content) {
+        public ChatMessage(string token, Guid roomId, Nullable<Guid> parentId, string content) {
             Token = token;
             RoomId = roomId;
             ParentId = parentId;
@@ -19,7 +19,7 @@ namespace ComeX.Lib.Common.ServerCommunicationModels {
         [JsonProperty("RoomId")]
         public Guid RoomId { get; set; }
         [JsonProperty("ParentId")]
-        public Guid ParentId { get; set; }
+        public Nullable<Guid> ParentId { get; set; }
         [JsonProperty("Content")]
         public string Content { get; set; }
     }

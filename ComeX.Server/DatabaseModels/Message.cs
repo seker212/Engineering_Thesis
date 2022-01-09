@@ -9,7 +9,7 @@ namespace ComeX.Server.DatabaseModels
     {
         private static readonly string[] _staticColumnNames = new string[] { "id", "authorId", "hasFile", "roomId", "sendTime", "parentId", "content" };
 
-        public Message(Guid id, Guid authorId, bool hasFile, Guid roomId, string sendTime, Guid parentId, string content)
+        public Message(Guid id, Guid authorId, bool hasFile, Guid roomId, string sendTime, Nullable<Guid> parentId, string content)
         {
             Id = id;
             AuthorId = authorId;
@@ -25,7 +25,7 @@ namespace ComeX.Server.DatabaseModels
         public bool HasFile { get; set; }
         public Guid RoomId { get; set; }
         public string SendTime { get; set; }
-        public Guid ParentId { get; set; }
+        public Nullable<Guid> ParentId { get; set; }
         public string Content { get; set; }
 
         public object[] Data => new object[] { Id, AuthorId, HasFile, RoomId, SendTime, ParentId, Content };

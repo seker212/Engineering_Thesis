@@ -23,7 +23,7 @@ namespace ComeX.Server.Hubs
         AnswerRepository ansRepo;
         VoteRepository votRepo;
 
-        readonly string dateFormat = "yyyy-mm-dd hh:mm:ss";
+        readonly string dateFormat = "yyyy-MM-dd hh:mm:ss";
 
         public ComeXHub(ILoginManager loginManager, IConnectionCache connectionCache)
         {
@@ -41,7 +41,6 @@ namespace ComeX.Server.Hubs
         // logowanie do serwera
         public async Task SendLoginMessage(LoginMessage msg)
         {
-            Console.WriteLine("Witam");
             //Klient wysyła mi tu token i ja sobie pobieram dane o nim
             _loginManager.Login(Context.ConnectionId, msg.Token);
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
