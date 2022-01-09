@@ -27,12 +27,12 @@ namespace ComeX.WPF.Commands {
             try {
                 string content = _viewModel.Content;
                 if (string.IsNullOrWhiteSpace(content)) throw new ArgumentException("Empty message");
-                ChatMessage message = new ChatMessage(_viewModel.LoginDM.Token, Guid.Empty, _viewModel.ReplyParentId, _viewModel.Content);
+                ChatMessage message = new ChatMessage(_viewModel.LoginDM.Token, _viewModel.CurrentRoom.RoomId, _viewModel.ReplyParentId, _viewModel.Content);
                 
                 await _viewModel.CurrentServer.Service.SendChatMessage(message);
                 _viewModel.ErrorMessage = string.Empty;
                 _viewModel.Content = string.Empty;
-                _viewModel.ReplyParentId = Guid.Empty;
+                _viewModel.ReplyParentId = null;
             } catch (ArgumentException e) {
                 _viewModel.ErrorMessage = e.Message;
             } catch (Exception e) { // TODO handling server problems

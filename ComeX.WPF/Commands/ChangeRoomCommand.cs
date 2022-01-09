@@ -1,4 +1,6 @@
-﻿using ComeX.WPF.Services;
+﻿using ComeX.Lib.Common.ServerCommunicationModels;
+using ComeX.WPF;
+using ComeX.WPF.Services;
 using ComeX.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -9,12 +11,12 @@ using System.Windows.Input;
 
 namespace ComeX.WPF.Commands {
     public class ChangeRoomCommand : ICommand {
-        private readonly ChatViewModel _viewModel;
-        private readonly ChatService _service;
+        private readonly ChatViewModel _chatViewModel;
+        private readonly RoomViewModel _roomViewModel;
 
-        public ChangeRoomCommand(ChatViewModel viewModel, ChatService service) {
-            _viewModel = viewModel;
-            _service = service;
+        public ChangeRoomCommand(ChatViewModel chatViewModel, RoomViewModel roomViewModel) {
+            _chatViewModel = chatViewModel;
+            _roomViewModel = roomViewModel;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -23,13 +25,17 @@ namespace ComeX.WPF.Commands {
             return true;
         }
 
-        public void Execute(object parameter) {
+        public async void Execute(object parameter) {
             try {
-                _viewModel.CurrentRoom = _viewModel.Rooms.First();
+                _chatViewModel.CurrentRoom = _roomViewModel;
+                // load messages
+                //await _chatViewModel.CurrentServer.Service.LoadChatHistory(new LoadChatRequest(_chatViewModel.LoginDM.Token, _roomViewModel.RoomId, DateTime.UtcNow.ToString(Consts.DATEFORMAT)));
+                _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoom));
+                _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoomMessages));
             } catch (ArgumentException e) {
-                _viewModel.ErrorMessage = e.Message;
+                _chatViewModel.ErrorMessage = e.Message;
             } catch (Exception e) {
-                _viewModel.ErrorMessage = "Unable to change room.";
+                _chatViewModel.ErrorMessage = "Unable to change room.";
             }
         }
     }

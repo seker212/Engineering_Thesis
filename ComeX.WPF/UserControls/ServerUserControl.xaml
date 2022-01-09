@@ -42,6 +42,7 @@
         <Ellipse x:Name="NotifyServerEllipse" Grid.Column="0" Style="{StaticResource DefaultEllipseStyle}"/>
         <Button x:Name="ServerNameButton" Grid.Column="1"
                 Style="{StaticResource RoomNameButtonStyle}"
-                Content="{Binding}"/>
+                Content="{Binding Name}"
+                Command="{Binding ChangeServerCommand}"/>
     </Grid>
 </UserControl>

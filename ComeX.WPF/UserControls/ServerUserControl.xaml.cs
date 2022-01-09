@@ -22,7 +22,6 @@ namespace ComeX.WPF.UserControls {
             InitializeComponent();
         }
 
-
         public string RoomName { get; set; }
 
         public void SetNewMessage() {

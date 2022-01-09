@@ -1,4 +1,5 @@
 ﻿using ComeX.Lib.Common.ServerResponseModels;
+using ComeX.WPF.Commands;
 using ComeX.WPF.MessageViewModels;
 using ComeX.WPF.ViewModels;
 using System;
@@ -7,20 +8,33 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 
-namespace ComeX.WPF.Models {
-    public class RoomClientModel {
+namespace ComeX.WPF.ViewModels {
+    public class RoomViewModel {
         public Guid RoomId { get; set; }
-        public string Name { get; set; }
         public bool IsArchived { get; set; }
+        private string _name;
+        public string Name {
+            get {
+                return _name;
+            }
+            set {
+                _name = value;
+            }
+        }
         public ObservableCollection<BaseMessageViewModel> MessageList { get; set; }
 
-        public RoomClientModel() { }
+        public ICommand ChangeRoomCommand { get; }
 
-        public RoomClientModel(Guid roomId, string name, bool isArchived) {
+        public RoomViewModel() { }
+
+        public RoomViewModel(ChatViewModel chatViewModel, Guid roomId, string name, bool isArchived) {
             RoomId = roomId;
             Name = name;
             IsArchived = isArchived;
+
+            ChangeRoomCommand = new ChangeRoomCommand(chatViewModel, this);
         }
 
         public void AddMessages(List<MessageResponse> messageResponse, ChatViewModel chatViewModel) {

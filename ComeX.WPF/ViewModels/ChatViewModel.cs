@@ -41,78 +41,66 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        private ObservableCollection<ServerClientModel> _servers;
-        public ObservableCollection<ServerClientModel> Servers {
+        private ObservableCollection<ServerViewModel> _servers;
+        public ObservableCollection<ServerViewModel> Servers {
             get {
                 return _servers;
             }
             set {
                 _servers = value;
                 OnPropertyChanged(nameof(Servers));
-                OnPropertyChanged(nameof(ServersNames));
             }
         }
 
-        private ServerClientModel _currentServer;
-        public ServerClientModel CurrentServer {
+        private ServerViewModel _currentServer;
+        public ServerViewModel CurrentServer {
             get {
                 return _currentServer;
             }
             set {
                 _currentServer = value;
+                Rooms = _currentServer.RoomList;
+                CurrentRoom = null;
+                OnPropertyChanged(nameof(CurrentServer));
+                OnPropertyChanged(nameof(Rooms));
             }
         }
 
-        public ObservableCollection<string> ServersNames {
-            get {
-                ObservableCollection<string> names = new ObservableCollection<string>();
-                foreach (var server in Servers)
-                    names.Add(server.Name);
-                return names;
-            }
-        }
-
-        private List<RoomClientModel> _rooms;
-        public List<RoomClientModel> Rooms {
+        private List<RoomViewModel> _rooms;
+        public List<RoomViewModel> Rooms {
             get {
                 return _rooms;
             }
             set {
                 _rooms = value;
+                CurrentRoom = null;
                 OnPropertyChanged(nameof(Rooms));
+                OnPropertyChanged(nameof(CurrentRoom));
             }
         }
 
-        private RoomClientModel _currentRoom;
-        public RoomClientModel CurrentRoom {
+        private RoomViewModel _currentRoom;
+        public RoomViewModel CurrentRoom {
             get {
                 return _currentRoom;
             }
             set {
                 _currentRoom = value;
+                if (value == null) {
+                    CurrentRoomMessages = new ObservableCollection<BaseMessageViewModel>();
+                } else {
+                    CurrentRoomMessages = _currentRoom.MessageList;
+                    SendMessageEnabled = true;
+                }
+                OnPropertyChanged(nameof(CurrentRoom));
+                OnPropertyChanged(nameof(CurrentRoomName));
+                OnPropertyChanged(nameof(SendMessageEnabled));
             }
         }
 
-        private string _currentRoomName;
         public string CurrentRoomName {
             get {
-                return _currentRoomName;
-            }
-            set {
-                _currentRoomName = value;
-                OnPropertyChanged(nameof(CurrentRoomName));
-            }
-        }
-
-        public List<string> RoomsNames {
-            get {
-                List<string> names = new List<string>();
-                // todo
-                /*
-                foreach (var room in CurrentServer.RoomList)
-                    names.Add(room.Name);
-                */
-                return names;
+                return CurrentRoom == null ? string.Empty : CurrentRoom.Name;
             }
         }
 
@@ -160,14 +148,14 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        private Guid _replyParentId;
-        public Guid ReplyParentId {
+        private Nullable<Guid> _replyParentId;
+        public Nullable<Guid> ReplyParentId {
             get {
                 return _replyParentId;
             }
             set {
                 _replyParentId = value;
-                if (value == Guid.Empty) {
+                if (value == null) {
                     ReplyParentAuthor = string.Empty;
                     ReplyParentContent = string.Empty;
                     ReplyParentVisibility = Visibility.Collapsed;
@@ -222,6 +210,16 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private bool _sendMessageEnabled;
+        public bool SendMessageEnabled {
+            get {
+                return _sendMessageEnabled;
+            }
+            set {
+                _sendMessageEnabled = value;
+            }
+        }
+
         private string _errorMessage = string.Empty;
         public string ErrorMessage {
             get {
@@ -266,9 +264,10 @@ namespace ComeX.WPF.ViewModels {
 
         public ChatViewModel(LoginService loginService, LoginDataModel loginDM, List<ServerDataModel> serverDMs) {
             ReplyParentVisibility = Visibility.Collapsed;
+            SendMessageEnabled = false;
 
             ServerDMs = new List<ServerDataModel>();
-            Servers = new ObservableCollection<ServerClientModel>();
+            Servers = new ObservableCollection<ServerViewModel>();
 
             if (loginDM != null) {
                 LoginDM = loginDM;
@@ -277,53 +276,17 @@ namespace ComeX.WPF.ViewModels {
                     ServerDMs = serverDMs;
 
                     foreach (var serverDM in ServerDMs) {
-                        ServerClientModel newServer = new ServerClientModel(serverDM.Url, this);
-                        newServer.Name = serverDM.Name;
+                        ServerViewModel newServer = new ServerViewModel(serverDM.Url, serverDM.Name, this);
                         Servers.Add(newServer);
                     }
                 }
             }
 
-            ConnectToServers();
-
             SendChatMessageCommand = new SendChatMessageCommand(this);
             CreateSurveyCommand = new CreateSurveyCommand(this);
-            GetRoomsListCommand = new GetRoomsListCommand(this);
             GetServersListCommand = new GetServersListCommand(this, loginService);
-            // ChangeRoomCommand = new ChangeRoomCommand(this, chatService);        // TODO
             OpenSettingsCommand = new OpenSettingsCommand(this, loginService);
             UnsetReplyCommand = new UnsetReplyCommand(this);
-
-            Mediator.Subscribe("ChangeRoom", ChangeRoom);
-
-            foreach (var server in Servers)
-                GetRooms(server);
-
-            if (Servers.Count > 0)
-                CurrentServer = Servers.First();
-
-            /*
-            CurrentRoom = RoomsMessages.First();
-            CurrentRoomName = CurrentRoom.Key.Name;
-            CurrentRoomMessages = CurrentRoom.Value;
-            */
-
-            CurrentRoomMessages = new ObservableCollection<BaseMessageViewModel>();
-
-            Guid g = Guid.NewGuid();
-            MessageResponse m1 = new MessageResponse(g, "Anonim", "Today", Guid.Empty, Guid.Empty, "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.", new Dictionary<string, int>());
-            MessageResponse m2 = new MessageResponse(Guid.NewGuid(), "Anonim2", "Today", Guid.Empty, Guid.Empty, "Test message 123", new Dictionary<string, int>());
-            MessageResponse m3 = new MessageResponse(Guid.NewGuid(), "Anonim3", "Today", Guid.Empty, g, "Elo Witam", new Dictionary<string, int>());
-
-            List<string> ans = new List<string>(new string[] { "Yes", "No", "Perhaps" });
-            SurveyMessage s1 = new SurveyMessage("token", Guid.Empty, "Do you like pizza", false, ans);
-
-            AddMessage(m1);
-            AddMessage(m2);
-            AddMessage(m3);
-            AddSurvey(s1);
-
-            // todo load recent messages
         }
 
         // fix - add not to CurrentRoomMessages
@@ -361,47 +324,6 @@ namespace ComeX.WPF.ViewModels {
         public static ChatViewModel CreatedConnectedModel(LoginService loginService, LoginDataModel loginDM, List<ServerDataModel> serverDMs) {
             ChatViewModel viewModel = new ChatViewModel(loginService, loginDM, serverDMs);
             return viewModel;
-        }
-
-        public void ConnectToServers() {
-            try {
-                foreach (var server in Servers) {
-                    server.LoginToServer(LoginDM);
-                    /*
-                    server.Service.ChatMessageReceived += ChatService_ChatMessageReceived;
-                    server.Service.SurveyReceived += ChatService_SurveyReceived;
-                    server.Service.RoomsListReceived += ChatService_RoomsListReceived;
-
-                    server.Service.SpecificMessageReceived += 
-                    _connection.On<LoadChatResponse>("Send_chat_history", (chatHistory) => ChatHistoryReceived?.Invoke(chatHistory));
-                    _connection.On<LoadSurveyResponse>("Send_survey_history", (surveyHistory) => SurveyHistoryReceived?.Invoke(surveyHistory));
-                    _connection.On<Guid>("Vote_duplicate", (surveyId) => SurveyVoteDuplicateReceived?.Invoke(surveyId));
-                    _connection.On<SurveyResponse>("Survey_updated", (survey) => UpdatedSurveyReceived?.Invoke(survey));
-                    _connection.On<LoadChatResponse>("Send_search", (searchChat) => SearchMessageReceived?.Invoke(searchChat));
-                    _connection.On<Guid>("React_duplicate", (messageId) => MessageReactionDuplicateReceived?.Invoke(messageId));*/
-                }
-            } catch (Exception e) {
-                ErrorMessage = "Could not connect to server";
-            }
-        }
-
-        //todo
-        private async void GetRooms(ServerClientModel server) {
-            //await server.Service.GetRoomsList();
-
-            /*
-            RoomsMessages = new Dictionary<RoomClientModel, ObservableCollection<BaseMessageViewModel>>();
-            RoomsMessages.Add(new RoomClientModel(Guid.Empty, "Room1", false), new ObservableCollection<BaseMessageViewModel>());
-            RoomsMessages.Add(new RoomClientModel(Guid.Empty, "Room2", false), new ObservableCollection<BaseMessageViewModel>());
-            RoomsMessages.Add(new RoomClientModel(Guid.Empty, "Room3", false), new ObservableCollection<BaseMessageViewModel>());
-            */
-        }
-
-        private void ChangeRoom(object obj) {
-            CurrentRoom = Rooms.First(o => o.Name == (string)obj);
-            CurrentRoomName = (string)obj;
-            CurrentRoomMessages = new ObservableCollection<BaseMessageViewModel>();
-            //CurrentRoomMessages = CurrentRoom.Value;
         }
     }
 }

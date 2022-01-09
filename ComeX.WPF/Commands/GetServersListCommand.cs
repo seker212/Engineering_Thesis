@@ -32,13 +32,10 @@ namespace ComeX.WPF.Commands {
                 foreach (var serverDM in serverDataModels) {
                     if (!_viewModel.ServerDMs.Any(o => o.Url == serverDM.Url)) {
                         _viewModel.ServerDMs.Add(serverDM);
-                        ServerClientModel newServer = new ServerClientModel(serverDM.Url);
-                        newServer.Name = serverDM.Name;
+                        ServerViewModel newServer = new ServerViewModel(serverDM.Url, serverDM.Name, _viewModel);
                         _viewModel.Servers.Add(newServer);
                     }
                 }
-                _viewModel.OnPropertyChanged(nameof(_viewModel.ServersNames));
-                _viewModel.ConnectToServers();
 
             } catch (Exception e) {
                 _viewModel.ErrorMessage = "Server list refresh failed";

@@ -44,7 +44,7 @@
         <Ellipse x:Name="NotifyRoomEllipse" Grid.Column="0" Style="{StaticResource DefaultEllipseStyle}"/>
         <Button x:Name="RoomNameButton" Grid.Column="1"
                 Style="{StaticResource RoomNameButtonStyle}"
-                Content="{Binding}"
-                Command="{Binding ChangeRoomCommand, ElementName=RoomUC}"/>
+                Content="{Binding Name}"
+                Command="{Binding ChangeRoomCommand}"/>
     </Grid>
 </UserControl>

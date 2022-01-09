@@ -1,6 +1,4 @@
-﻿using ComeX.Lib.Common.ServerCommunicationModels;
-using ComeX.Lib.Common.ServerResponseModels;
-using ComeX.WPF.Services;
+﻿using ComeX.WPF.Models;
 using ComeX.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -10,12 +8,12 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ComeX.WPF.Commands {
-    public class GetRoomsListCommand : ICommand {
-        private readonly ChatViewModel _viewModel;
+    public class ChangeServerCommand : ICommand {
+        private readonly ChatViewModel _chatViewModel;
         private readonly ServerViewModel _serverViewModel;
 
-        public GetRoomsListCommand(ChatViewModel viewModel, ServerViewModel serverViewModel) {
-            _viewModel = viewModel;
+        public ChangeServerCommand(ChatViewModel chatViewModel, ServerViewModel serverViewModel) {
+            _chatViewModel = chatViewModel;
             _serverViewModel = serverViewModel;
         }
 
@@ -27,11 +25,12 @@ namespace ComeX.WPF.Commands {
 
         public async void Execute(object parameter) {
             try {
-                await _serverViewModel.Service.SentRoomRequest(new RoomRequest(_viewModel.LoginDM.Token));
+                _chatViewModel.CurrentServer = _serverViewModel;
+
             } catch (ArgumentException e) {
-                _viewModel.ErrorMessage = e.Message;
+                _chatViewModel.ErrorMessage = e.Message;
             } catch (Exception e) { // TODO handling server problems
-                _viewModel.ErrorMessage = "Unable to get rooms.";
+                _chatViewModel.ErrorMessage = "Unable to change server.";
             }
         }
     }

@@ -23,7 +23,7 @@ namespace ComeX.WPF.Commands {
 
         public async void Execute(object parameter) {
             try {
-                _viewModel.ReplyParentId = Guid.Empty;
+                _viewModel.ReplyParentId = null;
                 _viewModel.ReplyParentAuthor = string.Empty;
                 _viewModel.ReplyParentContent = string.Empty;
                 _viewModel.ReplyParentVisibility = Visibility.Collapsed;

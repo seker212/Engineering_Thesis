@@ -56,8 +56,8 @@ namespace ComeX.WPF.Services {
             await _connection.SendAsync("SendChatSurveyVote", vote);
         }
 
-        public async Task GetRoomsList(RoomRequest request) {
-            await _connection.SendAsync("GetRoomsList", request);
+        public async Task SentRoomRequest(RoomRequest request) {
+            await _connection.SendAsync("SentRoomRequest", request);
         }
 
         public async Task LoadSpecificMessage(LoadMessageRequest request) {
