@@ -30,9 +30,9 @@ namespace ComeX.WPF.Commands {
         public async void Execute(object parameter) {
             try {
                 _chatViewModel.CurrentRoom = _roomViewModel;
-                _chatViewModel.CurrentRoomMessages = new ObservableCollection<BaseMessageViewModel>();
+                _chatViewModel.CurrentRoomMessages = _roomViewModel.MessageList;
 
-                await _chatViewModel.CurrentServer.Service.LoadChatHistory(new LoadChatRequest(_chatViewModel.LoginDM.Token, _roomViewModel.RoomId, DateTime.UtcNow.ToString(Consts.DATEFORMAT)));
+                await _chatViewModel.CurrentServer.Service.LoadChatHistory(new LoadChatRequest(_chatViewModel.LoginDM.Token, _roomViewModel.RoomId, DateTime.Now));
                 _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoom));
                 _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoomMessages));
             } catch (ArgumentException e) {

@@ -92,7 +92,9 @@ namespace ComeX.WPF.ViewModels {
         }
 
         private void ChatService_ChatMessageReceived(MessageResponse message) {
-            _chatViewModel.AddMessage(message);
+            RoomViewModel room = GetRoomById(message.RoomId);
+            room.AddMessage(message, _chatViewModel);
+            //_chatViewModel.AddMessage(message);
         }
 
         // fix
@@ -100,7 +102,6 @@ namespace ComeX.WPF.ViewModels {
             //CurrentRoomMessages.Add(new SurveyViewModel(survey, this));
         }
 
-        // todo
         private void ChatService_RoomsListReceived(RoomsListResponse response) {
             foreach (var room in response.RoomsList) {
                 RoomList.Add(new RoomViewModel(_chatViewModel, room.RoomId, room.Name, room.IsArchived));

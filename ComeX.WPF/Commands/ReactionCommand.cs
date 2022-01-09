@@ -34,7 +34,7 @@ namespace ComeX.WPF.Commands {
                     newReaction.Token = _chatViewModel.LoginDM.Token;
                     newReaction.MessageId = _msgViewModel.Message.Id;
 
-                    // await _chatViewModel.CurrentServer.Service.SendChatSurvey(newReaction);
+                    await _chatViewModel.CurrentServer.Service.AddReaction(newReaction);
                     _chatViewModel.ErrorMessage = string.Empty;
                 }
             } catch (ArgumentException e) {
@@ -48,13 +48,14 @@ namespace ComeX.WPF.Commands {
             ReactionMessage newReaction;
 
             _reactionView = new ReactionWindow();
-            _reactionView.DataContext = new ReactionViewModel(_chatViewModel);
+            ReactionViewModel reactionViewModel = new ReactionViewModel(_chatViewModel);
+            _reactionView.DataContext = reactionViewModel;
             _reactionView.Owner = Application.Current.MainWindow;
             _reactionView.WindowStartupLocation = WindowStartupLocation.CenterOwner;
             //Application.Current.MainWindow.IsEnabled = false;
 
             _reactionView.ShowDialog();
-            newReaction = _reactionView.Reaction;
+            newReaction = reactionViewModel.Reaction;
 
             return newReaction;
         }

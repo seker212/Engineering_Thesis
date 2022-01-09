@@ -1,6 +1,7 @@
 ﻿using ComeX.Lib.Common.ServerCommunicationModels;
 using ComeX.Lib.Common.ServerResponseModels;
 using ComeX.WPF.Commands;
+using ComeX.WPF.Models;
 using ComeX.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -74,6 +75,17 @@ namespace ComeX.WPF.MessageViewModels {
             }
         }
 
+        private List<ReactionMessageModel> _reactionsList;
+        public List<ReactionMessageModel> ReactionList {
+            get {
+                return _reactionsList;
+            }
+            set {
+                _reactionsList = value;
+                OnPropertyChanged(nameof(ReactionList));
+            }
+        }
+
         private Visibility _replyParentVisibility;
         public Visibility ReplyParentVisibility {
             get {
@@ -94,6 +106,13 @@ namespace ComeX.WPF.MessageViewModels {
 
             _chatVM = chatVM;
             Message = message;
+
+            ReactionList = new List<ReactionMessageModel>();
+ 
+            foreach (var react in Message.EmojiList) {
+                string filename = "/Resources/Images/Emojis/" + react.Key + ".png";
+                ReactionList.Add(new ReactionMessageModel(react.Key, filename, react.Value));
+            }
 
             if (parentMessage != null) {
                 ReplyParentVisibility = Visibility.Visible;

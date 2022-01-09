@@ -37,7 +37,8 @@
                         <StackPanel Orientation="Horizontal">
                             <Button Content="{Binding Name}" Style="{StaticResource DefaultButtonStyle}"
                                 Height="40"
-                                Width="40">
+                                Width="40"
+                                Click="AddReactionButtonHandler">
                                 <Button.Background>
                                     <ImageBrush ImageSource="{Binding Filename}"/>
                                 </Button.Background>

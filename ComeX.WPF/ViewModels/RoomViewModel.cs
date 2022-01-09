@@ -33,6 +33,7 @@ namespace ComeX.WPF.ViewModels {
             RoomId = roomId;
             Name = name;
             IsArchived = isArchived;
+            MessageList = new ObservableCollection<BaseMessageViewModel>();
 
             ChangeRoomCommand = new ChangeRoomCommand(chatViewModel, this);
         }
@@ -65,6 +66,8 @@ namespace ComeX.WPF.ViewModels {
                 MessageList[MessageList.IndexOf(oldMessage)] = newMessage;
                 SortMessageList();
             }
+
+            chatViewModel.OnPropertyChanged(nameof(chatViewModel.CurrentRoomMessages));
         }
 
         public void AddSurvey(SurveyResponse surveyResponse, ChatViewModel chatViewModel) {
@@ -85,7 +88,9 @@ namespace ComeX.WPF.ViewModels {
         }
 
         public ChatMessageViewModel GetMessageById(Guid id) {
-            return (ChatMessageViewModel)MessageList.FirstOrDefault(o => ((ChatMessageViewModel)o).Message.Id == id);
+            if (MessageList == null || MessageList.Count == 0) return null;
+            var msg = (ChatMessageViewModel)MessageList.FirstOrDefault(o => ((ChatMessageViewModel)o).Message.Id == id);
+            return msg;
         }
 
         public SurveyViewModel GetSurveyById(Guid id) {
