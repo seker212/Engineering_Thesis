@@ -115,6 +115,50 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private ObservableCollection<ChatMessageViewModel> _searchMessages;
+        public ObservableCollection<ChatMessageViewModel> SearchMessages {
+            get {
+                return _searchMessages;
+            }
+            set {
+                _searchMessages = value;
+                OnPropertyChanged(nameof(SearchMessages));
+            }
+        }
+
+        private string _searchPhrase;
+        public string SearchPhrase {
+            get {
+                return _searchPhrase;
+            }
+            set {
+                _searchPhrase = value;
+                OnPropertyChanged(nameof(SearchPhrase));
+            }
+        }
+
+        private string _searchPhraseLabel;
+        public string SearchPhraseLabel {
+            get {
+                return _searchPhraseLabel;
+            }
+            set {
+                _searchPhraseLabel = value;
+                OnPropertyChanged(nameof(SearchPhraseLabel));
+            }
+        }
+
+        private string _searchPhraseRoom;
+        public string SearchPhraseRoom {
+            get {
+                return _searchPhraseRoom;
+            }
+            set {
+                _searchPhraseRoom = value;
+                OnPropertyChanged(nameof(SearchPhraseRoom));
+            }
+        }
+
         private string _author;
         public string Author {
             get {
@@ -210,6 +254,12 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        public int SearchMaxLen {
+            get {
+                return Consts.SEARCH_MAXLEN;
+            }
+        }
+
         private bool _sendMessageEnabled;
         public bool SendMessageEnabled {
             get {
@@ -252,6 +302,7 @@ namespace ComeX.WPF.ViewModels {
         public ICommand ChangeRoomCommand { get; }
         public ICommand OpenSettingsCommand { get; }
         public ICommand UnsetReplyCommand { get; }
+        public ICommand SearchCommand { get; }
 
         private ICommand _changeViewToLoginCommand;
         public ICommand ChangeViewToLoginCommand {
@@ -287,12 +338,13 @@ namespace ComeX.WPF.ViewModels {
             GetServersListCommand = new GetServersListCommand(this, loginService);
             OpenSettingsCommand = new OpenSettingsCommand(this, loginService);
             UnsetReplyCommand = new UnsetReplyCommand(this);
+            SearchCommand = new SearchCommand(this);
         }
 
         // fix - add not to CurrentRoomMessages
         public void AddMessage (MessageResponse msg) {
             ChatMessageViewModel newMsgVM;
-            if (msg.ParentId != Guid.Empty) {
+            if (msg.ParentId != null) {
                 MessageResponse parentMsg = new MessageResponse();
                 foreach (var msgVM in CurrentRoomMessages) {
                     if (msgVM.GetType()==typeof(ChatMessageViewModel) && ((ChatMessageViewModel)msgVM).Message.Id == msg.ParentId) {
@@ -303,6 +355,21 @@ namespace ComeX.WPF.ViewModels {
                 newMsgVM = new ChatMessageViewModel(msg, this, parentMsg);
             } else newMsgVM = new ChatMessageViewModel(msg, this);
             CurrentRoomMessages.Add(newMsgVM);
+        }
+
+        public void AddSearchMessage(MessageResponse msg) {
+            ChatMessageViewModel newMsgVM;
+            if (msg.ParentId != null) {
+                MessageResponse parentMsg = new MessageResponse();
+                foreach (var msgVM in SearchMessages) {
+                    if (msgVM.Message.Id == msg.ParentId) {
+                        parentMsg = msgVM.Message;
+                    }
+                }
+                // if parentMsg not found - get parentMsg by msg.parentId from server
+                newMsgVM = new ChatMessageViewModel(msg, this, parentMsg);
+            } else newMsgVM = new ChatMessageViewModel(msg, this);
+            SearchMessages.Add(newMsgVM);
         }
 
         // temp
@@ -321,7 +388,7 @@ namespace ComeX.WPF.ViewModels {
             CurrentRoomMessages.Add(new SurveyViewModel(newSurvey, this));
         }
 
-        public static ChatViewModel CreatedConnectedModel(LoginService loginService, LoginDataModel loginDM, List<ServerDataModel> serverDMs) {
+            public static ChatViewModel CreatedConnectedModel(LoginService loginService, LoginDataModel loginDM, List<ServerDataModel> serverDMs) {
             ChatViewModel viewModel = new ChatViewModel(loginService, loginDM, serverDMs);
             return viewModel;
         }

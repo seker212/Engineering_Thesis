@@ -30,7 +30,7 @@
                 <ColumnDefinition MinWidth="360" Width="*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
-            <Grid x:Name="ServersUserGrid"
+            <Grid x:Name="ServersUserGrid" Grid.Column="0"
                   Width="100"
                   Background="{StaticResource DarkBlue3}">
                 <Grid.RowDefinitions>
@@ -164,7 +164,21 @@
                             <Setter Property="VerticalAlignment" Value="Center" />
                         </Style>
                     </WrapPanel.Resources>
-                    <Button Content="+" />
+                <TextBox x:Name="SearchTextBox"
+                         Template="{StaticResource BorderTextBoxTemplate}"
+                         BorderThickness="2"
+                         BorderBrush="{StaticResource DarkBlue2}"
+                         Height="40"
+                         Width="120"
+                         FontSize="16"
+                         Padding="5,0,0,0"
+                         VerticalContentAlignment="Center"
+                         MaxLength="{Binding SearchMaxLen}"
+                         Foreground="{StaticResource LightBlue1}"
+                         CaretBrush="{StaticResource LightBlue1}"
+                         Background="{StaticResource DarkBlue3}"
+                         Text="{Binding SearchPhrase}"/>
+                <Button x:Name="SearchButton" />
                 </WrapPanel>
             <Grid Grid.Column="0" Grid.Row="1" x:Name="RoomMessagesGrid"
                   Background="{StaticResource DarkBlue3}">
@@ -270,9 +284,85 @@
                     </Grid>
                 </Grid>
             </Grid>
-                <WrapPanel Grid.Column="1" Grid.Row="1" x:Name="SearchWrapP" Background="{StaticResource DarkBlue1}">
+            <Rectangle Grid.Column="1" Grid.Row="1" Fill="{StaticResource DarkBlue1}" />
+            <Grid Grid.Column="1" Grid.Row="1" x:Name="SearchGrid" Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="70"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid x:Name="SearchTopGrid" Grid.Row="0" Width="150">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Button x:Name="CloseSearchButton" Grid.Row="0"
+                        Template="{StaticResource RoundedButtonTemplate}"
+                        Height="20"
+                        Width="20"
+                        HorizontalAlignment="Right" />
 
-                </WrapPanel>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="SearchPhraseLabel" Grid.Column="0"
+                           Foreground="{StaticResource LightBlue2}"
+                           FontSize="12"
+                           Content="Results for: "/>
+                        <Label x:Name="SearchPhraseContent"
+                           Foreground="{StaticResource LightBlue2}"
+                           FontSize="12"
+                           Content="{Binding SearchPhraseLabel}"/>
+                    </Grid>
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Label x:Name="SearchRoomLabel" Grid.Column="0"
+                           Foreground="{StaticResource LightBlue2}"
+                           FontSize="12"
+                           Content="in room: "/>
+                        <Label x:Name="SearchRoomContent"
+                           Foreground="{StaticResource LightBlue2}"
+                           FontSize="12"
+                           Content="{Binding SearchPhraseRoom}"/>
+                    </Grid>
+                </Grid>
+                <WrapPanel Grid.Row="1" x:Name="SearchWrapP" Background="{StaticResource DarkBlue1}" >
+                    <ListView x:Name="SearchListView"
+                          Margin="5"                   
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          ItemsSource="{Binding SearchMessages}"
+                          Background="{StaticResource DarkBlue1}"
+                          BorderBrush="{x:Null}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel x:Name="SearchMessagesWrapP" Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.Resources>
+                        <DataTemplate DataType="{x:Type mvm:ChatMessageViewModel}">
+                            <uc:MessageUserControl/>
+                        </DataTemplate>
+                    </ListView.Resources>
+                </ListView>
+
+            </WrapPanel>
             </Grid>
+        </Grid>
         </Grid>
 </UserControl>

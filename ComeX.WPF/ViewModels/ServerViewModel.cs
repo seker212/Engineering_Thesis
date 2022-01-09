@@ -87,7 +87,7 @@ namespace ComeX.WPF.ViewModels {
             Service.SurveyHistoryReceived += ChatService_SurveyHistoryReceived;
             // _connection.On<Guid>("Vote_duplicate", (surveyId) => SurveyVoteDuplicateReceived?.Invoke(surveyId));
             Service.UpdatedSurveyReceived += ChatService_UpdatedSurveyReceived;
-            // _connection.On<LoadChatResponse>("Send_search", (searchChat) => SearchMessageReceived?.Invoke(searchChat));
+            Service.SearchMessageReceived += ChatService_SearchMessageReceived;
             // _connection.On<Guid>("React_duplicate", (messageId) => MessageReactionDuplicateReceived?.Invoke(messageId));
         }
 
@@ -128,6 +128,12 @@ namespace ComeX.WPF.ViewModels {
         private void ChatService_UpdatedSurveyReceived(SurveyResponse response) {
             RoomViewModel room = GetRoomById(response.RoomId);
             room.AddSurvey(response, _chatViewModel);
+        }
+
+        private void ChatService_SearchMessageReceived(LoadChatResponse response) {
+            foreach (var msg in response.MessageList) {
+                _chatViewModel.AddSearchMessage(msg);
+            }
         }
 
         public RoomViewModel GetRoomById (Guid roomId) {
