@@ -91,7 +91,7 @@ namespace ComeX.Server.Hubs
 
             try
             {
-                Message insertMsg = new Message(Guid.NewGuid(), usrId, false, msg.RoomId, DateTime.Now.ToString(dateFormat), msg.ParentId, msg.Content);
+                Message insertMsg = new Message(Guid.NewGuid(), usrId, false, msg.RoomId, DateTime.Now, msg.ParentId, msg.Content);
                 Message createdMsg = msgRepo.InsertMessage(insertMsg);
 
                 await Clients.Caller.SendAsync("ACK");
@@ -110,7 +110,7 @@ namespace ComeX.Server.Hubs
                     
                 }
 
-                MessageResponse rsp = new MessageResponse(createdMsg.Id, usrName, createdMsg.SendTime, createdMsg.RoomId, createdMsg.ParentId, createdMsg.Content, emojiList);
+                MessageResponse rsp = new MessageResponse(createdMsg.Id, usrName, createdMsg.SendTime.ToString(dateFormat), createdMsg.RoomId, createdMsg.ParentId, createdMsg.Content, emojiList);
 
                 await Clients.All.SendAsync("Message_created", rsp);
 
@@ -144,7 +144,7 @@ namespace ComeX.Server.Hubs
 
                 }
 
-                MessageResponse rsp = new MessageResponse(message.Id, creator.Username, message.SendTime, message.RoomId, message.ParentId, message.Content, emojiList);
+                MessageResponse rsp = new MessageResponse(message.Id, creator.Username, message.SendTime.ToString(dateFormat), message.RoomId, message.ParentId, message.Content, emojiList);
                 LoadMessageResponse response = new LoadMessageResponse(rsp);
 
                 await Clients.Caller.SendAsync("Load_message", response);
@@ -183,7 +183,7 @@ namespace ComeX.Server.Hubs
 
                     }
 
-                    MessageResponse rsp = new MessageResponse(m.Id, creator.Username, m.SendTime, m.RoomId, m.ParentId, m.Content, emojiList);
+                    MessageResponse rsp = new MessageResponse(m.Id, creator.Username, m.SendTime.ToString(dateFormat), m.RoomId, m.ParentId, m.Content, emojiList);
                     messageResponse.Add(rsp);
                 }
 
@@ -368,7 +368,7 @@ namespace ComeX.Server.Hubs
 
                     }
 
-                    MessageResponse rsp = new MessageResponse(m.Id, creator.Username, m.SendTime, m.RoomId, m.ParentId, m.Content, emojiList);
+                    MessageResponse rsp = new MessageResponse(m.Id, creator.Username, m.SendTime.ToString(dateFormat), m.RoomId, m.ParentId, m.Content, emojiList);
                     messageResponse.Add(rsp);
                 }
 
@@ -420,7 +420,7 @@ namespace ComeX.Server.Hubs
 
                 }
 
-                MessageResponse rsp = new MessageResponse(message.Id, creator.Username, message.SendTime, message.RoomId, message.ParentId, message.Content, emojiList);
+                MessageResponse rsp = new MessageResponse(message.Id, creator.Username, message.SendTime.ToString(dateFormat), message.RoomId, message.ParentId, message.Content, emojiList);
                 LoadMessageResponse response = new LoadMessageResponse(rsp);
 
                 await Clients.Caller.SendAsync("Load_message", response);

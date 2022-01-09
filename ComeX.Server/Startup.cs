@@ -15,7 +15,7 @@ namespace ComeX.Server
 {
     public class Startup
     {
-        public const string SELF_DATABASE_URL = "Server = comx.molly.ovh; Port = 25432; Database = postgres; User Id = banan; Password = J@c!28@dQ;";
+        public const string SELF_DATABASE_URL = "Server = comx.molly.ovh; Port = 25432; Database = postgres; User Id = banan; Password = s9n5#@Jo;";
 
         public Startup(IConfiguration configuration)
         {
