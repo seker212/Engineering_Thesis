@@ -223,7 +223,7 @@ namespace ComeX.Server.Hubs
                         ansList.Add(rsp, amount);
                     }
 
-                    SurveyResponse response = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, s.IsMultipleChoice, ansList);
+                    SurveyResponse response = new SurveyResponse(s.Id, usr.Username, s.SendTime.ToString(dateFormat), s.RoomId, s.Question, s.IsMultipleChoice, ansList);
                     surveyList.Add(response);
                 }
 
@@ -246,7 +246,7 @@ namespace ComeX.Server.Hubs
 
             try
             {
-                Survey insertSrv = new Survey(Guid.NewGuid(), usrId, msg.RoomId, DateTime.Now.ToString(dateFormat), msg.Question, msg.IsMultipleChoice);
+                Survey insertSrv = new Survey(Guid.NewGuid(), usrId, msg.RoomId, DateTime.Now, msg.Question, msg.IsMultipleChoice);
                 Survey createdSrv = srvRepo.Insert(insertSrv);
 
                 await Clients.Caller.SendAsync("ACK");
@@ -278,7 +278,7 @@ namespace ComeX.Server.Hubs
                     ansList.Add(rsp, amount);
                 }
 
-                SurveyResponse response = new SurveyResponse(createdSrv.Id, usrName, createdSrv.SendTime, createdSrv.RoomId, createdSrv.Question, createdSrv.IsMultipleChoice, ansList);
+                SurveyResponse response = new SurveyResponse(createdSrv.Id, usrName, createdSrv.SendTime.ToString(dateFormat), createdSrv.RoomId, createdSrv.Question, createdSrv.IsMultipleChoice, ansList);
 
                 await Clients.All.SendAsync("Survey_created", response);
 
@@ -329,7 +329,7 @@ namespace ComeX.Server.Hubs
                     ansList.Add(rsp, amount);
                 }
 
-                SurveyResponse response = new SurveyResponse(srv.Id, usr.Username, srv.SendTime, srv.RoomId, srv.Question, srv.IsMultipleChoice, ansList);
+                SurveyResponse response = new SurveyResponse(srv.Id, usr.Username, srv.SendTime.ToString(dateFormat), srv.RoomId, srv.Question, srv.IsMultipleChoice, ansList);
 
                 await Clients.All.SendAsync("Survey_updated", response);
 

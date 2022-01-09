@@ -10,7 +10,7 @@ namespace ComeX.Server.DatabaseModels
     {
         private static readonly string[] _staticColumnNames = new string[] { "id", "authorId", "roomId", "sendTime", "question", "isMultipleChoice" };
 
-        public Survey(Guid id, Guid authorId, Guid roomId, string sendTime, string question, bool isMultipleChoice)
+        public Survey(Guid id, Guid authorId, Guid roomId, DateTime sendTime, string question, bool isMultipleChoice)
         {
             Id = id;
             AuthorId = authorId;
@@ -23,7 +23,7 @@ namespace ComeX.Server.DatabaseModels
         public Guid Id { get; set; }
         public Guid AuthorId { get; set; }
         public Guid RoomId { get; set; }
-        public string SendTime { get; set; }
+        public DateTime SendTime { get; set; }
         public string Question { get; set; }
         public bool IsMultipleChoice { get; set; }
 
