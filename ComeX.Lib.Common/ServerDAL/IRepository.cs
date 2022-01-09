@@ -1,7 +1,7 @@
-﻿using ComeX.Server.DatabaseModels;
+﻿using ComeX.Lib.Common.ServerDAL.DatabaseModels;
 using System.Collections.Generic;
 
-namespace ComeX.Server.DAL
+namespace ComeX.Lib.Common.ServerDAL
 {
     public interface IRepository<T> where T : IDbModel
     {

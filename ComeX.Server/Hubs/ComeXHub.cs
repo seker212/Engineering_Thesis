@@ -1,5 +1,7 @@
 ﻿using ComeX.Lib.Auth;
 using ComeX.Lib.Common.ServerCommunicationModels;
+using ComeX.Lib.Common.ServerDAL.DatabaseModels;
+using ComeX.Lib.Common.ServerDAL;
 using ComeX.Lib.Common.ServerResponseModels;
 using ComeX.Server.DAL;
 using ComeX.Server.DatabaseModels;
