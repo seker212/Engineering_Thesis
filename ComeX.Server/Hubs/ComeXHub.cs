@@ -211,16 +211,17 @@ namespace ComeX.Server.Hubs
                     User usr = usrRepo.GetUser(s.AuthorId);
 
                     IEnumerable<Answer> answers = ansRepo.GetAnswers(s.Id);
-                    Dictionary<SurveyAnswerResponse, int> ansList = new Dictionary<SurveyAnswerResponse, int>();
+                    List<SurveyAnswerResponse> ansList = new List<SurveyAnswerResponse>();
 
                     foreach (Answer ans in answers)
                     {
-                        SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content);
 
                         IEnumerable<Vote> votes = votRepo.GetVotes(ans.Id);
                         int amount = votes.Count();
 
-                        ansList.Add(rsp, amount);
+                        SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content, amount);
+
+                        ansList.Add(rsp);
                     }
 
                     SurveyResponse response = new SurveyResponse(s.Id, usr.Username, s.SendTime.ToString(dateFormat), s.RoomId, s.Question, s.IsMultipleChoice, ansList);
@@ -265,17 +266,18 @@ namespace ComeX.Server.Hubs
                     
                 }
 
-                Dictionary<SurveyAnswerResponse, int> ansList = new Dictionary<SurveyAnswerResponse, int>();
                 IEnumerable<Answer> answers = ansRepo.GetAnswers(createdSrv.Id);
+                List<SurveyAnswerResponse> ansList = new List<SurveyAnswerResponse>();
 
                 foreach (Answer ans in answers)
                 {
-                    SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content);
 
                     IEnumerable<Vote> votes = votRepo.GetVotes(ans.Id);
                     int amount = votes.Count();
 
-                    ansList.Add(rsp, amount);
+                    SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content, amount);
+
+                    ansList.Add(rsp);
                 }
 
                 SurveyResponse response = new SurveyResponse(createdSrv.Id, usrName, createdSrv.SendTime.ToString(dateFormat), createdSrv.RoomId, createdSrv.Question, createdSrv.IsMultipleChoice, ansList);
@@ -317,16 +319,17 @@ namespace ComeX.Server.Hubs
                 User usr = usrRepo.GetUser(srv.AuthorId);
 
                 IEnumerable<Answer> answers = ansRepo.GetAnswers(msg.SurveyId);
-                Dictionary<SurveyAnswerResponse, int> ansList = new Dictionary<SurveyAnswerResponse, int>();
+                List<SurveyAnswerResponse> ansList = new List<SurveyAnswerResponse>();
 
                 foreach (Answer ans in answers)
                 {
-                    SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content);
 
                     IEnumerable<Vote> votes = votRepo.GetVotes(ans.Id);
                     int amount = votes.Count();
 
-                    ansList.Add(rsp, amount);
+                    SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content, amount);
+
+                    ansList.Add(rsp);
                 }
 
                 SurveyResponse response = new SurveyResponse(srv.Id, usr.Username, srv.SendTime.ToString(dateFormat), srv.RoomId, srv.Question, srv.IsMultipleChoice, ansList);
