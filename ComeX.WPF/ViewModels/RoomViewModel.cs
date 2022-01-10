@@ -84,7 +84,7 @@ namespace ComeX.WPF.ViewModels {
 
         // todo
         public void SortMessageList() {
-            MessageList = new ObservableCollection<BaseMessageViewModel>(MessageList.OrderBy(i => i));
+            // MessageList = new ObservableCollection<BaseMessageViewModel>(MessageList.OrderBy(i => i));
         }
 
         public ChatMessageViewModel GetMessageById(Guid id) {

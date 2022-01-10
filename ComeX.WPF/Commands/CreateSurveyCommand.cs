@@ -34,7 +34,7 @@ namespace ComeX.WPF.Commands {
                     await _viewModel.CurrentServer.Service.SendChatSurvey(newSurvey);
                     _viewModel.ErrorMessage = string.Empty;
 
-                    _viewModel.AddSurvey(newSurvey);
+                    //_viewModel.AddSurvey(newSurvey);
                 }
             } catch (ArgumentException e) {
                 _viewModel.ErrorMessage = e.Message;

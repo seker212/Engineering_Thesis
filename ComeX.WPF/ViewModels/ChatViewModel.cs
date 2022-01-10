@@ -374,6 +374,7 @@ namespace ComeX.WPF.ViewModels {
         }
 
         // temp
+        /*
         public void AddSurvey(SurveyMessage survey) {
             SurveyResponse newSurvey = new SurveyResponse();
             newSurvey.Username = "Anonim4";
@@ -388,7 +389,7 @@ namespace ComeX.WPF.ViewModels {
             newSurvey.AnswerList = answers;
             CurrentRoomMessages.Add(new SurveyViewModel(newSurvey, this));
         }
-
+        */
             public static ChatViewModel CreatedConnectedModel(LoginService loginService, LoginDataModel loginDM, List<ServerDataModel> serverDMs) {
             ChatViewModel viewModel = new ChatViewModel(loginService, loginDM, serverDMs);
             return viewModel;

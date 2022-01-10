@@ -13,13 +13,16 @@ namespace ComeX.WPF.MessageViewModels {
                 return AnswerResponse.Content;
             }
         }
-        public int Votes { get; set; }
+        public int Votes {
+            get {
+                return AnswerResponse.Votes;
+            }
+        }
         public bool IsChecked { get; set; }
 
         public SurveyAnswerViewModel() { }
-        public SurveyAnswerViewModel(SurveyAnswerResponse answerResponse, int votes, bool isChecked) {
+        public SurveyAnswerViewModel(SurveyAnswerResponse answerResponse, bool isChecked) {
             AnswerResponse = answerResponse;
-            Votes = votes;
             IsChecked = isChecked;
         }
     }

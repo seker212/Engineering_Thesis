@@ -69,7 +69,7 @@ namespace ComeX.WPF.MessageViewModels {
 
             SurveyAnswers = new List<SurveyAnswerViewModel>();
             foreach (var answer in Survey.AnswerList) {
-                SurveyAnswers.Add(new SurveyAnswerViewModel(answer.Key, answer.Value, false));
+                SurveyAnswers.Add(new SurveyAnswerViewModel(answer, false));
             }
         }
 
