@@ -9,7 +9,7 @@ namespace ComeX.Server.DAL
     public interface ISurveyRepository : IObjectRepository<Survey>
     {
         Survey GetSurvey(Guid id);
-        IEnumerable<Survey> GetSurveys(Guid roomId, string sendTime);
+        IEnumerable<Survey> GetSurveys(Guid roomId, DateTime sendTime);
         public Survey InsertSurvey(Survey srv);
     }
 }
