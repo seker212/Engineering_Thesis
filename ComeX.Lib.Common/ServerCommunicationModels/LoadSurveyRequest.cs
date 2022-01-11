@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ComeX.Lib.Common.ServerCommunicationModels {
     public class LoadSurveyRequest {
-        public LoadSurveyRequest(string token, Guid roomId, string date) {
+        public LoadSurveyRequest(string token, Guid roomId, DateTime date) {
             Token = token;
             RoomId = roomId;
             Date = date;
@@ -18,6 +18,6 @@ namespace ComeX.Lib.Common.ServerCommunicationModels {
         [JsonProperty("RoomId")]
         public Guid RoomId { get; set; }
         [JsonProperty("Date")]
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
     }
 }

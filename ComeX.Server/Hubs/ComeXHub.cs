@@ -192,6 +192,7 @@ namespace ComeX.Server.Hubs
 
             } catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 await Clients.Caller.SendAsync("Load_chat_error");
             }
             
