@@ -110,7 +110,7 @@ namespace ComeX.Server.Hubs
                     
                 }
 
-                MessageResponse rsp = new MessageResponse(createdMsg.Id, usrName, createdMsg.SendTime.ToString(dateFormat), createdMsg.RoomId, createdMsg.ParentId, createdMsg.Content, emojiList);
+                MessageResponse rsp = new MessageResponse(createdMsg.Id, usrName, createdMsg.SendTime, createdMsg.RoomId, createdMsg.ParentId, createdMsg.Content, emojiList);
 
                 await Clients.All.SendAsync("Message_created", rsp);
 
@@ -144,7 +144,7 @@ namespace ComeX.Server.Hubs
 
                 }
 
-                MessageResponse rsp = new MessageResponse(message.Id, creator.Username, message.SendTime.ToString(dateFormat), message.RoomId, message.ParentId, message.Content, emojiList);
+                MessageResponse rsp = new MessageResponse(message.Id, creator.Username, message.SendTime, message.RoomId, message.ParentId, message.Content, emojiList);
                 LoadMessageResponse response = new LoadMessageResponse(rsp);
 
                 await Clients.Caller.SendAsync("Load_message", response);
@@ -183,7 +183,7 @@ namespace ComeX.Server.Hubs
 
                     }
 
-                    MessageResponse rsp = new MessageResponse(m.Id, creator.Username, m.SendTime.ToString(dateFormat), m.RoomId, m.ParentId, m.Content, emojiList);
+                    MessageResponse rsp = new MessageResponse(m.Id, creator.Username, m.SendTime, m.RoomId, m.ParentId, m.Content, emojiList);
                     messageResponse.Add(rsp);
                 }
 
@@ -225,7 +225,7 @@ namespace ComeX.Server.Hubs
                         ansList.Add(rsp);
                     }
 
-                    SurveyResponse response = new SurveyResponse(s.Id, usr.Username, s.SendTime.ToString(dateFormat), s.RoomId, s.Question, s.IsMultipleChoice, ansList);
+                    SurveyResponse response = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, s.IsMultipleChoice, ansList);
                     surveyList.Add(response);
                 }
 
@@ -281,7 +281,7 @@ namespace ComeX.Server.Hubs
                     ansList.Add(rsp);
                 }
 
-                SurveyResponse response = new SurveyResponse(createdSrv.Id, usrName, createdSrv.SendTime.ToString(dateFormat), createdSrv.RoomId, createdSrv.Question, createdSrv.IsMultipleChoice, ansList);
+                SurveyResponse response = new SurveyResponse(createdSrv.Id, usrName, createdSrv.SendTime, createdSrv.RoomId, createdSrv.Question, createdSrv.IsMultipleChoice, ansList);
 
                 await Clients.All.SendAsync("Survey_created", response);
 
@@ -333,7 +333,7 @@ namespace ComeX.Server.Hubs
                     ansList.Add(rsp);
                 }
 
-                SurveyResponse response = new SurveyResponse(srv.Id, usr.Username, srv.SendTime.ToString(dateFormat), srv.RoomId, srv.Question, srv.IsMultipleChoice, ansList);
+                SurveyResponse response = new SurveyResponse(srv.Id, usr.Username, srv.SendTime, srv.RoomId, srv.Question, srv.IsMultipleChoice, ansList);
 
                 await Clients.All.SendAsync("Survey_updated", response);
 
@@ -372,7 +372,7 @@ namespace ComeX.Server.Hubs
 
                     }
 
-                    MessageResponse rsp = new MessageResponse(m.Id, creator.Username, m.SendTime.ToString(dateFormat), m.RoomId, m.ParentId, m.Content, emojiList);
+                    MessageResponse rsp = new MessageResponse(m.Id, creator.Username, m.SendTime, m.RoomId, m.ParentId, m.Content, emojiList);
                     messageResponse.Add(rsp);
                 }
 
@@ -424,7 +424,7 @@ namespace ComeX.Server.Hubs
 
                 }
 
-                MessageResponse rsp = new MessageResponse(message.Id, creator.Username, message.SendTime.ToString(dateFormat), message.RoomId, message.ParentId, message.Content, emojiList);
+                MessageResponse rsp = new MessageResponse(message.Id, creator.Username, message.SendTime, message.RoomId, message.ParentId, message.Content, emojiList);
                 LoadMessageResponse response = new LoadMessageResponse(rsp);
 
                 await Clients.Caller.SendAsync("Load_message", response);
