@@ -1,24 +1,20 @@
 ﻿using ComeX.Lib.Common.ServerCommunicationModels;
-using ComeX.WPF;
+using ComeX.Lib.Common.ServerResponseModels;
 using ComeX.WPF.MessageViewModels;
-using ComeX.WPF.Services;
 using ComeX.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace ComeX.WPF.Commands {
-    public class ChangeRoomCommand : ICommand {
+    public class LoadHistoryCommand : ICommand {
         private readonly ChatViewModel _chatViewModel;
-        private readonly RoomViewModel _roomViewModel;
 
-        public ChangeRoomCommand(ChatViewModel chatViewModel, RoomViewModel roomViewModel) {
+        public LoadHistoryCommand(ChatViewModel chatViewModel) {
             _chatViewModel = chatViewModel;
-            _roomViewModel = roomViewModel;
         }
 
         public event EventHandler CanExecuteChanged;
@@ -29,18 +25,22 @@ namespace ComeX.WPF.Commands {
 
         public async void Execute(object parameter) {
             try {
-                _chatViewModel.CurrentRoom = _roomViewModel;
-
-                if (_roomViewModel.MessageList.Count == 0) {
-                    await _chatViewModel.CurrentServer.Service.LoadChatHistory(new LoadChatRequest(_chatViewModel.LoginDM.Token, _roomViewModel.RoomId, DateTime.Now));
-                    await _chatViewModel.CurrentServer.Service.LoadSurveyHistory(new LoadSurveyRequest(_chatViewModel.LoginDM.Token, _roomViewModel.RoomId, DateTime.Now));
+                BaseMessageViewModel lastMsg = _chatViewModel.CurrentRoomMessages[0];
+                DateTime lastMsgTime = new DateTime();
+                if (lastMsg.GetType() == typeof(ChatMessageViewModel)) {
+                    lastMsgTime = ((ChatMessageViewModel)lastMsg).Message.SendTime;
+                } else if (lastMsg.GetType() == typeof(SurveyViewModel)) {
+                    lastMsgTime = ((SurveyViewModel)lastMsg).Survey.SendTime;
+                } else {
+                    throw new Exception();
                 }
+                await _chatViewModel.CurrentServer.Service.LoadChatHistory(new LoadChatRequest(_chatViewModel.LoginDM.Token, _chatViewModel.CurrentRoom.RoomId, lastMsgTime));
                 _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoom));
                 _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoomMessages));
             } catch (ArgumentException e) {
                 _chatViewModel.ErrorMessage = e.Message;
             } catch (Exception e) {
-                _chatViewModel.ErrorMessage = "Unable to change room.";
+                _chatViewModel.ErrorMessage = "Unable to load chat history.";
             }
         }
     }

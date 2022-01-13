@@ -22,9 +22,21 @@ namespace ComeX.WPF.MessageViewModels {
             }
         }
 
-        public string MessageDateTime { //TODO
+        public string MessageDateTime {
             get {
-                return "Today";
+                return Survey.SendTime.ToString(Consts.DATEFORMAT);
+            }
+        }
+
+        public override Guid Id {
+            get {
+                return Survey.Id;
+            }
+        }
+
+        public override DateTime SendTime {
+            get {
+                return Survey.SendTime;
             }
         }
 

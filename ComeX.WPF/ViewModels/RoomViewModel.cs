@@ -1,4 +1,5 @@
 ﻿using ComeX.Lib.Common.ServerResponseModels;
+using ComeX.Lib.Common.ServerCommunicationModels;
 using ComeX.WPF.Commands;
 using ComeX.WPF.MessageViewModels;
 using ComeX.WPF.ViewModels;
@@ -12,6 +13,9 @@ using System.Windows.Input;
 
 namespace ComeX.WPF.ViewModels {
     public class RoomViewModel {
+        private ChatViewModel _chatViewModel;
+        private ServerViewModel _serverViewModel;
+
         public Guid RoomId { get; set; }
         public bool IsArchived { get; set; }
         private string _name;
@@ -29,7 +33,10 @@ namespace ComeX.WPF.ViewModels {
 
         public RoomViewModel() { }
 
-        public RoomViewModel(ChatViewModel chatViewModel, Guid roomId, string name, bool isArchived) {
+        public RoomViewModel(ChatViewModel chatViewModel, ServerViewModel serverViewModel, Guid roomId, string name, bool isArchived) {
+            _chatViewModel = chatViewModel;
+            _serverViewModel = serverViewModel;
+
             RoomId = roomId;
             Name = name;
             IsArchived = isArchived;
@@ -41,9 +48,8 @@ namespace ComeX.WPF.ViewModels {
         public void AddMessages(List<MessageResponse> messageResponse, ChatViewModel chatViewModel) {
             messageResponse.Sort((p, q) => p.SendTime.CompareTo(q.SendTime));
             foreach (var message in messageResponse) {
-                ChatMessageViewModel mewMessage = new ChatMessageViewModel(message, chatViewModel);
-                if (!MessageList.Contains(mewMessage))
-                    MessageList.Add(new ChatMessageViewModel(message, chatViewModel));
+                if (GetMessageInListById(message.Id) == null)
+                    AddMessage(message, chatViewModel);
             }
             SortMessageList();
         }
@@ -51,23 +57,43 @@ namespace ComeX.WPF.ViewModels {
         public void AddSurveys(List<SurveyResponse> surveyResponse, ChatViewModel chatViewModel) {
             surveyResponse.Sort((p, q) => p.SendTime.CompareTo(q.SendTime));
             foreach (var survey in surveyResponse) {
-                MessageList.Add(new SurveyViewModel(survey, chatViewModel));
+                if (GetMessageInListById(survey.Id) == null)
+                    MessageList.Add(new SurveyViewModel(survey, chatViewModel));
             }
             SortMessageList();
         }
 
-        public void AddMessage(MessageResponse messageResponse, ChatViewModel chatViewModel) {
-            ChatMessageViewModel newMessage = new ChatMessageViewModel(messageResponse, chatViewModel);
-            ChatMessageViewModel oldMessage = GetMessageById(messageResponse.Id);
+        public async void AddMessage(MessageResponse messageResponse, ChatViewModel chatViewModel) {
+            ChatMessageViewModel newMessage;
+            if (messageResponse.ParentId == null) {
+                newMessage = new ChatMessageViewModel(messageResponse, chatViewModel);
+            } else {
+                ChatMessageViewModel parent = ((ChatMessageViewModel)GetMessageInListById((Guid)messageResponse.ParentId));
+                if (parent == null) {
+                    await _serverViewModel.Service.LoadSpecificMessage(new LoadMessageRequest(_chatViewModel.LoginDM.Token, (Guid)messageResponse.ParentId));
+                    MessageResponse tempParent = new MessageResponse();
+                    tempParent.Id = (Guid)messageResponse.ParentId;
+                    newMessage = new ChatMessageViewModel(messageResponse, chatViewModel, tempParent);
+                } else {
+                    newMessage = new ChatMessageViewModel(messageResponse, chatViewModel, parent.Message);
+                }
+            }
+
+            ChatMessageViewModel oldMessage = (ChatMessageViewModel)GetMessageInListById(messageResponse.Id);
 
             if (oldMessage == null)
                 MessageList.Add(newMessage);
             else {
-                MessageList[MessageList.IndexOf(oldMessage)] = newMessage;
-                SortMessageList();
+                MessageList[MessageList.IndexOf(oldMessage)] = newMessage;              
             }
 
-            chatViewModel.OnPropertyChanged(nameof(chatViewModel.CurrentRoomMessages));
+            SortMessageList();
+        }
+
+        public void UpdateParentMessage(MessageResponse messageResponse, ChatViewModel chatViewModel) {
+            ChatMessageViewModel childMsg = GetMessageInListByParentId(messageResponse.Id);
+            childMsg.AddParent(messageResponse);
+            _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoomMessages));
         }
 
         public void AddSurvey(SurveyResponse surveyResponse, ChatViewModel chatViewModel) {
@@ -82,15 +108,19 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        // todo
-        public void SortMessageList() {
-            // MessageList = new ObservableCollection<BaseMessageViewModel>(MessageList.OrderBy(i => i));
+        public BaseMessageViewModel GetMessageInListById(Guid id) {
+            if (MessageList == null || MessageList.Count == 0) return null;
+            return MessageList.FirstOrDefault(i => i.Id == id);
         }
 
-        public ChatMessageViewModel GetMessageById(Guid id) {
+        public ChatMessageViewModel GetMessageInListByParentId(Guid id) {
             if (MessageList == null || MessageList.Count == 0) return null;
-            var msg = (ChatMessageViewModel)MessageList.FirstOrDefault(o => ((ChatMessageViewModel)o).Message.Id == id);
-            return msg;
+            return (ChatMessageViewModel)MessageList.FirstOrDefault(i => i.GetType() == typeof(ChatMessageViewModel) && ((ChatMessageViewModel)i).ReplyParentId == id);
+        }
+
+        public void SortMessageList() {
+            MessageList = new ObservableCollection<BaseMessageViewModel>(MessageList.OrderBy(i => i.SendTime));
+            _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoomMessages));
         }
 
         public SurveyViewModel GetSurveyById(Guid id) {

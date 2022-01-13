@@ -86,10 +86,7 @@ namespace ComeX.WPF.ViewModels {
             }
             set {
                 _currentRoom = value;
-                if (value == null) {
-                    CurrentRoomMessages = new ObservableCollection<BaseMessageViewModel>();
-                } else {
-                    CurrentRoomMessages = _currentRoom.MessageList;
+                if (value != null) {
                     SendMessageEnabled = true;
                 }
                 OnPropertyChanged(nameof(CurrentRoom));
@@ -105,14 +102,10 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        private ObservableCollection<BaseMessageViewModel> _currentRoomMessages;
         public ObservableCollection<BaseMessageViewModel> CurrentRoomMessages {
             get {
-                return _currentRoomMessages;
-            }
-            set {
-                _currentRoomMessages = value;
-                OnPropertyChanged(nameof(CurrentRoomMessages));
+                if (CurrentRoom == null) return new ObservableCollection<BaseMessageViewModel>();
+                else return CurrentRoom.MessageList;
             }
         }
 
@@ -304,6 +297,7 @@ namespace ComeX.WPF.ViewModels {
         public ICommand OpenSettingsCommand { get; }
         public ICommand UnsetReplyCommand { get; }
         public ICommand SearchCommand { get; }
+        public ICommand LoadHistoryCommand { get; }
 
         private ICommand _changeViewToLoginCommand;
         public ICommand ChangeViewToLoginCommand {
@@ -340,22 +334,7 @@ namespace ComeX.WPF.ViewModels {
             OpenSettingsCommand = new OpenSettingsCommand(this, loginService);
             UnsetReplyCommand = new UnsetReplyCommand(this);
             SearchCommand = new SearchCommand(this);
-        }
-
-        // fix - add not to CurrentRoomMessages
-        public void AddMessage (MessageResponse msg) {
-            ChatMessageViewModel newMsgVM;
-            if (msg.ParentId != null) {
-                MessageResponse parentMsg = new MessageResponse();
-                foreach (var msgVM in CurrentRoomMessages) {
-                    if (msgVM.GetType()==typeof(ChatMessageViewModel) && ((ChatMessageViewModel)msgVM).Message.Id == msg.ParentId) {
-                        parentMsg = ((ChatMessageViewModel)msgVM).Message;
-                    }
-                }
-                // if parentMsg not found - get parentMsg by msg.parentId from server
-                newMsgVM = new ChatMessageViewModel(msg, this, parentMsg);
-            } else newMsgVM = new ChatMessageViewModel(msg, this);
-            CurrentRoomMessages.Add(newMsgVM);
+            LoadHistoryCommand = new LoadHistoryCommand(this);
         }
 
         public void AddSearchMessage(MessageResponse msg) {
@@ -368,7 +347,7 @@ namespace ComeX.WPF.ViewModels {
                     }
                 }
                 // if parentMsg not found - get parentMsg by msg.parentId from server
-                newMsgVM = new ChatMessageViewModel(msg, this, parentMsg);
+                newMsgVM = new ChatMessageViewModel(msg, this);
             } else newMsgVM = new ChatMessageViewModel(msg, this);
             SearchMessages.Add(newMsgVM);
         }

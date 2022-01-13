@@ -22,11 +22,11 @@ namespace ComeX.WPF.MessageViewModels {
             }
         }
 
-        public string MessageDateTime { //TODO
+        public string MessageDateTime {
             get {
-                return "Today";
+                return Message.SendTime.ToString(Consts.DATEFORMAT);
             }
-        }
+        }   
 
         public string MessageContent {
             get {
@@ -100,6 +100,19 @@ namespace ComeX.WPF.MessageViewModels {
         public ICommand SetReplyCommand { get; }
         public ICommand ReactionCommand { get; }
 
+        public override Guid Id {
+            get {
+                return Message.Id;
+            }
+        }
+
+        public override DateTime SendTime {
+            get {
+                return Message.SendTime;
+            }
+        }
+        public ChatMessageViewModel() { }
+
         public ChatMessageViewModel(MessageResponse message, ChatViewModel chatVM, MessageResponse parentMessage = null) {
             SetReplyCommand = new SetReplyCommand(this, chatVM);
             ReactionCommand = new ReactionCommand(this, chatVM);
@@ -115,13 +128,17 @@ namespace ComeX.WPF.MessageViewModels {
             }
 
             if (parentMessage != null) {
-                ReplyParentVisibility = Visibility.Visible;
-                ReplyParentId = parentMessage.Id;
-                ReplyParentAuthor = parentMessage.Username;
-                ReplyParentContent = parentMessage.Content;
+                AddParent(parentMessage);
             } else {
                 ReplyParentVisibility = Visibility.Collapsed;
             }
+        }
+
+        public void AddParent(MessageResponse parentMessage) {
+            ReplyParentVisibility = Visibility.Visible;
+            ReplyParentId = parentMessage.Id;
+            ReplyParentAuthor = parentMessage.Username;
+            ReplyParentContent = parentMessage.Content;
         }
     }
 }

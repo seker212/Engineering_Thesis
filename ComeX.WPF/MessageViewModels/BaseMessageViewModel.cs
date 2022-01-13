@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 using System.Windows;
 
 namespace ComeX.WPF.MessageViewModels {
-    public class BaseMessageViewModel : BaseViewModel {
-        public Visibility SurveyAnswersVisibility { get; set; }
+    public abstract class BaseMessageViewModel : BaseViewModel {
+        public abstract Guid Id { get; }
+        public abstract DateTime SendTime { get; }
 
-        public BaseMessageViewModel() {
-            SurveyAnswersVisibility = Visibility.Collapsed;
-        }
+        public BaseMessageViewModel() { }
     }
 }

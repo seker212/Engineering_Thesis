@@ -187,9 +187,18 @@
                         <RowDefinition Height="110"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <ListView Grid.Row="0" x:Name="MessagesListView"
-                          Margin="5"
-                          
+                <Grid Grid.Row="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <Button x:Name="LoadMessagesButton" Grid.Row="0"
+                            Template="{StaticResource RoundedButtonTemplate}"
+                            HorizontalAlignment="Center"
+                            Content="Load"
+                            Command="{Binding LoadHistoryCommand}"/>
+                    <ListView Grid.Row="1" x:Name="MessagesListView"
+                          Margin="5"                       
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ItemsSource="{Binding CurrentRoomMessages}"
                           Background="{StaticResource DarkBlue3}"
@@ -219,6 +228,7 @@
                             </DataTemplate>
                         </ListView.Resources>
                     </ListView>
+                </Grid>
 
                 <Grid Grid.Row="1" x:Name="TypeGrid" Margin="0,0,0,10">
                     <Grid.RowDefinitions>
