@@ -132,7 +132,7 @@
             <Grid Grid.Column="2" x:Name="ContentGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition MinWidth="200" Width="*"></ColumnDefinition>
-                    <ColumnDefinition Width="160"></ColumnDefinition>
+                    <ColumnDefinition Width="220"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"></RowDefinition>
@@ -343,7 +343,7 @@
                 </Grid>
                 <WrapPanel Grid.Row="1" x:Name="SearchWrapP" Background="{StaticResource DarkBlue1}" >
                     <ListView x:Name="SearchListView"
-                          Margin="5"                   
+                          Margin="5"  
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ItemsSource="{Binding SearchMessages}"
                           Background="{StaticResource DarkBlue1}"
@@ -366,7 +366,7 @@
                     </ListView.ItemsPanel>
                     <ListView.Resources>
                         <DataTemplate DataType="{x:Type mvm:ChatMessageViewModel}">
-                            <uc:MessageUserControl/>
+                            <uc:SearchMessageUserControl/>
                         </DataTemplate>
                     </ListView.Resources>
                 </ListView>
