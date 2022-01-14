@@ -13,6 +13,6 @@ namespace ComeX.Lib.Common.ServerDAL
         {
         }
 
-        public Allowed_user GetAllowed_user(Guid userId) => Query().Where("userId", userId).First<Allowed_user>();
+        public Allowed_user GetAllowed_user(Guid userId) => Query().Where("userId", userId).FirstOrDefault<Allowed_user>();
     }
 }
