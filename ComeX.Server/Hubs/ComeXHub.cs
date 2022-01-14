@@ -240,6 +240,86 @@ namespace ComeX.Server.Hubs
             
         }
 
+        // otrzymano zadanie wczytania wszystkiego z pokoju
+        public async Task LoadAllHistory(LoadChatRequest msg)
+        {
+            try
+            {
+                //wczytanie wiadomosci
+                List<MessageResponse> messageResponse = new List<MessageResponse>();
+                IEnumerable<Message> messages = msgRepo.GetRoomMessages(msg.RoomId, msg.Date);
+
+                //znalezienie daty najstarszej wiadomości
+                DateTime oldestMsg = DateTime.Now;
+                foreach (Message m in messages)
+                {
+                    if (m.SendTime < oldestMsg)
+                    {
+                        oldestMsg = m.SendTime;
+                    }
+                }
+
+                foreach (Message m in messages)
+                {
+                    User creator = usrRepo.GetUser(m.AuthorId);
+
+                    IEnumerable<Reaction> reactions = reactRepo.GetReactions(m.Id);
+                    Dictionary<string, int> emojiList = new Dictionary<string, int>();
+                    foreach (Reaction r in reactions)
+                    {
+                        try
+                        {
+                            emojiList.Add(r.Emoji, 1);
+                        }
+                        catch (ArgumentException)
+                        {
+                            emojiList[r.Emoji] += 1;
+                        }
+
+                    }
+
+                    MessageResponse rsp = new MessageResponse(m.Id, creator.Username, m.SendTime, m.RoomId, m.ParentId, m.Content, emojiList);
+                    messageResponse.Add(rsp);
+                }
+
+                //znalezienie ankiet
+                List<SurveyResponse> surveyList = new List<SurveyResponse>();
+                IEnumerable<Survey> surveys = srvRepo.GetSurveys(msg.RoomId, msg.Date, oldestMsg);
+
+                foreach (Survey s in surveys)
+                {
+                    User usr = usrRepo.GetUser(s.AuthorId);
+
+                    IEnumerable<Answer> answers = ansRepo.GetAnswers(s.Id);
+                    List<SurveyAnswerResponse> ansList = new List<SurveyAnswerResponse>();
+
+                    foreach (Answer ans in answers)
+                    {
+
+                        IEnumerable<Vote> votes = votRepo.GetVotes(ans.Id);
+                        int amount = votes.Count();
+
+                        SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content, amount);
+
+                        ansList.Add(rsp);
+                    }
+
+                    SurveyResponse newResponse = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, s.IsMultipleChoice, ansList);
+                    surveyList.Add(newResponse);
+                }
+
+                LoadAllResponse response = new LoadAllResponse(msg.RoomId, messageResponse, surveyList);
+                await Clients.Caller.SendAsync("Send_all_history", response);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                await Clients.Caller.SendAsync("Load_all_error");
+            }
+
+        }
+
         // otrzymano ankiete (zawiera dopuszczalne odpowiedzi)
         public async Task SendChatSurvey(SurveyMessage msg)
         {

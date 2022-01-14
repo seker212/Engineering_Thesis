@@ -10,6 +10,7 @@ namespace ComeX.Server.DAL
     {
         Survey GetSurvey(Guid id);
         IEnumerable<Survey> GetSurveys(Guid roomId, DateTime sendTime);
+        public IEnumerable<Survey> GetSurveys(Guid roomId, DateTime sendTime, DateTime endTime);
         public Survey InsertSurvey(Survey srv);
     }
 }
