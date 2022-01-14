@@ -34,7 +34,7 @@ namespace ComeX.WPF.Commands {
                 } else {
                     throw new Exception();
                 }
-                await _chatViewModel.CurrentServer.Service.LoadChatHistory(new LoadChatRequest(_chatViewModel.LoginDM.Token, _chatViewModel.CurrentRoom.RoomId, lastMsgTime));
+                await _chatViewModel.CurrentServer.Service.LoadAllHistory(new LoadChatRequest(_chatViewModel.LoginDM.Token, _chatViewModel.CurrentRoom.RoomId, lastMsgTime));
                 _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoom));
                 _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoomMessages));
             } catch (ArgumentException e) {

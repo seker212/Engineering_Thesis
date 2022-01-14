@@ -17,6 +17,7 @@ namespace ComeX.WPF.Services {
         public event Action<LoadMessageResponse> SpecificMessageReceived;
         public event Action<LoadChatResponse> ChatHistoryReceived;
         public event Action<LoadSurveyResponse> SurveyHistoryReceived;
+        public event Action<LoadAllResponse> AllHistoryReceived;
         public event Action<Guid> SurveyVoteDuplicateReceived;
         public event Action<SurveyResponse> UpdatedSurveyReceived;
         public event Action<LoadMessageResponse> UpdatedMessageReceived;
@@ -31,6 +32,7 @@ namespace ComeX.WPF.Services {
             _connection.On<LoadMessageResponse>("Load_message", (message) => SpecificMessageReceived?.Invoke(message));
             _connection.On<LoadChatResponse>("Send_chat_history", (chatHistory) => ChatHistoryReceived?.Invoke(chatHistory));
             _connection.On<LoadSurveyResponse>("Send_survey_history", (surveyHistory) => SurveyHistoryReceived?.Invoke(surveyHistory));
+            _connection.On<LoadAllResponse>("Send_all_history", (allHistory) => AllHistoryReceived?.Invoke(allHistory));
             _connection.On<Guid>("Vote_duplicate", (surveyId) => SurveyVoteDuplicateReceived?.Invoke(surveyId));
             _connection.On<SurveyResponse>("Survey_updated", (survey) => UpdatedSurveyReceived?.Invoke(survey));
             _connection.On<LoadMessageResponse>("Message_updated", (message) => UpdatedMessageReceived?.Invoke(message));
@@ -72,6 +74,10 @@ namespace ComeX.WPF.Services {
 
         public async Task LoadSurveyHistory(LoadSurveyRequest request) {
             await _connection.SendAsync("LoadSurveyHistory", request);
+        }
+
+        public async Task LoadAllHistory(LoadChatRequest request) {
+            await _connection.SendAsync("LoadAllHistory", request);
         }
 
         public async Task SearchMessage(SearchMessageRequest request) {

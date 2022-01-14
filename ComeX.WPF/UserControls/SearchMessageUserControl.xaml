@@ -20,16 +20,6 @@
                     </Trigger>
                 </Style.Triggers>
             </Style>
-
-            <Style x:Key="HoverButtonStyle" TargetType="Button">
-                <Setter Property="Visibility" Value="Hidden"/>
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding ElementName=MessageGrid, Path=IsMouseOver}" Value="True">
-                        <Setter Property="Visibility" Value="Visible" />
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-
         </ResourceDictionary>
     </UserControl.Resources>
 

@@ -45,13 +45,18 @@ namespace ComeX.WPF.ViewModels {
             ChangeRoomCommand = new ChangeRoomCommand(chatViewModel, this);
         }
 
+        public void AddMessagesAndSurveys(List<MessageResponse> messageResponse, List<SurveyResponse> surveyResponse, ChatViewModel chatViewModel) {
+            AddMessages(messageResponse, chatViewModel);
+            AddSurveys(surveyResponse, chatViewModel);
+            SortMessageList();
+        }
+
         public void AddMessages(List<MessageResponse> messageResponse, ChatViewModel chatViewModel) {
             messageResponse.Sort((p, q) => p.SendTime.CompareTo(q.SendTime));
             foreach (var message in messageResponse) {
                 if (GetMessageInListById(message.Id) == null)
                     AddMessage(message, chatViewModel);
             }
-            SortMessageList();
         }
 
         public void AddSurveys(List<SurveyResponse> surveyResponse, ChatViewModel chatViewModel) {
@@ -60,7 +65,6 @@ namespace ComeX.WPF.ViewModels {
                 if (GetMessageInListById(survey.Id) == null)
                     MessageList.Add(new SurveyViewModel(survey, chatViewModel));
             }
-            SortMessageList();
         }
 
         public async void AddMessage(MessageResponse messageResponse, ChatViewModel chatViewModel) {

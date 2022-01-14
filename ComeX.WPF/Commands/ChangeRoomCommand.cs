@@ -32,8 +32,7 @@ namespace ComeX.WPF.Commands {
                 _chatViewModel.CurrentRoom = _roomViewModel;
 
                 if (_roomViewModel.MessageList.Count == 0) {
-                    await _chatViewModel.CurrentServer.Service.LoadChatHistory(new LoadChatRequest(_chatViewModel.LoginDM.Token, _roomViewModel.RoomId, DateTime.Now));
-                    await _chatViewModel.CurrentServer.Service.LoadSurveyHistory(new LoadSurveyRequest(_chatViewModel.LoginDM.Token, _roomViewModel.RoomId, DateTime.Now));
+                    await _chatViewModel.CurrentServer.Service.LoadAllHistory(new LoadChatRequest(_chatViewModel.LoginDM.Token, _roomViewModel.RoomId, DateTime.Now));
                 }
                 _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoom));
                 _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoomMessages));
