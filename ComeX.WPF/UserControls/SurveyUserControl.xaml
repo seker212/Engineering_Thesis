@@ -24,7 +24,7 @@
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition x:Name="AuthorDateRow" Height="20"></RowDefinition>
-            <RowDefinition x:Name="QuestionRow" Height="20"></RowDefinition>
+            <RowDefinition x:Name="QuestionRow" Height="22"></RowDefinition>
             <RowDefinition x:Name="AnswersRow"></RowDefinition>
         </Grid.RowDefinitions>
 
@@ -51,7 +51,7 @@
                    Text="{Binding MessageContent}">
             </TextBlock>
 
-        <Border x:Name="BorderAnswerListView" Grid.Row="2" Style="{StaticResource DefaultBorderStyle}">
+        <Border x:Name="BorderAnswerListView" Grid.Row="2" Style="{StaticResource DefaultBorderStyle}" Margin="0,0,0,15">
             <Grid x:Name="AnswersGrid"
                   Background="{StaticResource DarkBlue2}">
                 <Grid.RowDefinitions>
@@ -104,7 +104,8 @@
                         IsEnabled="{Binding ButtonEnabled}"
                         Template="{StaticResource RoundedButtonTemplate}"
                         Width="80"
-                        Content="Vote"/>
+                        Content="Vote"
+                        Command="{Binding SendSurveyVoteCommand}"/>
             </Grid>
         </Border>
     </Grid>

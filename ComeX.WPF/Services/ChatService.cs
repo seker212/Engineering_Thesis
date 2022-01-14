@@ -19,6 +19,7 @@ namespace ComeX.WPF.Services {
         public event Action<LoadSurveyResponse> SurveyHistoryReceived;
         public event Action<Guid> SurveyVoteDuplicateReceived;
         public event Action<SurveyResponse> UpdatedSurveyReceived;
+        public event Action<LoadMessageResponse> UpdatedMessageReceived;
         public event Action<LoadChatResponse> SearchMessageReceived;
         public event Action<Guid> MessageReactionDuplicateReceived;
 
@@ -32,6 +33,7 @@ namespace ComeX.WPF.Services {
             _connection.On<LoadSurveyResponse>("Send_survey_history", (surveyHistory) => SurveyHistoryReceived?.Invoke(surveyHistory));
             _connection.On<Guid>("Vote_duplicate", (surveyId) => SurveyVoteDuplicateReceived?.Invoke(surveyId));
             _connection.On<SurveyResponse>("Survey_updated", (survey) => UpdatedSurveyReceived?.Invoke(survey));
+            _connection.On<LoadMessageResponse>("Message_updated", (message) => UpdatedMessageReceived?.Invoke(message));
             _connection.On<LoadChatResponse>("Send_search", (searchChat) => SearchMessageReceived?.Invoke(searchChat));
             _connection.On<Guid>("React_duplicate", (messageId) => MessageReactionDuplicateReceived?.Invoke(messageId));
         }

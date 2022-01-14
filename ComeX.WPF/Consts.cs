@@ -13,6 +13,6 @@ namespace ComeX.WPF {
         public static readonly int SURVEYANSWER_MAXLEN = 128;
         public static readonly int SEARCH_MAXLEN = 128;
 
-        public static readonly string DATEFORMAT = "hh:mm   dd-MM-yyyy";
+        public static readonly string DATEFORMAT = "HH:mm   dd-MM-yyyy";
     }
 }

@@ -98,14 +98,15 @@ namespace ComeX.WPF.ViewModels {
 
         public void AddSurvey(SurveyResponse surveyResponse, ChatViewModel chatViewModel) {
             SurveyViewModel newSurvey = new SurveyViewModel(surveyResponse, chatViewModel);
-            SurveyViewModel oldSurvey = GetSurveyById(surveyResponse.Id);
+            SurveyViewModel oldSurvey = (SurveyViewModel)GetMessageInListById(surveyResponse.Id);
 
             if (oldSurvey == null)
                 MessageList.Add(newSurvey);
             else {
                 MessageList[MessageList.IndexOf(oldSurvey)] = newSurvey;
-                SortMessageList();
             }
+
+            SortMessageList();
         }
 
         public BaseMessageViewModel GetMessageInListById(Guid id) {

@@ -87,6 +87,7 @@ namespace ComeX.WPF.ViewModels {
             Service.SurveyHistoryReceived += ChatService_SurveyHistoryReceived;
             // _connection.On<Guid>("Vote_duplicate", (surveyId) => SurveyVoteDuplicateReceived?.Invoke(surveyId));
             Service.UpdatedSurveyReceived += ChatService_UpdatedSurveyReceived;
+            Service.UpdatedMessageReceived += ChatService_UpdatedMessageReceived;
             Service.SearchMessageReceived += ChatService_SearchMessageReceived;
             // _connection.On<Guid>("React_duplicate", (messageId) => MessageReactionDuplicateReceived?.Invoke(messageId));
         }
@@ -97,8 +98,9 @@ namespace ComeX.WPF.ViewModels {
             //_chatViewModel.AddMessage(message);
         }
 
-        // fix
         private void ChatService_SurveyReceived(SurveyResponse survey) {
+            RoomViewModel room = GetRoomById(survey.RoomId);
+            room.AddSurvey(survey, _chatViewModel);
             //CurrentRoomMessages.Add(new SurveyViewModel(survey, this));
         }
 
@@ -128,6 +130,12 @@ namespace ComeX.WPF.ViewModels {
         private void ChatService_UpdatedSurveyReceived(SurveyResponse response) {
             RoomViewModel room = GetRoomById(response.RoomId);
             room.AddSurvey(response, _chatViewModel);
+        }
+
+        private void ChatService_UpdatedMessageReceived(LoadMessageResponse response) {
+            RoomViewModel room = GetRoomById(response.Message.RoomId);
+            room.AddMessage(response.Message, _chatViewModel);
+            // _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoomMessages));
         }
 
         private void ChatService_SearchMessageReceived(LoadChatResponse response) {
