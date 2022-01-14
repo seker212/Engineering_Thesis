@@ -8,6 +8,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Serialization;
+using Microsoft.OpenApi.Models;
+using ComeX.UserDatabaseAPI.Models;
+using Microsoft.Extensions.Options;
+using ComeX.UserDatabaseAPI.Services;
+using ComeX.UserDatabaseAPI.DAL;
 
 namespace ComeX.UserDatabaseAPI
 {
@@ -23,25 +29,58 @@ namespace ComeX.UserDatabaseAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            services.AddControllers();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "DatabaseAPI", Version = "v1" });
+            });
+            services.AddSwaggerGen(options =>
+            {
+                options.CustomSchemaIds(type => type.ToString());
+            });
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            });
+
+            services.AddControllersWithViews().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore)
+                .AddNewtonsoftJson(options => options.SerializerSettings.ContractResolver = new DefaultContractResolver());
+
+            services.Configure<UserDatabaseSettings>(Configuration.GetSection(nameof(UserDatabaseSettings)));
+
+            services.AddSingleton<IUserDatabaseSettings>(sp => sp.GetRequiredService<IOptions<UserDatabaseSettings>>().Value);
+
+            services.AddSingleton<IUserRepository, UserRepository>();
+            services.AddSingleton<ITokenRepository, TokenRepository>();
+            services.AddSingleton<IServerRepository, ServerRepository>();
+            services.AddSingleton<IUserToServerRepository, UserToServerRepository>();
+
+            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<IAuthService, AuthService>();
+            services.AddSingleton<IServerService, ServerService>();
+
+            services.AddControllers().AddNewtonsoftJson(options => options.UseMemberCasing());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors(options => options.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "UserDatabaseAPI v1"));
             }
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles();
 
             app.UseRouting();
 
@@ -49,7 +88,7 @@ namespace ComeX.UserDatabaseAPI
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapRazorPages();
+                endpoints.MapControllers();
             });
         }
     }

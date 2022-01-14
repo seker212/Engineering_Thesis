@@ -1,3 +1,4 @@
+using ComeX.Server.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -8,11 +9,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ComeX.Lib.Auth;
 
 namespace ComeX.Server
 {
     public class Startup
     {
+        public const string SELF_DATABASE_URL = "Server = comx.molly.ovh; Port = 25432; Database = postgres; User Id = banan; Password = s9n5#@Jo;";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -24,6 +28,8 @@ namespace ComeX.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            services.AddSignalR();
+            services.AddComeXAuth(new Uri("https://localhost:44327"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,11 +51,10 @@ namespace ComeX.Server
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                endpoints.MapHub<ComeXHub>("/ComeXLogin");
             });
         }
     }

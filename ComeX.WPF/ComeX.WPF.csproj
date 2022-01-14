@@ -6,4 +6,47 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="ExampleImages\**" />
+    <EmbeddedResource Remove="ExampleImages\**" />
+    <None Remove="ExampleImages\**" />
+    <Page Remove="ExampleImages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\Placeholders\messagePlaceholder.jpg" />
+    <Resource Include="Resources\Images\Placeholders\answerPlaceholder.jpg" />
+    <Resource Include="Resources\Images\Placeholders\questionPlaceholder.jpg" />
+    <Resource Include="Resources\Images\Placeholders\oldPasswordPlaceholder.jpg" />
+    <Resource Include="Resources\Images\Placeholders\newPasswordPlaceholder.jpg" />
+    <Resource Include="Resources\Images\Placeholders\passwordPlaceholder.jpg" />
+    <Resource Include="Resources\Fonts\Nunito-Medium.ttf" />
+    <Resource Include="Resources\Images\logo1.png" />
+    <Resource Include="Resources\Images\logo2.png" />
+    <Resource Include="Resources\Images\Emojis\1.png" />
+    <Resource Include="Resources\Images\Emojis\2.png" />
+    <Resource Include="Resources\Images\Emojis\3.png" />
+    <Resource Include="Resources\Images\Emojis\4.png" />
+    <Resource Include="Resources\Images\Emojis\5.png" />
+    <Resource Include="Resources\Images\Emojis\6.png" />
+    <Resource Include="Resources\Images\Emojis\7.png" />
+    <Resource Include="Resources\Images\Emojis\8.png" />
+    <Resource Include="Resources\Images\Emojis\9.png" />
+    <Resource Include="Resources\Images\Emojis\10.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Emoji.Wpf" Version="0.3.3" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ComeX.Lib.Common\ComeX.Lib.Common.csproj" />
+  </ItemGroup>
+
 </Project>

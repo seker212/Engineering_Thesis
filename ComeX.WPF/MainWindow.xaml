@@ -3,10 +3,50 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:local="clr-namespace:ComeX.WPF"
+        xmlns:vm="clr-namespace:ComeX.WPF.ViewModels"
+        xmlns:uc="clr-namespace:ComeX.WPF.UserControls"
+        xmlns:views="clr-namespace:ComeX.WPF.Views"
+        d:DataContext="{d:DesignInstance vm:MainViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="ComeX"
+        MinHeight="650" MinWidth="{Binding WindowMinWidth}"
+        SizeToContent="WidthAndHeight"
+        ResizeMode="{Binding WindowResizeMode}">
 
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <DataTemplate DataType="{x:Type vm:ChatViewModel}">
+                <views:ChatView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:LoginViewModel}">
+                <views:LoginView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:RegisterViewModel}">
+                <views:RegisterView/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
+                <views:SettingsView/>
+            </DataTemplate>
+
+            <local:MinusTenConverter x:Key="MinusTenConverter" />
+            <local:MinusAnotherValueConverter x:Key="MinusAnotherValueConverter" />
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <!--<Window.InputBindings>
+        <KeyBinding Command="{Binding SendChatMessageCommand}" Key="Enter"/>
+    </Window.InputBindings>-->
+
+    <Grid>
+        <ContentControl Content="{Binding CurrentView}" />
+        <!--<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <views:LoginView DataContext="{Binding LoginViewModel}" />
+        </ScrollViewer>-->
     </Grid>
 </Window>

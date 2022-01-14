@@ -2,7 +2,7 @@
 
 namespace ComeX.Lib.Auth
 {
-    interface IConnectionCache : IReadOnlyDictionary<string, TokenData>
+    public interface IConnectionCache : IReadOnlyDictionary<string, TokenData>
     {
     }
 }

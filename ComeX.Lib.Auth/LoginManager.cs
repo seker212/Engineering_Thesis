@@ -36,8 +36,8 @@ namespace ComeX.Lib.Auth
             var tokenData = new TokenData(tokenHash, tokenReceived.UserId, tokenReceived.Username, DateTime.Parse(tokenReceived.ValidTo), connectionId);
             if (tokenData.IsValid())
             {
-                if (!_connectionCache.TryAdd(connectionId, tokenData))
-                    throw new InvalidCredentialsException("Could not add connectionId and token to connection cache.");
+                if (!_connectionCache.TryAdd(token, tokenData))
+                    throw new InvalidCredentialsException("Could not add token to connection cache.");
             }
             else
                 throw new InvalidCredentialsException("Invalid token.");

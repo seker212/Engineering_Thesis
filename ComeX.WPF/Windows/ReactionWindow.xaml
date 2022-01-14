@@ -1,0 +1,52 @@
+﻿<Window x:Class="ComeX.WPF.Windows.ReactionWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ComeX.WPF.Windows"
+        mc:Ignorable="d"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Title="ReactionWindow"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Height="80" Width="350">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border x:Name="BorderMainGrid" Style="{StaticResource WindowBorderStyle}">
+        <Grid x:Name="ReactionMainGrid"
+              Margin="5">
+            <ListView x:Name="AnswersListView" Grid.Row="0"
+                      BorderThickness="0"
+                      HorizontalAlignment="Center"
+                      Background="{StaticResource DarkBlue3}"
+                      ItemsSource="{Binding ReactionList}">
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal"></StackPanel>
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="{Binding Name}" Style="{StaticResource DefaultButtonStyle}"
+                                Height="40"
+                                Width="40"
+                                Click="AddReactionButtonHandler">
+                                <Button.Background>
+                                    <ImageBrush ImageSource="{Binding Filename}"/>
+                                </Button.Background>
+                            </Button>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
+    </Border>
+</Window>
