@@ -301,7 +301,7 @@ namespace ComeX.Server.Hubs
             {
                 foreach(Guid ansId in msg.AnswerId)
                 {
-                    Vote checkVote = votRepo.GetVote(usrId, ansId);
+                    Vote checkVote = votRepo.GetVote(ansId, usrId);
                     if (checkVote == null)
                     {
                         Vote insertVote = new Vote(Guid.NewGuid(), usrId, ansId);
@@ -427,7 +427,7 @@ namespace ComeX.Server.Hubs
                 MessageResponse rsp = new MessageResponse(message.Id, creator.Username, message.SendTime, message.RoomId, message.ParentId, message.Content, emojiList);
                 LoadMessageResponse response = new LoadMessageResponse(rsp);
 
-                await Clients.Caller.SendAsync("Load_message", response);
+                await Clients.Caller.SendAsync("Message_updated", response);
 
             } catch (Exception e)
             {
