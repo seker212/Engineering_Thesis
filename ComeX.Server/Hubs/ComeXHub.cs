@@ -26,8 +26,6 @@ namespace ComeX.Server.Hubs
         VoteRepository votRepo;
         Allowed_userRepository allowRepo;
 
-        readonly string dateFormat = "yyyy-MM-dd hh:mm:ss";
-
         public ComeXHub(ILoginManager loginManager, IConnectionCache connectionCache)
         {
             _loginManager = loginManager;
@@ -47,6 +45,18 @@ namespace ComeX.Server.Hubs
         {
             Allowed_user user = allowRepo.GetAllowed_user(usrId);
             if (user == null)
+            {
+                return false;
+            } else
+            {
+                return true;
+            }
+        }
+
+        private bool CheckRoomWriteStatus(Guid roomId)
+        {
+            Room check = roomRepo.GetRoom(roomId);
+            if (check.IsArchived)
             {
                 return false;
             } else
@@ -88,6 +98,7 @@ namespace ComeX.Server.Hubs
             Guid usrId = Guid.Parse(_connectionCache[rqst.Token].UserId);
             if (CheckWhitelist(usrId))
             {
+                //wczytanie i wyslanie listy pokojow
                 try
                 {
                     List<RoomResponse> roomList = new List<RoomResponse>();
@@ -115,42 +126,51 @@ namespace ComeX.Server.Hubs
         }
 
         // otrzymano message
-        public async Task SendChatMessage(ChatMessage msg) // token, room id, parent id, content
+        public async Task SendChatMessage(ChatMessage msg)
         {
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
             string usrName = _connectionCache[msg.Token].Username;
             if (CheckWhitelist(usrId))
             {
-                try
+                //sprawdzenie czy do pokoju mozna zapisywac
+                if (CheckRoomWriteStatus(msg.RoomId))
                 {
-                    Message insertMsg = new Message(Guid.NewGuid(), usrId, false, msg.RoomId, DateTime.Now, msg.ParentId, msg.Content);
-                    Message createdMsg = msgRepo.InsertMessage(insertMsg);
-
-                    await Clients.Caller.SendAsync("ACK");
-
-                    IEnumerable<Reaction> reactions = reactRepo.GetReactions(createdMsg.Id);
-                    Dictionary<string, int> emojiList = new Dictionary<string, int>();
-                    foreach (Reaction r in reactions)
+                    //dodanie wiadomosci do bazy danych
+                    try
                     {
-                        try
+                        Message insertMsg = new Message(Guid.NewGuid(), usrId, msg.RoomId, DateTime.Now, msg.ParentId, msg.Content);
+                        Message createdMsg = msgRepo.InsertMessage(insertMsg);
+
+                        await Clients.Caller.SendAsync("ACK");
+
+                        //wczytanie wiadomosci i reakcji na nia i wyslanie do kazdego polaczonego klienta
+                        IEnumerable<Reaction> reactions = reactRepo.GetReactions(createdMsg.Id);
+                        Dictionary<string, int> emojiList = new Dictionary<string, int>();
+                        foreach (Reaction r in reactions)
                         {
-                            emojiList.Add(r.Emoji, 1);
+                            try
+                            {
+                                emojiList.Add(r.Emoji, 1);
+                            }
+                            catch (ArgumentException)
+                            {
+                                emojiList[r.Emoji] += 1;
+                            }
+
                         }
-                        catch (ArgumentException)
-                        {
-                            emojiList[r.Emoji] += 1;
-                        }
+
+                        MessageResponse rsp = new MessageResponse(createdMsg.Id, usrName, createdMsg.SendTime, createdMsg.RoomId, createdMsg.ParentId, createdMsg.Content, emojiList);
+
+                        await Clients.All.SendAsync("Message_created", rsp);
 
                     }
-
-                    MessageResponse rsp = new MessageResponse(createdMsg.Id, usrName, createdMsg.SendTime, createdMsg.RoomId, createdMsg.ParentId, createdMsg.Content, emojiList);
-
-                    await Clients.All.SendAsync("Message_created", rsp);
-
-                }
-                catch (Exception e)
+                    catch (Exception e)
+                    {
+                        await Clients.Caller.SendAsync("Server_message_error");
+                    }
+                } else
                 {
-                    await Clients.Caller.SendAsync("Server_message_error");
+                    await Clients.Caller.SendAsync("Room_archived");
                 }
             } else
             {
@@ -205,6 +225,7 @@ namespace ComeX.Server.Hubs
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
             if (CheckWhitelist(usrId))
             {
+                //wczytanie wiadomosci starszych niz podana data
                 try
                 {
                     List<MessageResponse> messageResponse = new List<MessageResponse>();
@@ -254,6 +275,7 @@ namespace ComeX.Server.Hubs
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
             if (CheckWhitelist(usrId))
             {
+                //wczytanie ankiet starszych niz podana data
                 try
                 {
                     List<SurveyResponse> surveyList = new List<SurveyResponse>();
@@ -277,7 +299,7 @@ namespace ComeX.Server.Hubs
                             ansList.Add(rsp);
                         }
 
-                        SurveyResponse response = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, s.IsMultipleChoice, ansList);
+                        SurveyResponse response = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, ansList);
                         surveyList.Add(response);
                     }
 
@@ -363,7 +385,7 @@ namespace ComeX.Server.Hubs
                             ansList.Add(rsp);
                         }
 
-                        SurveyResponse newResponse = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, s.IsMultipleChoice, ansList);
+                        SurveyResponse newResponse = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, ansList);
                         surveyList.Add(newResponse);
                     }
 
@@ -389,50 +411,60 @@ namespace ComeX.Server.Hubs
             string usrName = _connectionCache[msg.Token].Username;
             if (CheckWhitelist(usrId))
             {
-                try
+                //sprawdzenie czy do pokoju mozna zapisywac
+                if (CheckRoomWriteStatus(msg.RoomId))
                 {
-                    Survey insertSrv = new Survey(Guid.NewGuid(), usrId, msg.RoomId, DateTime.Now, msg.Question, msg.IsMultipleChoice);
-                    Survey createdSrv = srvRepo.Insert(insertSrv);
-
-                    await Clients.Caller.SendAsync("ACK");
-
-                    foreach (string s in msg.AnswerList)
+                    //utworzenie ankiety
+                    try
                     {
-                        try
+                        Survey insertSrv = new Survey(Guid.NewGuid(), usrId, msg.RoomId, DateTime.Now, msg.Question);
+                        Survey createdSrv = srvRepo.Insert(insertSrv);
+
+                        await Clients.Caller.SendAsync("ACK");
+
+                        //utworzenie dopuszczalnych odpowiedzi
+                        foreach (string s in msg.AnswerList)
                         {
-                            Answer insertAns = new Answer(Guid.NewGuid(), s, createdSrv.Id);
-                            Answer createdAns = ansRepo.Insert(insertAns);
+                            try
+                            {
+                                Answer insertAns = new Answer(Guid.NewGuid(), s, createdSrv.Id);
+                                Answer createdAns = ansRepo.Insert(insertAns);
+
+                            }
+                            catch (Exception e)
+                            {
+                                await Clients.Caller.SendAsync("Server_survey_answer_error");
+                            }
 
                         }
-                        catch (Exception e)
+
+                        //wczytanie danych utworzonej ankiety i wyslanie do kazdego polaczonego klienta
+                        IEnumerable<Answer> answers = ansRepo.GetAnswers(createdSrv.Id);
+                        List<SurveyAnswerResponse> ansList = new List<SurveyAnswerResponse>();
+
+                        foreach (Answer ans in answers)
                         {
-                            await Clients.Caller.SendAsync("Server_survey_answer_error");
+
+                            IEnumerable<Vote> votes = votRepo.GetVotes(ans.Id);
+                            int amount = votes.Count();
+
+                            SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content, amount);
+
+                            ansList.Add(rsp);
                         }
 
+                        SurveyResponse response = new SurveyResponse(createdSrv.Id, usrName, createdSrv.SendTime, createdSrv.RoomId, createdSrv.Question, ansList);
+
+                        await Clients.All.SendAsync("Survey_created", response);
+
                     }
-
-                    IEnumerable<Answer> answers = ansRepo.GetAnswers(createdSrv.Id);
-                    List<SurveyAnswerResponse> ansList = new List<SurveyAnswerResponse>();
-
-                    foreach (Answer ans in answers)
+                    catch (Exception e)
                     {
-
-                        IEnumerable<Vote> votes = votRepo.GetVotes(ans.Id);
-                        int amount = votes.Count();
-
-                        SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content, amount);
-
-                        ansList.Add(rsp);
+                        await Clients.Caller.SendAsync("Server_survey_error");
                     }
-
-                    SurveyResponse response = new SurveyResponse(createdSrv.Id, usrName, createdSrv.SendTime, createdSrv.RoomId, createdSrv.Question, createdSrv.IsMultipleChoice, ansList);
-
-                    await Clients.All.SendAsync("Survey_created", response);
-
-                }
-                catch (Exception e)
+                } else
                 {
-                    await Clients.Caller.SendAsync("Server_survey_error");
+                    await Clients.Caller.SendAsync("Room_archived");
                 }
             } else
             {
@@ -446,6 +478,7 @@ namespace ComeX.Server.Hubs
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
             if (CheckWhitelist(usrId))
             {
+                //dodanie glosu pod warunkiem ze nie jest duplikatem
                 try
                 {
                     foreach (Guid ansId in msg.AnswerId)
@@ -483,7 +516,7 @@ namespace ComeX.Server.Hubs
                         ansList.Add(rsp);
                     }
 
-                    SurveyResponse response = new SurveyResponse(srv.Id, usr.Username, srv.SendTime, srv.RoomId, srv.Question, srv.IsMultipleChoice, ansList);
+                    SurveyResponse response = new SurveyResponse(srv.Id, usr.Username, srv.SendTime, srv.RoomId, srv.Question, ansList);
 
                     await Clients.All.SendAsync("Survey_updated", response);
 

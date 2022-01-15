@@ -17,6 +17,6 @@ namespace ComeX.Server.DAL
 
         public IEnumerable<Reaction> GetReactions(Guid messageId) => Query().Where("messageId", messageId).Get<Reaction>();
         public Reaction GetReaction(Guid userId, Guid messageId, string emoji) => Query().Where("userId", userId).Where("messageId", messageId).Where("emoji", emoji).FirstOrDefault<Reaction>();
-        public Reaction InsertReaction(Reaction rec) => Query().Insert(GenerateDataDictionary(rec, 0)) == 1 ? rec : throw new Exception();
+        public Reaction InsertReaction(Reaction rec) => Insert(rec);
     }
 }
