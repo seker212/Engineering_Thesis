@@ -32,6 +32,9 @@ namespace Comex.Server.AdminCli
                     case "ar":
                         ArchiveRoomCommand(args.Skip(1).Single());
                         break;
+                    case "unar":
+                        UnarchiveRoomCommand(args.Skip(1).Single());
+                        break;
                     default:
                         throw new UnknownCommandException();
                 }
@@ -51,6 +54,12 @@ namespace Comex.Server.AdminCli
         {
             var room = _repository.GetRooms().Single(x => x.Name == arg);
             room.IsArchived = true;
+            _repository.Update(room);
+        }
+
+        void UnarchiveRoomCommand(string arg) {
+            var room = _repository.GetRooms().Single(x => x.Name == arg);
+            room.IsArchived = false;
             _repository.Update(room);
         }
     }

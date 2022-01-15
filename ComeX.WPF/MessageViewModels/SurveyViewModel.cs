@@ -49,12 +49,6 @@ namespace ComeX.WPF.MessageViewModels {
 
         public List<SurveyAnswerViewModel> SurveyAnswers { get; set; }
 
-        public bool SurveyIsMultipleChoice {
-            get {
-                return Survey.IsMultipleChoice;
-            }
-        }
-
         public bool ButtonEnabled {
             get {
                 return (!AlreadyAnswered && AnyAnswerChecked());
