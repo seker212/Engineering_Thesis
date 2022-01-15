@@ -91,6 +91,7 @@
         </WrapPanel>
             <WrapPanel x:Name="MessageToolsWrapP" Grid.Column="1"
                        Orientation="Horizontal"
+                       Visibility="{Binding ToolsVisibility}"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Right">
                 <WrapPanel.Resources>

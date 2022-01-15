@@ -88,6 +88,7 @@
                                     </Style>
                                 </Grid.Resources>
                                 <CheckBox x:Name="AnswerButton" Grid.Column="0"
+                                    IsEnabled="{Binding IsRoomArchived}"
                                     VerticalAlignment="Top"
                                     Foreground="{StaticResource LightBlue1}"
                                     Margin="5"
@@ -102,6 +103,7 @@
                 </ListView.ItemTemplate>
             </ListView>
                 <Button x:Name="VoteButton" Grid.Row="1"
+                        Visibility="{Binding ButtonVisibility}"
                         IsEnabled="{Binding ButtonEnabled}"
                         Template="{StaticResource RoundedButtonTemplate}"
                         Width="80"

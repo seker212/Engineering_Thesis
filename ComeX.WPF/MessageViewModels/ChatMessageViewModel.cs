@@ -97,6 +97,17 @@ namespace ComeX.WPF.MessageViewModels {
             }
         }
 
+        private Visibility _toolsVisibility;
+        public Visibility ToolsVisibility {
+            get {
+                return _toolsVisibility;
+            }
+            set {
+                _toolsVisibility = value;
+                OnPropertyChanged(nameof(ToolsVisibility));
+            }
+        }
+
         public ICommand SetReplyCommand { get; }
         public ICommand ReactionCommand { get; }
 
@@ -113,9 +124,12 @@ namespace ComeX.WPF.MessageViewModels {
         }
         public ChatMessageViewModel() { }
 
-        public ChatMessageViewModel(MessageResponse message, ChatViewModel chatVM, MessageResponse parentMessage = null) {
+        public ChatMessageViewModel(MessageResponse message, ChatViewModel chatVM, bool isRoomArchived, MessageResponse parentMessage = null) {
             SetReplyCommand = new SetReplyCommand(this, chatVM);
             ReactionCommand = new ReactionCommand(this, chatVM);
+            if (isRoomArchived)
+                ToolsVisibility = Visibility.Collapsed;
+            else ToolsVisibility = Visibility.Visible;
 
             _chatVM = chatVM;
             Message = message;

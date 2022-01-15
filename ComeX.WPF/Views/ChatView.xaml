@@ -99,37 +99,79 @@
                 </WrapPanel>
             </Grid>
 
-            <WrapPanel Grid.Column="1" x:Name="RoomsWrapP"
+        <Grid Grid.Column="1" Background="{StaticResource DarkBlue1}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <WrapPanel Grid.Row="0" x:Name="RoomsWrapP"
                    Width="160"
-                   Background="{StaticResource DarkBlue1}"
                    Orientation="Vertical">
-            <ListView Grid.Row="0" Grid.ColumnSpan="2" x:Name="RoomsListView"
+                <ListView Grid.Row="0" Grid.ColumnSpan="2" x:Name="RoomsListView"
                           Margin="5"
                           ItemsSource="{Binding Rooms}"
                           Background="{x:Null}"
                           BorderBrush="{x:Null}">
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="ListViewItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="ListViewItem">
-                                    <ContentPresenter />
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <WrapPanel>
-                            <uc:RoomUserControl/>
-                        </WrapPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-        </WrapPanel>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <WrapPanel>
+                                <uc:RoomUserControl/>
+                            </WrapPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </WrapPanel>
 
-            <Grid Grid.Column="2" x:Name="ContentGrid">
+            <Label Grid.Row="1" x:Name="ArchivedRoomsLabel" Style="{StaticResource DefaultHeaderLabelStyle}"
+                   Margin="0,15,0,0"
+                   FontSize="14"
+                   HorizontalAlignment="Center"
+                   Visibility="{Binding ArchivedRoomsVisibility}"
+                   Content="Archived rooms"/>
+
+            <WrapPanel Grid.Row="2" x:Name="ArchivedRoomsWrapP"
+                   Width="160"
+                   Orientation="Vertical">
+                <ListView Grid.Row="0" Grid.ColumnSpan="2" x:Name="ArchivedRoomsListView"
+                          Margin="5"
+                          ItemsSource="{Binding ArchivedRooms}"
+                          Background="{x:Null}"
+                          BorderBrush="{x:Null}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <WrapPanel>
+                                <uc:RoomUserControl/>
+                            </WrapPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </WrapPanel>
+        </Grid>
+
+        <Grid Grid.Column="2" x:Name="ContentGrid">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition MinWidth="200" Width="*"></ColumnDefinition>
                     <ColumnDefinition Width="220"></ColumnDefinition>
@@ -198,9 +240,10 @@
                             Content="Load"
                             Command="{Binding LoadHistoryCommand}"/>
                     <ListView Grid.Row="1" x:Name="MessagesListView"
-                          Margin="5"                       
+                          Margin="5"  
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ItemsSource="{Binding CurrentRoomMessages}"
+
                           Background="{StaticResource DarkBlue3}"
                           BorderBrush="{x:Null}">
                         <ListView.ItemContainerStyle>

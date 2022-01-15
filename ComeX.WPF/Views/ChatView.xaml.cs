@@ -3,6 +3,7 @@ using ComeX.WPF.UserControls;
 using ComeX.WPF.Windows;
 using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -22,51 +23,9 @@ namespace ComeX.WPF.Views {
     /// Logika interakcji dla klasy ChatView.xaml
     /// </summary>
     public partial class ChatView : UserControl {
-        string SolutionPath = Directory.GetParent(System.IO.Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-        ImageBrush Avatar = new ImageBrush();
-
         public ChatView() {
             InitializeComponent();
-
-            LoadUser();
-            LoadServers();
-            //LoadRooms();
-
         }
-
-        void LoadUser() {
-            // Avatar.ImageSource = new BitmapImage(new Uri(System.IO.Path.Combine(SolutionPath, @"ExampleImages\avatar2.jpg")));
-            // UserAvatar.Background = Avatar;
-        }
-
-        void LoadServers() {
-
-        }
-
-        void LoadRooms() {
-            for (int i = 0; i < 3; i++) {
-                RoomUserControl newRoom = new RoomUserControl { };
-                newRoom.RoomNameButton.Content = "Room" + i;
-                newRoom.RoomNameButton.Click += new RoutedEventHandler(SwitchRoom);
-                if (i == 1)
-                    newRoom.SetNewMessage();
-                RoomsWrapP.Children.Add(newRoom);
-                if (i == 0) {
-                    SwitchRoom(newRoom.RoomNameButton, null);
-                }
-            }
-        }
-
-        void SwitchServer(object sender, RoutedEventArgs e) { }
-
-        void SwitchRoom(object sender, RoutedEventArgs e) {
-            Button button = sender as Button;
-            RoomUserControl room = button.DataContext as RoomUserControl;
-            //SelectedRoomTitle.Text = (string)button.Content;
-            room.DeleteNotify();
-        }
-
-        void AddServerMethod(object sender, RoutedEventArgs e) { }
 
         private void AddMessagePlaceholder(object sender, RoutedEventArgs e) {
             TextBox textbox = sender as TextBox;
