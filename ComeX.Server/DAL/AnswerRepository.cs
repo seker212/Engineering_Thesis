@@ -16,6 +16,6 @@ namespace ComeX.Server.DAL
         }
 
         public IEnumerable<Answer> GetAnswers(Guid surveyId) => Query().Where("surveyId", surveyId).Get<Answer>();
-        public Answer InsertAnswer(Answer ans) => Query().Insert(GenerateDataDictionary(ans, 0)) == 1 ? ans : throw new Exception();
+        public Answer InsertAnswer(Answer ans) => Insert(ans);
     }
 }
