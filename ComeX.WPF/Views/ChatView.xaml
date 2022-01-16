@@ -290,14 +290,33 @@
                       x:Name="RoomMessagesGrid"
                       Background="{StaticResource DarkBlue3}">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*"></RowDefinition>
+                        <RowDefinition Height="*" x:Name="ContentRow"></RowDefinition>
                         <RowDefinition Height="120"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                    <ListView
+                    <ListView Grid.Row="0"
                         Background="{StaticResource DarkBlue3}"
                         BorderThickness="0"
-                        HorizontalAlignment="Center">
+                        HorizontalAlignment="Stretch"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="ListViewItem">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                                <Style.Triggers>
+                                    <Trigger Property="Control.IsMouseOver"
+                                             Value="True">
+                                        <Setter Property="Control.Background"
+                                                Value="Transparent" />
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </ListView.ItemContainerStyle>
                         <Button x:Name="LoadMessagesButton"
                                 Template="{StaticResource RoundedButtonTemplate}"
                                 HorizontalAlignment="Center"
@@ -305,14 +324,17 @@
                                 Height="30"
                                 Command="{Binding LoadHistoryCommand}" />
                         <uc:LoadingUserControl Width="30"
-                                               Height="30"/>
+                                               Height="30"
+                                               Visibility="Collapsed"/>
                         <ListView x:Name="MessagesListView"
                                   Margin="5,5,5,5"
+                                  Height="{Binding ActualHeight, ElementName=ContentRow}"
+                                  HorizontalAlignment="Stretch"
                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
                                   ItemsSource="{Binding CurrentRoomMessages}"
                                   Background="{StaticResource DarkBlue3}"
-                                  BorderBrush="{x:Null}"
-                                  Grid.ColumnSpan="2">
+                                  BorderBrush="{x:Null}">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="Template">
@@ -322,12 +344,19 @@
                                             </ControlTemplate>
                                         </Setter.Value>
                                     </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="Control.IsMouseOver"
+                                                 Value="True">
+                                            <Setter Property="Control.Background"
+                                                    Value="Transparent" />
+                                        </Trigger>
+                                    </Style.Triggers>
                                 </Style>
                             </ListView.ItemContainerStyle>
                             <ListView.ItemsPanel>
                                 <ItemsPanelTemplate>
                                     <WrapPanel x:Name="MessagesWrapP"
-                                               Orientation="Vertical" />
+                                               Orientation="Vertical"/>
                                 </ItemsPanelTemplate>
                             </ListView.ItemsPanel>
                             <ListView.Resources>

@@ -4,10 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:ComeX.WPF.UserControls"
-             mc:Ignorable="d"
-             x:Name="LoadingUC"
-             d:DesignHeight="{Binding Path=SizeUC, ElementName=LoadingUC}"
-             d:DesignWidth="{Binding Path=SizeUC, ElementName=LoadingUC}">
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="40">
     <UserControl.Resources>
         <Color x:Key="FilledColor"
                A="255"
@@ -165,14 +163,14 @@
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 Background="{TemplateBinding Background}">
                             <Grid>
-                                <Canvas Height="{Binding Path=SizeUC, ElementName=LoadingUC}"
-                                        Width="{Binding Path=SizeUC, ElementName=LoadingUC}">
+                                <Canvas Height="40"
+                                        Width="40">
                                     <Canvas.Resources>
                                         <Style TargetType="Ellipse">
                                             <Setter Property="Width"
-                                                    Value="{Binding Path=SizeE, ElementName=LoadingUC}" />
+                                                    Value="10" />
                                             <Setter Property="Height"
-                                                    Value="{Binding Path=SizeE, ElementName=LoadingUC}" />
+                                                    Value="10" />
                                             <Setter Property="Fill"
                                                     Value="#009B9B9B" />
                                         </Style>
