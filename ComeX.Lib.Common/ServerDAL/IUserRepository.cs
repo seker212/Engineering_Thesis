@@ -7,5 +7,6 @@ namespace ComeX.Lib.Common.ServerDAL
     {
         User GetUser(Guid id);
         User InsertUser(User usr);
+        bool UpdateToNormalUser(Guid newId, string username);
     }
 }
