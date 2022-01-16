@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ComeX.WPF.ViewModels {
@@ -149,6 +150,7 @@ namespace ComeX.WPF.ViewModels {
             foreach (var msg in response.MessageList) {
                 _chatViewModel.AddSearchMessage(msg);
             }
+            _chatViewModel.SearchVisibility = Visibility.Visible;
         }
 
         public RoomViewModel GetRoomById (Guid roomId) {

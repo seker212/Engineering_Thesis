@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ComeX.WPF.Commands {
@@ -45,6 +46,7 @@ namespace ComeX.WPF.Commands {
                     isInputCorrect = false;
                 }
                 if (isInputCorrect) {
+                    _viewModel.LoadingVisibility = Visibility.Visible;
                     LoginDataModel loginDataModel = await _loginService.Login(login, _viewModel.SecureStringToString(password));
                     IEnumerable<ServerDataModel> serverDataModels = await _loginService.GetServers(login);
                     _viewModel.LoginDM = loginDataModel;
@@ -52,12 +54,13 @@ namespace ComeX.WPF.Commands {
                         _viewModel.ServerDMs.Add(serverDM);
                     _viewModel.SetLoginDMCommand.Execute(null);
                     _viewModel.ChangeViewToChatCommand.Execute(null);
-                   // _viewModel.ErrorMessage = string.Empty;
                 }
             } catch (ArgumentException e) {
+                _viewModel.LoadingVisibility = Visibility.Hidden;
                 _viewModel.SetUsernameErrorMessage(string.Empty);
                 _viewModel.SetPasswordErrorMessage("Username or password is invalid");
             } catch (Exception e) {
+                _viewModel.LoadingVisibility = Visibility.Hidden;
                 _viewModel.ErrorMessage = "Login failed";
             }
         }

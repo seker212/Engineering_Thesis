@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:uc="clr-namespace:ComeX.WPF.UserControls"
              xmlns:local="clr-namespace:ComeX.WPF.Views"
              mc:Ignorable="d" 
              Height="650" Width="500"
@@ -77,9 +78,6 @@
                        Foreground="Red"
                        Visibility="{Binding PasswordErrorVisibility}"
                        Content="{Binding PasswordError}"/>
-                <Label>
-                    <Hyperlink x:Name="ForgotPasswordLink" Foreground="{StaticResource LightBlue2}">Forgot password?</Hyperlink>
-                </Label>
                 <Button x:Name="LoginButton"
                         Template="{StaticResource RoundedButtonTemplate}"
                         Margin="30"
@@ -92,6 +90,10 @@
                         BorderBrush="{StaticResource DarkBlue3}"
                         Content="Sign in"
                         Command="{Binding LoginCommand}"/>
+                <uc:LoadingUserControl                 
+                    Width="40"
+                    Height="40"
+                    Visibility="{Binding LoadingVisibility}"/>
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" VerticalAlignment="Bottom">

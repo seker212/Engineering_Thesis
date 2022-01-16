@@ -80,6 +80,17 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private Visibility _loadingVisibility;
+        public Visibility LoadingVisibility {
+            get {
+                return _loadingVisibility;
+            }
+            set {
+                _loadingVisibility = value;
+                OnPropertyChanged(nameof(LoadingVisibility));
+            }
+        }
+
         private Brush _usernameBoxBorder;
         public Brush UsernameBoxBorder {
             get {
@@ -205,6 +216,7 @@ namespace ComeX.WPF.ViewModels {
 
             UsernameErrorVisibility = Visibility.Collapsed;
             PasswordErrorVisibility = Visibility.Collapsed;
+            LoadingVisibility = Visibility.Hidden;
 
             _defaultBorderBrush = (Brush)Application.Current.MainWindow.FindResource("DarkBlue3");
 
@@ -217,14 +229,6 @@ namespace ComeX.WPF.ViewModels {
 
             return viewModel;
         }
-
-        /*
-        public void ResetViewModel () {
-            Username = string.Empty;
-            UnsetUsernameErrorMessage();
-            UnsetPasswordErrorMessage();
-        }
-        */
 
         public void SetUsernameErrorMessage (string errorMessage) {
             if (errorMessage != string.Empty) {

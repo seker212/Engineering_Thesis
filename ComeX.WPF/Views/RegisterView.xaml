@@ -2,7 +2,8 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:uc="clr-namespace:ComeX.WPF.UserControls"
              xmlns:local="clr-namespace:ComeX.WPF.Views"
              mc:Ignorable="d" 
              Height="650" Width="500"
@@ -113,6 +114,9 @@
                         BorderBrush="{StaticResource DarkBlue3}"
                         Content="Create account"
                         Command="{Binding RegisterCommand}"/>
+                <uc:LoadingUserControl Width="40"
+                                       Height="40"
+                                       Visibility="{Binding LoadingVisibility}" />
             </StackPanel>
         </Grid>
         <Grid Grid.Row="1" VerticalAlignment="Bottom">

@@ -272,6 +272,17 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private Visibility _searchVisibility;
+        public Visibility SearchVisibility {
+            get {
+                return _searchVisibility;
+            }
+            set {
+                _searchVisibility = value;
+                OnPropertyChanged(nameof(SearchVisibility));
+            }
+        }
+
         public int MessageMaxLen {
             get {
                 return Consts.MESSAGE_MAXLEN;
@@ -323,11 +334,11 @@ namespace ComeX.WPF.ViewModels {
         public ICommand CreateSurveyCommand { get; }
         public ICommand GetServersListCommand { get; }
         public ICommand GetRoomsListCommand { get; }
-        public ICommand ChangeRoomCommand { get; }
         public ICommand OpenSettingsCommand { get; }
         public ICommand UnsetReplyCommand { get; }
         public ICommand SearchCommand { get; }
         public ICommand LoadHistoryCommand { get; }
+        public ICommand CloseSearchCommand { get; }
 
         private ICommand _changeViewToLoginCommand;
         public ICommand ChangeViewToLoginCommand {
@@ -341,6 +352,7 @@ namespace ComeX.WPF.ViewModels {
         public ChatViewModel(LoginService loginService, LoginDataModel loginDM, List<ServerDataModel> serverDMs) {
             ReplyParentVisibility = Visibility.Collapsed;
             ArchivedRoomsVisibility = Visibility.Collapsed;
+            SearchVisibility = Visibility.Collapsed;
             SendMessageEnabled = false;
 
             ServerDMs = new List<ServerDataModel>();
@@ -366,6 +378,7 @@ namespace ComeX.WPF.ViewModels {
             UnsetReplyCommand = new UnsetReplyCommand(this);
             SearchCommand = new SearchCommand(this);
             LoadHistoryCommand = new LoadHistoryCommand(this);
+            CloseSearchCommand = new CloseSearchCommand(this);
         }
 
         public void AddSearchMessage(MessageResponse msg) {

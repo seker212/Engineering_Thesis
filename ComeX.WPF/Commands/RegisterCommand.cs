@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ComeX.WPF.Commands {
@@ -58,6 +59,7 @@ namespace ComeX.WPF.Commands {
                     isInputCorrect = false;
                 }
                 if (isInputCorrect) {
+                    _viewModel.LoadingVisibility = Visibility.Visible;
                     bool result = await _service.Register(login, password);
                     if (result) {
                         LoginDataModel loginDataModel = await _service.Login(login, password);
@@ -67,8 +69,10 @@ namespace ComeX.WPF.Commands {
                     }
                 }
             } catch (ArgumentException e) {
+                _viewModel.LoadingVisibility = Visibility.Hidden;
                 _viewModel.SetUsernameErrorMessage("This username is already taken");
             } catch (Exception e) {
+                _viewModel.LoadingVisibility = Visibility.Hidden;
                 _viewModel.ErrorMessage = "Register failed";
             }
         }
