@@ -25,7 +25,7 @@ namespace ComeX.WPF.Commands {
 
         public async void Execute(object parameter) {
             try {
-                BaseMessageViewModel lastMsg = _chatViewModel.CurrentRoomMessages[0];
+                BaseMessageViewModel lastMsg = _chatViewModel.CurrentRoomMessages[1];
                 DateTime lastMsgTime = new DateTime();
                 if (lastMsg.GetType() == typeof(ChatMessageViewModel)) {
                     lastMsgTime = ((ChatMessageViewModel)lastMsg).Message.SendTime;
