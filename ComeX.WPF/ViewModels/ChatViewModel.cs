@@ -135,7 +135,13 @@ namespace ComeX.WPF.ViewModels {
         public ObservableCollection<BaseMessageViewModel> CurrentRoomMessages {
             get {
                 if (CurrentRoom == null) return new ObservableCollection<BaseMessageViewModel>();
-                else return CurrentRoom.MessageList;
+                else {
+                    ObservableCollection<BaseMessageViewModel> list = new ObservableCollection<BaseMessageViewModel>();
+                    list.Add(new LoadHistoryViewModel(this));
+                    foreach (var el in CurrentRoom.MessageList)
+                        list.Add(el);
+                    return list;
+                }
             }
         }
 
@@ -158,6 +164,17 @@ namespace ComeX.WPF.ViewModels {
             set {
                 _searchPhrase = value;
                 OnPropertyChanged(nameof(SearchPhrase));
+            }
+        }
+
+        private string _searchPhraseNumberLabel;
+        public string SearchPhraseNumberLabel {
+            get {
+                return _searchPhraseNumberLabel;
+            }
+            set {
+                _searchPhraseNumberLabel = value;
+                OnPropertyChanged(nameof(SearchPhraseNumberLabel));
             }
         }
 
@@ -337,7 +354,6 @@ namespace ComeX.WPF.ViewModels {
         public ICommand OpenSettingsCommand { get; }
         public ICommand UnsetReplyCommand { get; }
         public ICommand SearchCommand { get; }
-        public ICommand LoadHistoryCommand { get; }
         public ICommand CloseSearchCommand { get; }
 
         private ICommand _changeViewToLoginCommand;
@@ -377,7 +393,6 @@ namespace ComeX.WPF.ViewModels {
             OpenSettingsCommand = new OpenSettingsCommand(this, loginService);
             UnsetReplyCommand = new UnsetReplyCommand(this);
             SearchCommand = new SearchCommand(this);
-            LoadHistoryCommand = new LoadHistoryCommand(this);
             CloseSearchCommand = new CloseSearchCommand(this);
         }
 

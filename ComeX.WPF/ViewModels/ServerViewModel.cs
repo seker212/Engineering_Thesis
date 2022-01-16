@@ -151,6 +151,10 @@ namespace ComeX.WPF.ViewModels {
                 _chatViewModel.AddSearchMessage(msg);
             }
             _chatViewModel.SearchVisibility = Visibility.Visible;
+            _chatViewModel.SearchPhraseLabel = _chatViewModel.SearchPhrase;
+            int elo = response.MessageList.Count;
+            _chatViewModel.SearchPhraseNumberLabel = elo.ToString();
+            _chatViewModel.SearchPhraseRoom = _chatViewModel.CurrentRoom.Name;
         }
 
         public RoomViewModel GetRoomById (Guid roomId) {

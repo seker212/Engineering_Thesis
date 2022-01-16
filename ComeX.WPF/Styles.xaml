@@ -47,21 +47,29 @@
         <Setter Property="Background" Value="{x:Null}"/>
     </Style>
 
-    <Style x:Key="DefaultButtonStyle" TargetType="Button">
-        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}"/>
-        <Setter Property="FontSize" Value="14"/>
+    <Style x:Key="DefaultButtonStyle"
+           TargetType="Button">
+        <Setter Property="FontFamily"
+                Value="{StaticResource DefaultFont}" />
+        <Setter Property="FontSize"
+                Value="14" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type Button}">
-                    <Border Background="{TemplateBinding Background}" BorderBrush="{x:Null}" BorderThickness="1">
-                        <ContentPresenter HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{x:Null}"
+                            BorderThickness="1">
+                        <ContentPresenter HorizontalAlignment="Left"
+                                          VerticalAlignment="Center" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
         <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource DarkBlue3}"/>
+            <Trigger Property="IsMouseOver"
+                     Value="True">
+                <Setter Property="Background"
+                        Value="{StaticResource DarkBlue3}" />
             </Trigger>
         </Style.Triggers>
     </Style>
