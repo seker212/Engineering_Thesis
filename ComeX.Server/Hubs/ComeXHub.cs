@@ -79,14 +79,15 @@ namespace ComeX.Server.Hubs
                 //wpisanie do users
                 try
                 {
+                    //gdy uzytkownik loguje sie po raz pierwszy
                     User loginUser = usrRepo.GetUser(Guid.Parse(_connectionCache[msg.Token].UserId));
                     await Clients.Caller.SendAsync("Logged_in");
                 }
                 catch (Exception e)
                 {
-                    //User loginUser = usrRepo.InsertUser(new User(usrId, usrName));
-                    
-                    
+                    //gdy uzytkownik loguje sie po raz kolejny
+                    await Clients.Caller.SendAsync("Repeat_login");
+
                 }
             } else
             {

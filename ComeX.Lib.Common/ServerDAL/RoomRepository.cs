@@ -13,7 +13,7 @@ namespace ComeX.Lib.Common.ServerDAL
         {
         }
 
-        public Room GetRoom(Guid id) => Query().Where("id", id).First<Room>();
+        public Room GetRoom(Guid id) => Get(id);
         public IEnumerable<Room> GetRooms() => Query().Get<Room>();
     }
 }
