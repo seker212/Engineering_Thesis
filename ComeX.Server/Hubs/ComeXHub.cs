@@ -51,6 +51,8 @@ namespace ComeX.Server.Hubs
                 allowRepo.Insert(new Allowed_user(usrId));
                 return true;
             }
+            else if (user != null)
+                return true;
             return false;
         }
 
