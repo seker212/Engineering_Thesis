@@ -14,7 +14,7 @@ namespace ComeX.Server.DAL
         {
         }
 
-        public Survey GetSurvey(Guid id) => Query().Where("id", id).First<Survey>();
+        public Survey GetSurvey(Guid id) => Get(id);
         public IEnumerable<Survey> GetSurveys(Guid roomId, DateTime sendTime) => Query().Where("roomId", roomId).Where("sendTime", "<", sendTime).OrderByDesc("sendTime").Limit(50).Get<Survey>();
         public IEnumerable<Survey> GetSurveys(Guid roomId, DateTime sendTime, DateTime endTime) => Query().Where("roomId", roomId).Where("sendTime", "<", sendTime).Where("sendTime", ">=", endTime).OrderByDesc("sendTime").Limit(50).Get<Survey>();
         public Survey InsertSurvey(Survey srv) => Insert(srv);
