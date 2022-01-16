@@ -11,7 +11,10 @@
         d:DataContext="{d:DesignInstance vm:MainViewModel}"
         mc:Ignorable="d"
         Title="ComeX"
-        MinHeight="650" MinWidth="{Binding WindowMinWidth}"
+        MinHeight="650"
+        Height="{Binding WindowHeight}"
+        MinWidth="{Binding WindowMinWidth}"
+        Width="{Binding WindowWidth}"
         SizeToContent="WidthAndHeight"
         ResizeMode="{Binding WindowResizeMode}">
 
@@ -33,20 +36,10 @@
             <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
                 <views:SettingsView/>
             </DataTemplate>
-
-            <local:MinusTenConverter x:Key="MinusTenConverter" />
-            <local:MinusAnotherValueConverter x:Key="MinusAnotherValueConverter" />
         </ResourceDictionary>
     </Window.Resources>
 
-    <!--<Window.InputBindings>
-        <KeyBinding Command="{Binding SendChatMessageCommand}" Key="Enter"/>
-    </Window.InputBindings>-->
-
     <Grid>
         <ContentControl Content="{Binding CurrentView}" />
-        <!--<ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-            <views:LoginView DataContext="{Binding LoginViewModel}" />
-        </ScrollViewer>-->
     </Grid>
 </Window>

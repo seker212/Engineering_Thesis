@@ -60,6 +60,7 @@ namespace ComeX.WPF.ViewModels {
             set {
                 _currentServer = value;
                 Rooms = _currentServer.RoomList;
+                ArchivedRooms = _currentServer.ArchivedRoomList;
                 CurrentRoom = null;
                 OnPropertyChanged(nameof(CurrentServer));
                 OnPropertyChanged(nameof(Rooms));
@@ -79,6 +80,33 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private List<RoomViewModel> _archivedRooms;
+        public List<RoomViewModel> ArchivedRooms {
+            get {
+                return _archivedRooms;
+            }
+            set {
+                _archivedRooms = value;
+                if (_archivedRooms != null && _archivedRooms.Count > 0)
+                    ArchivedRoomsVisibility = Visibility.Visible;
+                else {
+                    ArchivedRoomsVisibility = Visibility.Collapsed;
+                }
+                OnPropertyChanged(nameof(ArchivedRooms));
+            }
+        }
+
+        private Visibility _archivedRoomsVisibility;
+        public Visibility ArchivedRoomsVisibility {
+            get {
+                return _archivedRoomsVisibility;
+            }
+            set {
+                _archivedRoomsVisibility = value;
+                OnPropertyChanged(nameof(ArchivedRoomsVisibility));
+            }
+        }
+
         private RoomViewModel _currentRoom;
         public RoomViewModel CurrentRoom {
             get {
@@ -86,8 +114,10 @@ namespace ComeX.WPF.ViewModels {
             }
             set {
                 _currentRoom = value;
-                if (value != null) {
+                if (_currentRoom != null && !_currentRoom.IsArchived) {
                     SendMessageEnabled = true;
+                } else {
+                    SendMessageEnabled = false;
                 }
                 OnPropertyChanged(nameof(CurrentRoom));
                 OnPropertyChanged(nameof(CurrentRoomName));
@@ -105,7 +135,13 @@ namespace ComeX.WPF.ViewModels {
         public ObservableCollection<BaseMessageViewModel> CurrentRoomMessages {
             get {
                 if (CurrentRoom == null) return new ObservableCollection<BaseMessageViewModel>();
-                else return CurrentRoom.MessageList;
+                else {
+                    ObservableCollection<BaseMessageViewModel> list = new ObservableCollection<BaseMessageViewModel>();
+                    list.Add(new LoadHistoryViewModel(this));
+                    foreach (var el in CurrentRoom.MessageList)
+                        list.Add(el);
+                    return list;
+                }
             }
         }
 
@@ -128,6 +164,17 @@ namespace ComeX.WPF.ViewModels {
             set {
                 _searchPhrase = value;
                 OnPropertyChanged(nameof(SearchPhrase));
+            }
+        }
+
+        private string _searchPhraseNumberLabel;
+        public string SearchPhraseNumberLabel {
+            get {
+                return _searchPhraseNumberLabel;
+            }
+            set {
+                _searchPhraseNumberLabel = value;
+                OnPropertyChanged(nameof(SearchPhraseNumberLabel));
             }
         }
 
@@ -242,6 +289,17 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private Visibility _searchVisibility;
+        public Visibility SearchVisibility {
+            get {
+                return _searchVisibility;
+            }
+            set {
+                _searchVisibility = value;
+                OnPropertyChanged(nameof(SearchVisibility));
+            }
+        }
+
         public int MessageMaxLen {
             get {
                 return Consts.MESSAGE_MAXLEN;
@@ -293,11 +351,10 @@ namespace ComeX.WPF.ViewModels {
         public ICommand CreateSurveyCommand { get; }
         public ICommand GetServersListCommand { get; }
         public ICommand GetRoomsListCommand { get; }
-        public ICommand ChangeRoomCommand { get; }
         public ICommand OpenSettingsCommand { get; }
         public ICommand UnsetReplyCommand { get; }
         public ICommand SearchCommand { get; }
-        public ICommand LoadHistoryCommand { get; }
+        public ICommand CloseSearchCommand { get; }
 
         private ICommand _changeViewToLoginCommand;
         public ICommand ChangeViewToLoginCommand {
@@ -310,6 +367,8 @@ namespace ComeX.WPF.ViewModels {
 
         public ChatViewModel(LoginService loginService, LoginDataModel loginDM, List<ServerDataModel> serverDMs) {
             ReplyParentVisibility = Visibility.Collapsed;
+            ArchivedRoomsVisibility = Visibility.Collapsed;
+            SearchVisibility = Visibility.Collapsed;
             SendMessageEnabled = false;
 
             ServerDMs = new List<ServerDataModel>();
@@ -334,7 +393,7 @@ namespace ComeX.WPF.ViewModels {
             OpenSettingsCommand = new OpenSettingsCommand(this, loginService);
             UnsetReplyCommand = new UnsetReplyCommand(this);
             SearchCommand = new SearchCommand(this);
-            LoadHistoryCommand = new LoadHistoryCommand(this);
+            CloseSearchCommand = new CloseSearchCommand(this);
         }
 
         public void AddSearchMessage(MessageResponse msg) {
@@ -347,28 +406,11 @@ namespace ComeX.WPF.ViewModels {
                     }
                 }
                 // if parentMsg not found - get parentMsg by msg.parentId from server
-                newMsgVM = new ChatMessageViewModel(msg, this);
-            } else newMsgVM = new ChatMessageViewModel(msg, this);
+                newMsgVM = new ChatMessageViewModel(msg, this, true);
+            } else newMsgVM = new ChatMessageViewModel(msg, this, true);
             SearchMessages.Add(newMsgVM);
         }
 
-        // temp
-        /*
-        public void AddSurvey(SurveyMessage survey) {
-            SurveyResponse newSurvey = new SurveyResponse();
-            newSurvey.Username = "Anonim4";
-            newSurvey.SendTime = "Today";
-            newSurvey.RoomId = Guid.Empty;
-            newSurvey.Question = survey.Question;
-            newSurvey.IsMultipleChoice = survey.IsMultipleChoice;
-            Dictionary<SurveyAnswerResponse, int> answers = new Dictionary<SurveyAnswerResponse, int>();
-            foreach (var answer in survey.AnswerList) {
-                answers.Add(new SurveyAnswerResponse(Guid.NewGuid(), answer), 0);
-            }
-            newSurvey.AnswerList = answers;
-            CurrentRoomMessages.Add(new SurveyViewModel(newSurvey, this));
-        }
-        */
             public static ChatViewModel CreatedConnectedModel(LoginService loginService, LoginDataModel loginDM, List<ServerDataModel> serverDMs) {
             ChatViewModel viewModel = new ChatViewModel(loginService, loginDM, serverDMs);
             return viewModel;

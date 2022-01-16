@@ -8,11 +8,10 @@ using Newtonsoft.Json;
 namespace ComeX.Lib.Common.ServerCommunicationModels {
 
     public class SurveyMessage {
-        public SurveyMessage(string token, Guid roomId, string question, bool isMultipleChoice, List<string> answerList) {
+        public SurveyMessage(string token, Guid roomId, string question, List<string> answerList) {
             Token = token;
             RoomId = roomId;
             Question = question;
-            IsMultipleChoice = isMultipleChoice;
             AnswerList = answerList;
         }
 
@@ -24,8 +23,6 @@ namespace ComeX.Lib.Common.ServerCommunicationModels {
         public Guid RoomId { get; set; }
         [JsonProperty("Question")]
         public string Question { get; set; }
-        [JsonProperty("IsMultipleChoice")]
-        public bool IsMultipleChoice { get; set; }
         [JsonProperty("AnswerList")]
         public List<string> AnswerList { get; set; }
     }

@@ -57,7 +57,6 @@ namespace ComeX.WPF.Windows {
 
             if (isInputCorrect) {
                 SurveyMessage newSurvey = new SurveyMessage();
-                newSurvey.IsMultipleChoice = (bool)MultipleChoiceCheckBox.IsChecked;
                 newSurvey.Question = QuestionTextBox.Text;
                 newSurvey.AnswerList = answerList;
 

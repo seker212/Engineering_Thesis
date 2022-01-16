@@ -1,13 +1,7 @@
 CREATE TABLE "users" (
   "id" uuid PRIMARY KEY,
-  "username" text
-);
-
-CREATE TABLE "user_tokens" (
-  "tokenHash" text PRIMARY KEY,
-  "userId" uuid,
-  "validFrom" timestamp,
-  "validTo" timestamp
+  "username" text UNIQUE NOT NULL,
+  "is_temp" bool NOT NULL
 );
 
 CREATE TABLE "rooms" (
@@ -16,15 +10,9 @@ CREATE TABLE "rooms" (
   "isArchived" boolean
 );
 
-CREATE TABLE "user_to_room" (
-  "userId" uuid,
-  "roomId" uuid
-);
-
 CREATE TABLE "messages" (
   "id" uuid PRIMARY KEY,
   "authorId" uuid,
-  "hasFile" boolean,
   "roomId" uuid,
   "sendTime" timestamp,
   "parentId" uuid,
@@ -43,8 +31,7 @@ CREATE TABLE "surveys" (
   "authorId" uuid,
   "roomId" uuid,
   "sendTime" timestamp,
-  "question" text,
-  "isMultipleChoice" boolean
+  "question" text
 );
 
 CREATE TABLE "answers" (
@@ -59,19 +46,9 @@ CREATE TABLE "votes" (
   "answerId" uuid
 );
 
-CREATE TABLE "blocked_users" (
-  "userId" uuid
-);
-
 CREATE TABLE "allowed_users" (
   "userId" uuid
 );
-
-ALTER TABLE "user_tokens" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
-
-ALTER TABLE "user_to_room" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
-
-ALTER TABLE "user_to_room" ADD FOREIGN KEY ("roomId") REFERENCES "rooms" ("id");
 
 ALTER TABLE "messages" ADD FOREIGN KEY ("authorId") REFERENCES "users" ("id");
 
@@ -92,7 +69,5 @@ ALTER TABLE "answers" ADD FOREIGN KEY ("surveyId") REFERENCES "surveys" ("id");
 ALTER TABLE "votes" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
 
 ALTER TABLE "votes" ADD FOREIGN KEY ("answerId") REFERENCES "answers" ("id");
-
-ALTER TABLE "blocked_users" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");
 
 ALTER TABLE "allowed_users" ADD FOREIGN KEY ("userId") REFERENCES "users" ("id");

@@ -15,7 +15,7 @@ namespace ComeX.Server.DAL
         {
         }
 
-        public Message GetMessage(Guid id) => Query().Where("id", id).First<Message>();
+        public Message GetMessage(Guid id) => Get(id);
         public IEnumerable<Message> GetRoomMessages(Guid roomId, DateTime sendTime) => Query().Where("roomId", roomId).Where("sendTime", "<", sendTime).OrderByDesc("sendTime").Limit(50).Get<Message>();
         public IEnumerable<Message> FindMessages(Guid roomId, string search) => Query().Where("roomId", roomId).WhereContains("content", search).Limit(20).Get<Message>();
         public Message InsertMessage(Message msg) => Insert(msg);

@@ -63,23 +63,23 @@ namespace ComeX.WPF.ViewModels {
             surveyResponse.Sort((p, q) => p.SendTime.CompareTo(q.SendTime));
             foreach (var survey in surveyResponse) {
                 if (GetMessageInListById(survey.Id) == null)
-                    MessageList.Add(new SurveyViewModel(survey, chatViewModel));
+                    MessageList.Add(new SurveyViewModel(survey, chatViewModel, IsArchived));
             }
         }
 
         public async void AddMessage(MessageResponse messageResponse, ChatViewModel chatViewModel) {
             ChatMessageViewModel newMessage;
             if (messageResponse.ParentId == null) {
-                newMessage = new ChatMessageViewModel(messageResponse, chatViewModel);
+                newMessage = new ChatMessageViewModel(messageResponse, chatViewModel, IsArchived);
             } else {
                 ChatMessageViewModel parent = ((ChatMessageViewModel)GetMessageInListById((Guid)messageResponse.ParentId));
                 if (parent == null) {
                     await _serverViewModel.Service.LoadSpecificMessage(new LoadMessageRequest(_chatViewModel.LoginDM.Token, (Guid)messageResponse.ParentId));
                     MessageResponse tempParent = new MessageResponse();
                     tempParent.Id = (Guid)messageResponse.ParentId;
-                    newMessage = new ChatMessageViewModel(messageResponse, chatViewModel, tempParent);
+                    newMessage = new ChatMessageViewModel(messageResponse, chatViewModel, IsArchived, tempParent);
                 } else {
-                    newMessage = new ChatMessageViewModel(messageResponse, chatViewModel, parent.Message);
+                    newMessage = new ChatMessageViewModel(messageResponse, chatViewModel, IsArchived, parent.Message);
                 }
             }
 
@@ -101,7 +101,7 @@ namespace ComeX.WPF.ViewModels {
         }
 
         public void AddSurvey(SurveyResponse surveyResponse, ChatViewModel chatViewModel) {
-            SurveyViewModel newSurvey = new SurveyViewModel(surveyResponse, chatViewModel);
+            SurveyViewModel newSurvey = new SurveyViewModel(surveyResponse, chatViewModel, IsArchived);
             SurveyViewModel oldSurvey = (SurveyViewModel)GetMessageInListById(surveyResponse.Id);
 
             if (oldSurvey == null)

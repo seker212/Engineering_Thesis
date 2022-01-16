@@ -1,10 +1,5 @@
-﻿using ComeX.Lib.Common.ServerCommunicationModels;
-using ComeX.WPF.UserControls;
-using ComeX.WPF.Windows;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,12 +13,12 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ComeX.WPF.Views {
+namespace ComeX.WPF.UserControls {
     /// <summary>
-    /// Logika interakcji dla klasy ChatView.xaml
+    /// Logika interakcji dla klasy LoadingUserControl.xaml
     /// </summary>
-    public partial class ChatView : UserControl {
-        public ChatView() {
+    public partial class LoadingUserControl : UserControl {
+        public LoadingUserControl() {
             InitializeComponent();
         }
     }

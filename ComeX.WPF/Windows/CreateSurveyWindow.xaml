@@ -65,9 +65,8 @@
                 </Grid.Resources>
             <Grid.RowDefinitions>
                 <RowDefinition x:Name="QuestionErrorRow" Height="Auto"/>
-                <RowDefinition x:Name="QuestionRow" Height="40"/>
-                <RowDefinition x:Name="CheckboxedRow" Height="40"/>
-                <RowDefinition x:Name="AddAnswerRow" Height="40"/>
+                    <RowDefinition x:Name="QuestionRow" Height="40"/>
+                    <RowDefinition x:Name="AddAnswerRow" Height="40"/>
                 <RowDefinition x:Name="AnswersRow" Height="*"/>
             </Grid.RowDefinitions>
              <Label x:Name="QuestionErrorLabel" Grid.Row="0"
@@ -99,23 +98,8 @@
                         <ImageBrush/>
                     </TextBox.Background>
                 </TextBox>
-                <Grid x:Name="CheckboxesGrid" Grid.Row="2" Margin="0,5,0,5">
-                <Grid.Resources>
-                    <Style TargetType="{x:Type CheckBox}">
-                        <Setter Property="FontFamily" Value="{StaticResource DefaultFont}" />
-                        <Setter Property="FontSize" Value="14" />
-                        <Setter Property="Foreground" Value="{StaticResource LightBlue1}" />
-                    </Style>
-                </Grid.Resources>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition x:Name="MultipleChoiceCol"/>
-                    <ColumnDefinition x:Name="EnableAddingCol"/>
-                </Grid.ColumnDefinitions>
-                    <CheckBox x:Name="MultipleChoiceCheckBox" Grid.Column="0"
-                          Content="Multiple choice" />
-                </Grid>
 
-                <Grid Grid.Row="3">
+                <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"></ColumnDefinition>
                         <ColumnDefinition></ColumnDefinition>
@@ -132,7 +116,7 @@
                        Margin="5,0,0,0"
                        Visibility="Collapsed"/>
                 </Grid>
-                <Grid Grid.Row="4" Margin="0,5,8,5" Height="180" Background="{StaticResource DarkBlue2}">
+                <Grid Grid.Row="3" Margin="0,5,8,5" Height="240" Background="{StaticResource DarkBlue2}">
                 <ScrollViewer VerticalScrollBarVisibility="Auto" >
                     <StackPanel x:Name="AnswersStackP"
                                 HorizontalAlignment="Left"

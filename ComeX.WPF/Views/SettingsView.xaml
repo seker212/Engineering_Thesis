@@ -48,8 +48,8 @@
                     Content=" Cancel "
                     Click="CancelButtonHandler"/>
             </Grid>
-            <Grid Grid.Row="1" Margin="0,5,8,5" Background="{StaticResource DarkBlue2}">
-                <StackPanel x:Name="MainStackP" HorizontalAlignment="Left">
+            <Grid Grid.Row="1" Margin="5" Background="{StaticResource DarkBlue2}">
+                <StackPanel x:Name="MainStackP" HorizontalAlignment="Left" VerticalAlignment="Top">
                     <StackPanel.Resources>
                         <Style TargetType="{x:Type Label}">
                             <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -67,7 +67,7 @@
                         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource WindowRoundButtonStyle}">
                             <Setter Property="Width" Value="120" />
                             <Setter Property="HorizontalAlignment" Value="Left" />
-                            <Setter Property="Margin" Value="10,0,10,0"/>
+                            <Setter Property="Margin" Value="10,10,10,0"/>
                         </Style>
                         <Style TargetType="{x:Type PasswordBox}">
                             <Setter Property="Template" Value="{StaticResource BorderPasswordBoxTemplate}" />
@@ -77,7 +77,7 @@
                             <Setter Property="FontSize" Value="14" />
                             <Setter Property="BorderThickness" Value="4" />
                             <Setter Property="BorderBrush" Value="{StaticResource DarkBlue3}" />
-                            <Setter Property="Margin" Value="10,5,10,5"/>
+                            <Setter Property="Margin" Value="10,5,10,0"/>
                         </Style>
                     </StackPanel.Resources>
 

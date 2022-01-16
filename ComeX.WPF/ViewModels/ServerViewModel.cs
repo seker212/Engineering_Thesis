@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ComeX.WPF.ViewModels {
@@ -28,6 +29,7 @@ namespace ComeX.WPF.ViewModels {
         public HubConnection Connection;
         public ChatService Service;
         public List<RoomViewModel> RoomList;
+        public List<RoomViewModel> ArchivedRoomList;
 
         private ChatViewModel _chatViewModel;
 
@@ -39,6 +41,7 @@ namespace ComeX.WPF.ViewModels {
             Url = url;
             Name = name;
             RoomList = new List<RoomViewModel>();
+            ArchivedRoomList = new List<RoomViewModel>();
             _chatViewModel = chatViewModel;
 
             ChangeServerCommand = new ChangeServerCommand(chatViewModel, this);
@@ -96,18 +99,19 @@ namespace ComeX.WPF.ViewModels {
         private void ChatService_ChatMessageReceived(MessageResponse message) {
             RoomViewModel room = GetRoomById(message.RoomId);
             room.AddMessage(message, _chatViewModel);
-            //_chatViewModel.AddMessage(message);
         }
 
         private void ChatService_SurveyReceived(SurveyResponse survey) {
             RoomViewModel room = GetRoomById(survey.RoomId);
             room.AddSurvey(survey, _chatViewModel);
-            //CurrentRoomMessages.Add(new SurveyViewModel(survey, this));
         }
 
         private void ChatService_RoomsListReceived(RoomsListResponse response) {
             foreach (var room in response.RoomsList) {
-                RoomList.Add(new RoomViewModel(_chatViewModel, this, room.RoomId, room.Name, room.IsArchived));
+                if (room.IsArchived)
+                    ArchivedRoomList.Add(new RoomViewModel(_chatViewModel, this, room.RoomId, room.Name, room.IsArchived));
+                else
+                    RoomList.Add(new RoomViewModel(_chatViewModel, this, room.RoomId, room.Name, room.IsArchived));
             }
         }
 
@@ -146,10 +150,18 @@ namespace ComeX.WPF.ViewModels {
             foreach (var msg in response.MessageList) {
                 _chatViewModel.AddSearchMessage(msg);
             }
+            _chatViewModel.SearchVisibility = Visibility.Visible;
+            _chatViewModel.SearchPhraseLabel = _chatViewModel.SearchPhrase;
+            int elo = response.MessageList.Count;
+            _chatViewModel.SearchPhraseNumberLabel = elo.ToString();
+            _chatViewModel.SearchPhraseRoom = _chatViewModel.CurrentRoom.Name;
         }
 
         public RoomViewModel GetRoomById (Guid roomId) {
-            return RoomList.FirstOrDefault(o => o.RoomId == roomId);
+            var result = RoomList.FirstOrDefault(o => o.RoomId == roomId);
+            if (result == null)
+                result = ArchivedRoomList.FirstOrDefault(o => o.RoomId == roomId);
+            return result;
         }
     }
 }

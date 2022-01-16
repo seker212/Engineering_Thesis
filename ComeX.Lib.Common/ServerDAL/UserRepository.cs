@@ -13,7 +13,8 @@ namespace ComeX.Lib.Common.ServerDAL
         {
         }
 
-        public User GetUser(Guid id) => Query().Where("id", id).First<User>();
-        public User InsertUser(User usr) => Query().Insert(GenerateDataDictionary(usr, 0)) == 1 ? usr : throw new Exception();
+        public User GetUser(Guid id) => Get(id);
+        public User InsertUser(User usr) => Insert(usr);
+        public bool UpdateToNormalUser(Guid newId, string username) => Query().Where("username", username).WhereTrue("is_temp").Update(new Dictionary<string, object>() { { "id", newId }, { "is_temp", false } }) == 1;
     }
 }

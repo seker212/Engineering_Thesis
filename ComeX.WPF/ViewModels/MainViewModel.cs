@@ -24,7 +24,7 @@ namespace ComeX.WPF.ViewModels {
             get { return _currentView; }
             set {
                 _currentView = value;
-                OnPropertyChanged("CurrentView");
+                OnPropertyChanged(nameof(CurrentView));
             }
         }
 
@@ -33,7 +33,7 @@ namespace ComeX.WPF.ViewModels {
             get { return _windowResizeMode; }
             set {
                 _windowResizeMode = value;
-                OnPropertyChanged("WindowResizeMode");
+                OnPropertyChanged(nameof(WindowResizeMode));
             }
         }
 
@@ -42,7 +42,25 @@ namespace ComeX.WPF.ViewModels {
             get { return _windowMinWidth; }
             set {
                 _windowMinWidth = value;
-                OnPropertyChanged("WindowMinWidth");
+                OnPropertyChanged(nameof(WindowMinWidth));
+            }
+        }
+
+        private int _windowWidth;
+        public int WindowWidth {
+            get { return _windowWidth; }
+            set {
+                _windowWidth = value;
+                OnPropertyChanged(nameof(WindowWidth));
+            }
+        }
+
+        private int _windowHeight;
+        public int WindowHeight {
+            get { return _windowHeight; }
+            set {
+                _windowHeight = value;
+                OnPropertyChanged(nameof(WindowHeight));
             }
         }
 
@@ -65,22 +83,23 @@ namespace ComeX.WPF.ViewModels {
         private void ChangeViewToLogin(object obj) {
             _loginViewModel = LoginViewModel.CreatedConnectedModel(_loginService);
             CurrentView = _loginViewModel;
+            WindowWidth = 500;
+            WindowHeight = 650;
             WindowResizeMode = ResizeMode.NoResize;
-            WindowMinWidth = 500;
         }
 
         private void ChangeViewToRegister(object obj) {
             _registerViewModel = RegisterViewModel.CreatedConnectedModel(_loginService);
             CurrentView = _registerViewModel;
+            WindowWidth = 500;
+            WindowHeight = 650;
             WindowResizeMode = ResizeMode.NoResize;
-            WindowMinWidth = 500;
         }
 
         private void ChangeViewToChat(object obj) {
             if (CurrentView == _loginViewModel)
                 _chatViewModel = ChatViewModel.CreatedConnectedModel(_loginService, _loginViewModel.LoginDM, _loginViewModel.ServerDMs);
             else _chatViewModel = ChatViewModel.CreatedConnectedModel(_loginService, _registerViewModel.LoginDM, null);
-            //SetLoginDM(_loginViewModel.LoginDM);
             CurrentView = _chatViewModel;
             WindowResizeMode = ResizeMode.CanResize;
             WindowMinWidth = 850;

@@ -13,7 +13,7 @@
             </ResourceDictionary.MergedDictionaries>
 
             <Style x:Key="HoverBackgroundStyle" TargetType="Grid">
-                <Setter Property="Background" Value="{StaticResource DarkBlue3}" />
+                <Setter Property="Background" Value="{StaticResource DarkBlue2}" />
                 <Style.Triggers>
                     <Trigger Property="Grid.IsMouseOver" Value="True" >
                         <Setter Property="Background" Value="{StaticResource DarkBlue2}" />

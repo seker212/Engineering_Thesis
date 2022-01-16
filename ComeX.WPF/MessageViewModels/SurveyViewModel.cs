@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
@@ -46,21 +47,7 @@ namespace ComeX.WPF.MessageViewModels {
             }
         }
 
-        /*
-        public Dictionary<SurveyAnswerResponse, int> SurveyAnswers {
-            get {
-                return Survey.AnswerList;
-            }
-        }
-        */
-
         public List<SurveyAnswerViewModel> SurveyAnswers { get; set; }
-
-        public bool SurveyIsMultipleChoice {
-            get {
-                return Survey.IsMultipleChoice;
-            }
-        }
 
         public bool ButtonEnabled {
             get {
@@ -68,12 +55,30 @@ namespace ComeX.WPF.MessageViewModels {
             }
         }
 
+        private bool _isRoomArchived;
+        public bool IsRoomArchived {
+            get {
+                return _isRoomArchived;
+            }
+            set {
+                _isRoomArchived = value;
+                OnPropertyChanged(nameof(IsRoomArchived));
+            }
+        }
+
+        public Visibility ButtonVisibility {
+            get {
+                return IsRoomArchived ? Visibility.Collapsed : Visibility.Visible;
+            }
+        }
+
         public ICommand SendSurveyVoteCommand { get; }
         public ICommand CheckedAnswerCommand { get; }
 
-        public SurveyViewModel(SurveyResponse survey, ChatViewModel chatVM) {
+        public SurveyViewModel(SurveyResponse survey, ChatViewModel chatVM, bool isRoomArchived) {
             SendSurveyVoteCommand = new SendSurveyVoteCommand(this, chatVM);
             CheckedAnswerCommand = new CheckedAnswerCommand(this);
+            IsRoomArchived = isRoomArchived;
 
             _chatVM = chatVM;
             Survey = survey;
