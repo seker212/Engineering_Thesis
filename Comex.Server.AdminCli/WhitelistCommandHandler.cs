@@ -52,7 +52,7 @@ namespace Comex.Server.AdminCli
                 }
             }
             else
-                _userRepository.Insert(new User(Guid.Empty, arg, true));
+                _userRepository.Insert(new User(Guid.NewGuid(), arg, true));
         }
 
         private void DeleteUserCommand(string arg)
