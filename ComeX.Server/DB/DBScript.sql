@@ -1,6 +1,7 @@
 CREATE TABLE "users" (
   "id" uuid PRIMARY KEY,
-  "username" text
+  "username" text UNIQUE NOT NULL,
+  "is_temp" bool NOT NULL
 );
 
 CREATE TABLE "rooms" (

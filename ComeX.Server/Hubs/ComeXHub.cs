@@ -41,16 +41,15 @@ namespace ComeX.Server.Hubs
         }
 
         //sprawdzanie czy uzytkownik jest na whitelist
-        private bool CheckWhitelist(Guid usrId)
+        private bool CheckWhitelist(Guid usrId, string username)
         {
             Allowed_user user = allowRepo.GetAllowed_user(usrId);
-            if (user == null)
+            if (user == null && usrRepo.UpdateToNormalUser(usrId, username))
             {
-                return false;
-            } else
-            {
+                allowRepo.Insert(new Allowed_user(usrId));
                 return true;
             }
+            return false;
         }
 
         private bool CheckRoomWriteStatus(Guid roomId)
@@ -73,7 +72,7 @@ namespace ComeX.Server.Hubs
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
             string usrName = _connectionCache[msg.Token].Username;
 
-            if (CheckWhitelist(usrId))
+            if (CheckWhitelist(usrId, usrName))
             {
                 //wpisanie do users
                 try
@@ -83,7 +82,8 @@ namespace ComeX.Server.Hubs
                 }
                 catch (Exception e)
                 {
-                    User loginUser = usrRepo.InsertUser(new User(usrId, usrName));
+                    //User loginUser = usrRepo.InsertUser(new User(usrId, usrName));
+                    
                     
                 }
             } else
@@ -96,7 +96,8 @@ namespace ComeX.Server.Hubs
         public async Task SentRoomRequest(RoomRequest rqst)
         {
             Guid usrId = Guid.Parse(_connectionCache[rqst.Token].UserId);
-            if (CheckWhitelist(usrId))
+            string usrName = _connectionCache[rqst.Token].Username;
+            if (CheckWhitelist(usrId, usrName))
             {
                 //wczytanie i wyslanie listy pokojow
                 try
@@ -130,7 +131,7 @@ namespace ComeX.Server.Hubs
         {
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
             string usrName = _connectionCache[msg.Token].Username;
-            if (CheckWhitelist(usrId))
+            if (CheckWhitelist(usrId, usrName))
             {
                 //sprawdzenie czy do pokoju mozna zapisywac
                 if (CheckRoomWriteStatus(msg.RoomId))
@@ -182,7 +183,8 @@ namespace ComeX.Server.Hubs
         public async Task LoadSpecificMessage(LoadMessageRequest msg)
         {
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
-            if (CheckWhitelist(usrId))
+            string usrName = _connectionCache[msg.Token].Username;
+            if (CheckWhitelist(usrId, usrName))
             {
                 try
                 {
@@ -223,7 +225,8 @@ namespace ComeX.Server.Hubs
         public async Task LoadChatHistory(LoadChatRequest msg)
         {
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
-            if (CheckWhitelist(usrId))
+            string usrName = _connectionCache[msg.Token].Username;
+            if (CheckWhitelist(usrId, usrName))
             {
                 //wczytanie wiadomosci starszych niz podana data
                 try
@@ -273,7 +276,8 @@ namespace ComeX.Server.Hubs
         public async Task LoadSurveyHistory(LoadSurveyRequest msg)
         {
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
-            if (CheckWhitelist(usrId))
+            string usrName = _connectionCache[msg.Token].Username;
+            if (CheckWhitelist(usrId, usrName))
             {
                 //wczytanie ankiet starszych niz podana data
                 try
@@ -322,7 +326,8 @@ namespace ComeX.Server.Hubs
         public async Task LoadAllHistory(LoadChatRequest msg)
         {
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
-            if (CheckWhitelist(usrId))
+            string usrName = _connectionCache[msg.Token].Username;
+            if (CheckWhitelist(usrId, usrName))
             {
                 try
                 {
@@ -409,7 +414,7 @@ namespace ComeX.Server.Hubs
         {
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
             string usrName = _connectionCache[msg.Token].Username;
-            if (CheckWhitelist(usrId))
+            if (CheckWhitelist(usrId, usrName))
             {
                 //sprawdzenie czy do pokoju mozna zapisywac
                 if (CheckRoomWriteStatus(msg.RoomId))
@@ -476,7 +481,8 @@ namespace ComeX.Server.Hubs
         public async Task SendChatSurveyVote(SurveyVoteMessage msg)
         {
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
-            if (CheckWhitelist(usrId))
+            string usrName = _connectionCache[msg.Token].Username;
+            if (CheckWhitelist(usrId, usrName))
             {
                 //dodanie glosu pod warunkiem ze nie jest duplikatem
                 try
@@ -535,7 +541,8 @@ namespace ComeX.Server.Hubs
         public async Task SearchMessage(SearchMessageRequest msg)
         {
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
-            if (CheckWhitelist(usrId))
+            string usrName = _connectionCache[msg.Token].Username;
+            if (CheckWhitelist(usrId, usrName))
             {
                 try
                 {
@@ -584,7 +591,8 @@ namespace ComeX.Server.Hubs
         public async Task AddReaction(ReactionMessage msg)
         {
             Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
-            if (CheckWhitelist(usrId))
+            string usrName = _connectionCache[msg.Token].Username;
+            if (CheckWhitelist(usrId, usrName))
             {
                 try
                 {

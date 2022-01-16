@@ -38,14 +38,42 @@ namespace Comex.Server.AdminCli
 
         private void AddUserCommand(string arg)
         {
-            var user = _userRepository.Get().Single(x => x.Username == arg);
-            _allowedUserRepository.Insert(new Allowed_user(user.Id));
+            var users = _userRepository.Get();
+            if (users.Any(x => x.Username == arg)){
+                var user = users.Single(x => x.Username == arg);
+                if (user.IsTemp)
+                    throw new Exception("User already on the whitelist");
+                else
+                {
+                    var al = _allowedUserRepository.GetAllowed_user(user.Id);
+                    if (al != null)
+                        throw new Exception("User already on the whitelist");
+                    _allowedUserRepository.Insert(new Allowed_user(user.Id));
+                }
+            }
+            else
+                _userRepository.Insert(new User(Guid.Empty, arg, true));
         }
 
         private void DeleteUserCommand(string arg)
         {
-            var user = _userRepository.Get().Single(x => x.Username == arg);
-            _allowedUserRepository.Delete(new Allowed_user(user.Id));
+            var users = _userRepository.Get();
+            if (users.Any(x => x.Username == arg))
+            {
+                var user = users.Single(x => x.Username == arg);
+                if (user.IsTemp)
+                    _userRepository.Delete(user);
+                else
+                {
+                    var allowedUsers = _allowedUserRepository.Get();
+                    if (allowedUsers.Any(x => x.UserId == user.Id))
+                        _allowedUserRepository.Delete(new Allowed_user(user.Id));
+                    else
+                        throw new Exception("User already removed from whitelist");
+                }
+            }
+            else
+                throw new Exception("User not found");
         }
     }
 }
