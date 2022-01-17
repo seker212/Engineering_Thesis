@@ -133,7 +133,7 @@ namespace ComeX.Server.Hubs.Tests
 
             connection.On<LoadMessageResponse>("Load_message", (rsp) =>
             {
-                rsp.Message.Should().Be(msg.Id);
+                rsp.Message.Id.Should().Be(msg.Id);
                 mock.Object.TestMethod();
             });
 
