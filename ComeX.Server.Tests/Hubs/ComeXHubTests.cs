@@ -133,7 +133,7 @@ namespace ComeX.Server.Hubs.Tests
 
             connection.On<LoadMessageResponse>("Load_message", (rsp) =>
             {
-                rsp.Message.Should().Be(msg.Id);
+                rsp.Message.Id.Should().Be(msg.Id);
                 mock.Object.TestMethod();
             });
 
@@ -155,7 +155,7 @@ namespace ComeX.Server.Hubs.Tests
 
             connection.On<LoadChatResponse>("Send_chat_history", (rsp) =>
             {
-                rsp.MessageList.Should().ContainSingle(rsp => rsp.RoomId == Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"));
+                rsp.MessageList.Should().Contain(rsp => rsp.RoomId == Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"));
                 mock.Object.TestMethod();
             });
 
@@ -177,7 +177,7 @@ namespace ComeX.Server.Hubs.Tests
 
             connection.On<LoadSurveyResponse>("Send_survey_history", (rsp) =>
             {
-                rsp.SurveyList.Should().ContainSingle(rsp => rsp.RoomId == Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"));
+                rsp.SurveyList.Should().Contain(rsp => rsp.RoomId == Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"));
                 mock.Object.TestMethod();
             });
 
@@ -198,8 +198,8 @@ namespace ComeX.Server.Hubs.Tests
 
             connection.On<LoadAllResponse>("Send_all_history", (rsp) =>
             {
-                rsp.SurveyList.Should().ContainSingle(rsp => rsp.RoomId == Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"));
-                rsp.MessageList.Should().ContainSingle(rsp => rsp.RoomId == Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"));
+                rsp.SurveyList.Should().Contain(rsp => rsp.RoomId == Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"));
+                rsp.MessageList.Should().Contain(rsp => rsp.RoomId == Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"));
                 mock.Object.TestMethod();
             });
 
@@ -273,7 +273,7 @@ namespace ComeX.Server.Hubs.Tests
 
             connection.On<LoadChatResponse>("Send_search", (rsp) =>
             {
-                rsp.MessageList.Should().ContainSingle(rsp => rsp.RoomId == Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"));
+                rsp.MessageList.Should().Contain(rsp => rsp.RoomId == Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"));
                 mock.Object.TestMethod();
             });
 
@@ -296,7 +296,7 @@ namespace ComeX.Server.Hubs.Tests
 
             connection.On<LoadMessageResponse>("Message_updated", (rsp) =>
             {
-                rsp.Message.Should().Be(msg.MessageId);
+                rsp.Message.Id.Should().Be(msg.MessageId);
                 mock.Object.TestMethod();
             });
 
