@@ -47,15 +47,24 @@ namespace ComeX.Server.Hubs.Tests
         [TestMethod()]
         public async Task SendLoginMessageTest()
         {
+            bool invoked = false;
             HubConnection connection = null;
             connection = GetNewConnection();
 
             connection.On("Logged_in", () => {
-                true.Should().BeTrue();
+                invoked = true;
             });
 
             await connection.StartAsync();
             await connection.InvokeAsync("SendLoginMessage", new LoginMessage("2lNwrCIvaNcXrwgnIIXwXsCC0bM3lknARHqFggUu1fA="));
+            
+            for (int i = 0; i < 1000; i++)
+            {
+                if (invoked)
+                    break;
+                Thread.Sleep(5);
+            }
+            invoked.Should().BeTrue();
         }
 
         [TestMethod()]
