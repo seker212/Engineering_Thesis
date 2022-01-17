@@ -15,12 +15,29 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.SignalR.Client;
 using ComeX.Lib.Common.ServerCommunicationModels;
 using System.Diagnostics;
+using FluentAssertions;
+using System.Threading;
 
 namespace ComeX.Server.Hubs.Tests
 {
+    public interface ITest
+    {
+        void TestMethod();
+    }
+
     [TestClass()]
     public class ComeXHubTests
     {
+        static TestServer server;
+
+        [ClassInitialize]
+        public static void ClassInit(TestContext testContext)
+        {
+            var webHostBuilder = new WebHostBuilder()
+                .UseStartup<Startup>();
+            server = new TestServer(webHostBuilder);
+        }
+
         [TestMethod()]
         public void ComeXHubTest()
         {
@@ -30,23 +47,15 @@ namespace ComeX.Server.Hubs.Tests
         [TestMethod()]
         public async Task SendLoginMessageTest()
         {
-            TestServer server = null;
-            string m = null;
-            var webHostBuilder = new WebHostBuilder()
-                .UseStartup<Startup>();
-            server = new TestServer(webHostBuilder);
-            var connection = new HubConnectionBuilder()
-                .WithUrl("http://localhost/ComeXLogin", o => o.HttpMessageHandlerFactory = _ => server.CreateHandler())
-                .Build();
+            HubConnection connection = null;
+            connection = GetNewConnection();
 
-            connection.On<string>("SendLoginMessage", msg =>
-            {
-                m = msg;
+            connection.On("Logged_in", () => {
+                true.Should().BeTrue();
             });
 
             await connection.StartAsync();
             await connection.InvokeAsync("SendLoginMessage", new LoginMessage("2lNwrCIvaNcXrwgnIIXwXsCC0bM3lknARHqFggUu1fA="));
-            Debug.WriteLine(m);
         }
 
         [TestMethod()]
@@ -107,6 +116,13 @@ namespace ComeX.Server.Hubs.Tests
         public void AddReactionTest()
         {
             throw new NotImplementedException();
+        }
+
+        HubConnection GetNewConnection()
+        {
+            return new HubConnectionBuilder()
+                .WithUrl("http://localhost/ComeXLogin", o => o.HttpMessageHandlerFactory = _ => server.CreateHandler())
+                .Build();
         }
     }
 }
