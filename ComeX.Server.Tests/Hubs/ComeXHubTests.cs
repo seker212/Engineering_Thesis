@@ -47,24 +47,21 @@ namespace ComeX.Server.Hubs.Tests
         [TestMethod()]
         public async Task SendLoginMessageTest()
         {
-            bool invoked = false;
+            var mock = new Mock<ITest>();
             HubConnection connection = null;
+
+            mock.Setup(x => x.TestMethod()).Verifiable();
             connection = GetNewConnection();
 
-            connection.On("Logged_in", () => {
-                invoked = true;
+            connection.On("Logged_in", () =>
+            {
+                mock.Object.TestMethod();
             });
 
             await connection.StartAsync();
             await connection.InvokeAsync("SendLoginMessage", new LoginMessage("2lNwrCIvaNcXrwgnIIXwXsCC0bM3lknARHqFggUu1fA="));
-            
-            for (int i = 0; i < 1000; i++)
-            {
-                if (invoked)
-                    break;
-                Thread.Sleep(5);
-            }
-            invoked.Should().BeTrue();
+
+            VerifyMock(mock);
         }
 
         [TestMethod()]
@@ -132,6 +129,23 @@ namespace ComeX.Server.Hubs.Tests
             return new HubConnectionBuilder()
                 .WithUrl("http://localhost/ComeXLogin", o => o.HttpMessageHandlerFactory = _ => server.CreateHandler())
                 .Build();
+        }
+
+        private static void VerifyMock(Mock<ITest> mock)
+        {
+            for (int i = 0; i < 1000; i++)
+            {
+                try
+                {
+                    mock.Verify();
+                    break;
+                }
+                catch (Exception)
+                {
+                    Thread.Sleep(5);
+                }
+            }
+            mock.Verify();
         }
     }
 }
