@@ -52,7 +52,6 @@ namespace ComeX.WPF.Commands {
             _reactionView.DataContext = reactionViewModel;
             _reactionView.Owner = Application.Current.MainWindow;
             _reactionView.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            //Application.Current.MainWindow.IsEnabled = false;
 
             _reactionView.ShowDialog();
             newReaction = reactionViewModel.Reaction;

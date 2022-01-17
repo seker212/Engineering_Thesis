@@ -14,7 +14,6 @@ using System.Windows.Input;
 namespace ComeX.WPF.ViewModels {
     public class MainViewModel : BaseViewModel {
         private LoginService _loginService { get; }
-        private ChatService _chatService { get; }
         private ChatViewModel _chatViewModel { get; set; }
         private LoginViewModel _loginViewModel { get; set; }
         private RegisterViewModel _registerViewModel { get; set; }
@@ -82,18 +81,18 @@ namespace ComeX.WPF.ViewModels {
 
         private void ChangeViewToLogin(object obj) {
             _loginViewModel = LoginViewModel.CreatedConnectedModel(_loginService);
-            CurrentView = _loginViewModel;
             WindowWidth = 500;
             WindowHeight = 650;
             WindowResizeMode = ResizeMode.NoResize;
+            CurrentView = _loginViewModel;
         }
 
         private void ChangeViewToRegister(object obj) {
             _registerViewModel = RegisterViewModel.CreatedConnectedModel(_loginService);
-            CurrentView = _registerViewModel;
             WindowWidth = 500;
             WindowHeight = 650;
             WindowResizeMode = ResizeMode.NoResize;
+            CurrentView = _registerViewModel;
         }
 
         private void ChangeViewToChat(object obj) {

@@ -30,13 +30,11 @@
     <Resource Include="Resources\Images\Emojis\5.png" />
     <Resource Include="Resources\Images\Emojis\6.png" />
     <Resource Include="Resources\Images\Emojis\7.png" />
-    <Resource Include="Resources\Images\Emojis\8.png" />
-    <Resource Include="Resources\Images\Emojis\9.png" />
-    <Resource Include="Resources\Images\Emojis\10.png" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Resources\" />
+    <Folder Include="Windows\" />
   </ItemGroup>
 
   <ItemGroup>

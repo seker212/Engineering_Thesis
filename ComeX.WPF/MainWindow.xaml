@@ -12,9 +12,7 @@
         mc:Ignorable="d"
         Title="ComeX"
         MinHeight="650"
-        Height="{Binding WindowHeight}"
         MinWidth="{Binding WindowMinWidth}"
-        Width="{Binding WindowWidth}"
         SizeToContent="WidthAndHeight"
         ResizeMode="{Binding WindowResizeMode}">
 
@@ -39,7 +37,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid>
-        <ContentControl Content="{Binding CurrentView}" />
-    </Grid>
+
+        <ContentControl Content="{Binding CurrentView}"/>
+
 </Window>
