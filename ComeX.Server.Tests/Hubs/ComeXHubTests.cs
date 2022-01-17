@@ -30,7 +30,8 @@ namespace ComeX.Server.Hubs.Tests
     public class ComeXHubTests
     {
         TestServer server;
-        const string token = "2lNwrCIvaNcXrwgnIIXwXsCC0bM3lknARHqFggUu1fA=";
+        const string TOKEN = "2lNwrCIvaNcXrwgnIIXwXsCC0bM3lknARHqFggUu1fA=";
+        const string USERNAME = "User1";
 
         [TestInitialize]
         public void TestInit()
@@ -61,7 +62,7 @@ namespace ComeX.Server.Hubs.Tests
             });
 
             await connection.StartAsync();
-            await connection.InvokeAsync("SendLoginMessage", new LoginMessage(token));
+            await connection.InvokeAsync("SendLoginMessage", new LoginMessage(TOKEN));
 
             VerifyMock(mock);
         }
@@ -82,7 +83,7 @@ namespace ComeX.Server.Hubs.Tests
             });
 
             await connection.StartAsync();
-            await connection.InvokeAsync("SentRoomRequest", new RoomRequest(token));
+            await connection.InvokeAsync("SentRoomRequest", new RoomRequest(TOKEN));
 
             VerifyMock(mock);
         }
@@ -97,13 +98,22 @@ namespace ComeX.Server.Hubs.Tests
             mock.Setup(x => x.TestMethod()).Verifiable();
             connection = GetNewConnection();
 
+            var chatMessage = new ChatMessage(TOKEN, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), null, "automated test message");
+
             connection.On<MessageResponse>("Message_created", (rsp) =>
             {
+                rsp.Should().NotBeNull();
+                rsp.ParentId.Should().Be(chatMessage.ParentId);
+                rsp.RoomId.Should().Be(chatMessage.RoomId);
+                rsp.Content.Should().Be(chatMessage.Content);
+                rsp.EmojiList.Should().BeEmpty();
+                rsp.SendTime.Should().NotBeCloseTo(DateTime.UtcNow, TimeSpan.FromMinutes(1));
+                rsp.Username.Should().Be(USERNAME);
                 mock.Object.TestMethod();
             });
 
             await connection.StartAsync();
-            await connection.InvokeAsync("SendChatMessage", new ChatMessage(token, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), null, "automated test message"));
+            await connection.InvokeAsync("SendChatMessage", chatMessage);
 
             VerifyMock(mock);
         }
@@ -124,7 +134,7 @@ namespace ComeX.Server.Hubs.Tests
             });
 
             await connection.StartAsync();
-            await connection.InvokeAsync("LoadSpecificMessage", new LoadMessageRequest(token, Guid.Parse("d9feaa19-4d5f-42a2-90f7-e91ef2d808a5")));
+            await connection.InvokeAsync("LoadSpecificMessage", new LoadMessageRequest(TOKEN, Guid.Parse("d9feaa19-4d5f-42a2-90f7-e91ef2d808a5")));
 
             VerifyMock(mock);
         }
@@ -145,7 +155,7 @@ namespace ComeX.Server.Hubs.Tests
             });
 
             await connection.StartAsync();
-            await connection.InvokeAsync("LoadChatHistory", new LoadChatRequest(token, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), DateTime.Now));
+            await connection.InvokeAsync("LoadChatHistory", new LoadChatRequest(TOKEN, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), DateTime.Now));
 
             VerifyMock(mock);
         }
@@ -166,7 +176,7 @@ namespace ComeX.Server.Hubs.Tests
             });
 
             await connection.StartAsync();
-            await connection.InvokeAsync("LoadSurveyHistory", new LoadSurveyRequest(token, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), DateTime.Now));
+            await connection.InvokeAsync("LoadSurveyHistory", new LoadSurveyRequest(TOKEN, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), DateTime.Now));
             VerifyMock(mock);
         }
 
@@ -186,7 +196,7 @@ namespace ComeX.Server.Hubs.Tests
             });
 
             await connection.StartAsync();
-            await connection.InvokeAsync("LoadAllHistory", new LoadChatRequest(token, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), DateTime.Now));
+            await connection.InvokeAsync("LoadAllHistory", new LoadChatRequest(TOKEN, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), DateTime.Now));
             VerifyMock(mock);
         }
 
@@ -209,7 +219,7 @@ namespace ComeX.Server.Hubs.Tests
             List<string> answerList = new List<string>();
             answerList.Add("Test answer 1");
             answerList.Add("Test answer 2");
-            await connection.InvokeAsync("SendChatSurvey", new SurveyMessage(token, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), "Test question", answerList));
+            await connection.InvokeAsync("SendChatSurvey", new SurveyMessage(TOKEN, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), "Test question", answerList));
             VerifyMock(mock);
         }
 
@@ -232,7 +242,7 @@ namespace ComeX.Server.Hubs.Tests
             List<Guid> votes = new List<Guid>();
             votes.Add(Guid.Parse("db6ec4e2-f550-47f5-a458-2a1554bd755e"));
             votes.Add(Guid.Parse("32765081-eae2-49f9-83c0-18d77e86229f"));
-            await connection.InvokeAsync("SendChatSurveyVote", new SurveyVoteMessage(token, Guid.Parse("bb90b28c-912c-429e-9ea3-6aac41b17356"), votes));
+            await connection.InvokeAsync("SendChatSurveyVote", new SurveyVoteMessage(TOKEN, Guid.Parse("bb90b28c-912c-429e-9ea3-6aac41b17356"), votes));
             VerifyMock(mock);
         }
 
@@ -252,7 +262,7 @@ namespace ComeX.Server.Hubs.Tests
             });
 
             await connection.StartAsync();
-            await connection.InvokeAsync("SearchMessage", new SearchMessageRequest(token, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), "test"));
+            await connection.InvokeAsync("SearchMessage", new SearchMessageRequest(TOKEN, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), "test"));
             VerifyMock(mock);
         }
 
@@ -272,7 +282,7 @@ namespace ComeX.Server.Hubs.Tests
             });
 
             await connection.StartAsync();
-            await connection.InvokeAsync("AddReaction", new ReactionMessage(token, Guid.Parse("eb20efc8-afd5-40fe-b7c8-7a8d7ab1bde4"), "1"));
+            await connection.InvokeAsync("AddReaction", new ReactionMessage(TOKEN, Guid.Parse("eb20efc8-afd5-40fe-b7c8-7a8d7ab1bde4"), "1"));
             VerifyMock(mock);
         }
 
