@@ -17,6 +17,7 @@ using ComeX.Lib.Common.ServerCommunicationModels;
 using System.Diagnostics;
 using FluentAssertions;
 using System.Threading;
+using ComeX.Lib.Common.ServerResponseModels;
 
 namespace ComeX.Server.Hubs.Tests
 {
@@ -29,6 +30,7 @@ namespace ComeX.Server.Hubs.Tests
     public class ComeXHubTests
     {
         static TestServer server;
+        const string token = "2lNwrCIvaNcXrwgnIIXwXsCC0bM3lknARHqFggUu1fA=";
 
         [ClassInitialize]
         public static void ClassInit(TestContext testContext)
@@ -59,69 +61,203 @@ namespace ComeX.Server.Hubs.Tests
             });
 
             await connection.StartAsync();
-            await connection.InvokeAsync("SendLoginMessage", new LoginMessage("2lNwrCIvaNcXrwgnIIXwXsCC0bM3lknARHqFggUu1fA="));
+            await connection.InvokeAsync("SendLoginMessage", new LoginMessage(token));
 
             VerifyMock(mock);
         }
 
         [TestMethod()]
-        public void SentRoomRequestTest()
+        public async Task SentRoomRequestTest()
         {
-            throw new NotImplementedException();
+            var mock = new Mock<ITest>();
+            HubConnection connection = null;
+
+            mock.Setup(x => x.TestMethod()).Verifiable();
+            connection = GetNewConnection();
+
+            connection.On<RoomsListResponse>("Sending_rooms", (rsp) =>
+            {
+                mock.Object.TestMethod();
+            });
+
+            await connection.StartAsync();
+            await connection.InvokeAsync("SentRoomRequest", new RoomRequest(token));
+
+            VerifyMock(mock);
         }
 
         [TestMethod()]
-        public void SendChatMessageTest()
+        public async Task SendChatMessageTest()
         {
-            throw new NotImplementedException();
+            var mock = new Mock<ITest>();
+            HubConnection connection = null;
+
+            mock.Setup(x => x.TestMethod()).Verifiable();
+            connection = GetNewConnection();
+
+            connection.On<MessageResponse>("MessageCreated", (rsp) =>
+            {
+                mock.Object.TestMethod();
+            });
+
+            await connection.StartAsync();
+            await connection.InvokeAsync("SendChatMessage", new ChatMessage(token, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), null, "automated test message"));
+
+            VerifyMock(mock);
         }
 
         [TestMethod()]
-        public void LoadSpecificMessageTest()
+        public async Task LoadSpecificMessageTest()
         {
-            throw new NotImplementedException();
+            var mock = new Mock<ITest>();
+            HubConnection connection = null;
+
+            mock.Setup(x => x.TestMethod()).Verifiable();
+            connection = GetNewConnection();
+
+            connection.On<LoadMessageResponse>("Load_message", (rsp) =>
+            {
+                mock.Object.TestMethod();
+            });
+
+            await connection.StartAsync();
+            await connection.InvokeAsync("LoadSpecificMessage", new LoadMessageRequest(token, Guid.Parse("d9feaa19-4d5f-42a2-90f7-e91ef2d808a5")));
+
+            VerifyMock(mock);
         }
 
         [TestMethod()]
-        public void LoadChatHistoryTest()
+        public async Task LoadChatHistoryTest()
         {
-            throw new NotImplementedException();
+            var mock = new Mock<ITest>();
+            HubConnection connection = null;
+
+            mock.Setup(x => x.TestMethod()).Verifiable();
+            connection = GetNewConnection();
+
+            connection.On<LoadChatResponse>("Send_chat_history", (rsp) =>
+            {
+                mock.Object.TestMethod();
+            });
+
+            await connection.StartAsync();
+            await connection.InvokeAsync("LoadChatHistory", new LoadChatRequest(token, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), DateTime.Now));
+
+            VerifyMock(mock);
         }
 
         [TestMethod()]
-        public void LoadSurveyHistoryTest()
+        public async Task LoadSurveyHistoryTest()
         {
-            throw new NotImplementedException();
+            var mock = new Mock<ITest>();
+            HubConnection connection = null;
+
+            mock.Setup(x => x.TestMethod()).Verifiable();
+            connection = GetNewConnection();
+
+            connection.On<LoadSurveyResponse>("Send_survey_history", (rsp) =>
+            {
+                mock.Object.TestMethod();
+            });
+
+            await connection.StartAsync();
+            await connection.InvokeAsync("LoadSurveyHistory", new LoadSurveyRequest(token, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), DateTime.Now));
         }
 
         [TestMethod()]
-        public void LoadAllHistoryTest()
+        public async Task LoadAllHistoryTest()
         {
-            throw new NotImplementedException();
+            var mock = new Mock<ITest>();
+            HubConnection connection = null;
+
+            mock.Setup(x => x.TestMethod()).Verifiable();
+            connection = GetNewConnection();
+
+            connection.On<LoadAllResponse>("Send_all_history", (rsp) =>
+            {
+                mock.Object.TestMethod();
+            });
+
+            await connection.StartAsync();
+            await connection.InvokeAsync("LoadAllHistory", new LoadChatRequest(token, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), DateTime.Now));
         }
 
         [TestMethod()]
-        public void SendChatSurveyTest()
+        public async Task SendChatSurveyTest()
         {
-            throw new NotImplementedException();
+            var mock = new Mock<ITest>();
+            HubConnection connection = null;
+
+            mock.Setup(x => x.TestMethod()).Verifiable();
+            connection = GetNewConnection();
+
+            connection.On<SurveyResponse>("Survey_created", (rsp) =>
+            {
+                mock.Object.TestMethod();
+            });
+
+            await connection.StartAsync();
+            List<string> answerList = new List<string>();
+            answerList.Add("Test answer 1");
+            answerList.Add("Test answer 2");
+            await connection.InvokeAsync("SendChatSurvey", new SurveyMessage(token, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), "Test question", answerList));
         }
 
         [TestMethod()]
-        public void SendChatSurveyVoteTest()
+        public async Task SendChatSurveyVoteTest()
         {
-            throw new NotImplementedException();
+            var mock = new Mock<ITest>();
+            HubConnection connection = null;
+
+            mock.Setup(x => x.TestMethod()).Verifiable();
+            connection = GetNewConnection();
+
+            connection.On<SurveyResponse>("Survey_updated", (rsp) =>
+            {
+                mock.Object.TestMethod();
+            });
+
+            await connection.StartAsync();
+            List<Guid> votes = new List<Guid>();
+            votes.Add(Guid.Parse("db6ec4e2-f550-47f5-a458-2a1554bd755e"));
+            votes.Add(Guid.Parse("32765081-eae2-49f9-83c0-18d77e86229f"));
+            await connection.InvokeAsync("SendChatSurveyVote", new SurveyVoteMessage(token, Guid.Parse("bb90b28c-912c-429e-9ea3-6aac41b17356"), ));
         }
 
         [TestMethod()]
-        public void SearchMessageTest()
+        public async Task SearchMessageTest()
         {
-            throw new NotImplementedException();
+            var mock = new Mock<ITest>();
+            HubConnection connection = null;
+
+            mock.Setup(x => x.TestMethod()).Verifiable();
+            connection = GetNewConnection();
+
+            connection.On<LoadChatResponse>("Send_search", (rsp) =>
+            {
+                mock.Object.TestMethod();
+            });
+
+            await connection.StartAsync();
+            await connection.InvokeAsync("SearchMessage", new SearchMessageRequest(token, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), "test"));
         }
 
         [TestMethod()]
-        public void AddReactionTest()
+        public async Task AddReactionTest()
         {
-            throw new NotImplementedException();
+            var mock = new Mock<ITest>();
+            HubConnection connection = null;
+
+            mock.Setup(x => x.TestMethod()).Verifiable();
+            connection = GetNewConnection();
+
+            connection.On<LoadMessageResponse>("Message_updated", (rsp) =>
+            {
+                mock.Object.TestMethod();
+            });
+
+            await connection.StartAsync();
+            await connection.InvokeAsync("AddReaction", new ReactionMessage(token, Guid.Parse("eb20efc8-afd5-40fe-b7c8-7a8d7ab1bde4"), "1"));
         }
 
         HubConnection GetNewConnection()
