@@ -79,6 +79,7 @@ namespace ComeX.Server.Hubs.Tests
 
             connection.On<RoomsListResponse>("Sending_rooms", (rsp) =>
             {
+                rsp.RoomsList.Should().ContainSingle(room => room.RoomId == Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040") && !room.IsArchived);
                 mock.Object.TestMethod();
             });
 
