@@ -16,6 +16,7 @@ namespace ComeX.Server.DAL
         }
 
         public IEnumerable<Answer> GetAnswers(Guid surveyId) => Query().Where("surveyId", surveyId).Get<Answer>();
+        public Answer GetUserAnswered(Guid surveyId, Guid userId) => Query().Where("surveyId", surveyId).Where("userId", userId).FirstOrDefault<Answer>();
         public Answer InsertAnswer(Answer ans) => Insert(ans);
     }
 }
