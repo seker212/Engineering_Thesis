@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace ComeX.Lib.Common.ServerResponseModels {
     public class SurveyVoterResponse {
-        public SurveyVoterResponse(Guid surveyId, Guid userId, bool voted) {
+        public SurveyVoterResponse(Guid surveyId, Guid userId, Guid roomId, bool voted) {
             SurveyId = surveyId;
             UserId = userId;
+            RoomId = roomId;
             Voted = voted;
         }
 
@@ -19,6 +20,8 @@ namespace ComeX.Lib.Common.ServerResponseModels {
         public Guid SurveyId { get; set; }
         [JsonProperty("UserId")]
         public Guid UserId { get; set; }
+        [JsonProperty("RoomId")]
+        public Guid RoomId { get; set; }
         [JsonProperty("Voted")]
         public bool Voted { get; set; }
     }

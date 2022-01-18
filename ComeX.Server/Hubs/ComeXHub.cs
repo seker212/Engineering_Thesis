@@ -311,11 +311,11 @@ namespace ComeX.Server.Hubs
                         Answer checkUser = ansRepo.GetUserAnswered(s.Id, usrId);
                         if (checkUser != null)
                         {
-                            SurveyVoterResponse voted = new SurveyVoterResponse(s.Id, usrId, true);
+                            SurveyVoterResponse voted = new SurveyVoterResponse(s.Id, usrId, s.RoomId, true);
                             voterList.Add(voted);
                         } else
                         {
-                            SurveyVoterResponse voted = new SurveyVoterResponse(s.Id, usrId, false);
+                            SurveyVoterResponse voted = new SurveyVoterResponse(s.Id, usrId, s.RoomId, false);
                             voterList.Add(voted);
                         }
 
@@ -413,12 +413,12 @@ namespace ComeX.Server.Hubs
                         Answer checkUser = ansRepo.GetUserAnswered(s.Id, usrId);
                         if (checkUser != null)
                         {
-                            SurveyVoterResponse voted = new SurveyVoterResponse(s.Id, usrId, true);
+                            SurveyVoterResponse voted = new SurveyVoterResponse(s.Id, usrId, s.RoomId, true);
                             voterList.Add(voted);
                         }
                         else
                         {
-                            SurveyVoterResponse voted = new SurveyVoterResponse(s.Id, usrId, false);
+                            SurveyVoterResponse voted = new SurveyVoterResponse(s.Id, usrId, s.RoomId, false);
                             voterList.Add(voted);
                         }
 
@@ -497,7 +497,7 @@ namespace ComeX.Server.Hubs
 
                         await Clients.All.SendAsync("Survey_created", response);
 
-                        SurveyVoterResponse voterResponse = new SurveyVoterResponse(createdSrv.Id, usrId, false);
+                        SurveyVoterResponse voterResponse = new SurveyVoterResponse(createdSrv.Id, usrId, createdSrv.RoomId, false);
 
                         await Clients.Caller.SendAsync("Survey_status", voterResponse);
                     }
@@ -564,7 +564,7 @@ namespace ComeX.Server.Hubs
 
                     await Clients.All.SendAsync("Survey_updated", response);
 
-                    SurveyVoterResponse voterResponse = new SurveyVoterResponse(srv.Id, usrId, true);
+                    SurveyVoterResponse voterResponse = new SurveyVoterResponse(srv.Id, usrId, srv.RoomId, true);
 
                     await Clients.Caller.SendAsync("Survey_status", voterResponse);
                 }
