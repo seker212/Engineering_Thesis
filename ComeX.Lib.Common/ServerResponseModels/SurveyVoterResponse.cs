@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace ComeX.Lib.Common.ServerResponseModels {
-    class SurveyVoterResponse {
+    public class SurveyVoterResponse {
         public SurveyVoterResponse(Guid surveyId, Guid userId, bool voted) {
             SurveyId = surveyId;
             UserId = userId;

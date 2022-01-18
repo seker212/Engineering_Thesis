@@ -288,6 +288,8 @@ namespace ComeX.Server.Hubs
                     List<SurveyResponse> surveyList = new List<SurveyResponse>();
                     IEnumerable<Survey> surveys = srvRepo.GetSurveys(msg.RoomId, msg.Date);
 
+                    List<SurveyVoterResponse> voterList = new List<SurveyVoterResponse>();
+
                     foreach (Survey s in surveys)
                     {
                         User usr = usrRepo.GetUser(s.AuthorId);
@@ -306,6 +308,17 @@ namespace ComeX.Server.Hubs
                             ansList.Add(rsp);
                         }
 
+                        Answer checkUser = ansRepo.GetUserAnswered(s.Id, usrId);
+                        if (checkUser != null)
+                        {
+                            SurveyVoterResponse voted = new SurveyVoterResponse(s.Id, usrId, true);
+                            voterList.Add(voted);
+                        } else
+                        {
+                            SurveyVoterResponse voted = new SurveyVoterResponse(s.Id, usrId, false);
+                            voterList.Add(voted);
+                        }
+
                         SurveyResponse response = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, ansList);
                         surveyList.Add(response);
                     }
@@ -314,6 +327,8 @@ namespace ComeX.Server.Hubs
 
                     await Clients.Caller.SendAsync("Send_survey_history", surveyResponse);
 
+                    SurveyVoterResponseList list = new SurveyVoterResponseList(voterList);
+                    await Clients.Caller.SendAsync("Load_survey_status", list);
                 }
                 catch (Exception e)
                 {
@@ -375,6 +390,8 @@ namespace ComeX.Server.Hubs
                     List<SurveyResponse> surveyList = new List<SurveyResponse>();
                     IEnumerable<Survey> surveys = srvRepo.GetSurveys(msg.RoomId, msg.Date, oldestMsg);
 
+                    List<SurveyVoterResponse> voterList = new List<SurveyVoterResponse>();
+
                     foreach (Survey s in surveys)
                     {
                         User usr = usrRepo.GetUser(s.AuthorId);
@@ -393,12 +410,27 @@ namespace ComeX.Server.Hubs
                             ansList.Add(rsp);
                         }
 
+                        Answer checkUser = ansRepo.GetUserAnswered(s.Id, usrId);
+                        if (checkUser != null)
+                        {
+                            SurveyVoterResponse voted = new SurveyVoterResponse(s.Id, usrId, true);
+                            voterList.Add(voted);
+                        }
+                        else
+                        {
+                            SurveyVoterResponse voted = new SurveyVoterResponse(s.Id, usrId, false);
+                            voterList.Add(voted);
+                        }
+
                         SurveyResponse newResponse = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, ansList);
                         surveyList.Add(newResponse);
                     }
 
                     LoadAllResponse response = new LoadAllResponse(msg.RoomId, messageResponse, surveyList);
                     await Clients.Caller.SendAsync("Send_all_history", response);
+
+                    SurveyVoterResponseList list = new SurveyVoterResponseList(voterList);
+                    await Clients.Caller.SendAsync("Load_survey_status", list);
 
                 }
                 catch (Exception e)
@@ -465,6 +497,9 @@ namespace ComeX.Server.Hubs
 
                         await Clients.All.SendAsync("Survey_created", response);
 
+                        SurveyVoterResponse voterResponse = new SurveyVoterResponse(createdSrv.Id, usrId, false);
+
+                        await Clients.Caller.SendAsync("Survey_status", voterResponse);
                     }
                     catch (Exception e)
                     {
@@ -529,6 +564,9 @@ namespace ComeX.Server.Hubs
 
                     await Clients.All.SendAsync("Survey_updated", response);
 
+                    SurveyVoterResponse voterResponse = new SurveyVoterResponse(srv.Id, usrId, true);
+
+                    await Clients.Caller.SendAsync("Survey_status", voterResponse);
                 }
                 catch (Exception e)
                 {
