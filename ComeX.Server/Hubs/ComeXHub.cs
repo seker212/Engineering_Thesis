@@ -285,10 +285,10 @@ namespace ComeX.Server.Hubs
                 //wczytanie ankiet starszych niz podana data
                 try
                 {
-                    List<SurveyResponse> surveyList = new List<SurveyResponse>();
+                    List<SurveyVoteResponse> surveyList = new List<SurveyVoteResponse>();
                     IEnumerable<Survey> surveys = srvRepo.GetSurveys(msg.RoomId, msg.Date);
 
-                    List<SurveyVoterResponse> voterList = new List<SurveyVoterResponse>();
+                    bool voted = false;
 
                     foreach (Survey s in surveys)
                     {
@@ -306,29 +306,22 @@ namespace ComeX.Server.Hubs
                             SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content, amount);
 
                             ansList.Add(rsp);
-                        }
 
-                        Answer checkUser = ansRepo.GetUserAnswered(s.Id, usrId);
-                        if (checkUser != null)
-                        {
-                            SurveyVoterResponse voted = new SurveyVoterResponse(s.Id, usrId, s.RoomId, true);
-                            voterList.Add(voted);
-                        } else
-                        {
-                            SurveyVoterResponse voted = new SurveyVoterResponse(s.Id, usrId, s.RoomId, false);
-                            voterList.Add(voted);
+                            Vote checkUser = votRepo.GetVote(ans.Id, usrId);
+                            if (checkUser != null)
+                            {
+                                voted = true;
+                            }
                         }
-
+                        
                         SurveyResponse response = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, ansList);
-                        surveyList.Add(response);
+                        SurveyVoteResponse voteResponse = new SurveyVoteResponse(response, voted);
+                        surveyList.Add(voteResponse);
                     }
 
-                    LoadSurveyResponse surveyResponse = new LoadSurveyResponse(msg.RoomId, surveyList);
-
+                    LoadSurveyVoteResponse surveyResponse = new LoadSurveyVoteResponse(msg.RoomId, surveyList);
                     await Clients.Caller.SendAsync("Send_survey_history", surveyResponse);
 
-                    SurveyVoterResponseList list = new SurveyVoterResponseList(voterList);
-                    await Clients.Caller.SendAsync("Load_survey_status", list);
                 }
                 catch (Exception e)
                 {
@@ -387,10 +380,10 @@ namespace ComeX.Server.Hubs
                     }
 
                     //znalezienie ankiet
-                    List<SurveyResponse> surveyList = new List<SurveyResponse>();
-                    IEnumerable<Survey> surveys = srvRepo.GetSurveys(msg.RoomId, msg.Date, oldestMsg);
+                    List<SurveyVoteResponse> surveyList = new List<SurveyVoteResponse>();
+                    IEnumerable<Survey> surveys = srvRepo.GetSurveys(msg.RoomId, msg.Date);
 
-                    List<SurveyVoterResponse> voterList = new List<SurveyVoterResponse>();
+                    bool voted = false;
 
                     foreach (Survey s in surveys)
                     {
@@ -408,29 +401,21 @@ namespace ComeX.Server.Hubs
                             SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content, amount);
 
                             ansList.Add(rsp);
+
+                            Vote checkUser = votRepo.GetVote(ans.Id, usrId);
+                            if (checkUser != null)
+                            {
+                                voted = true;
+                            }
                         }
 
-                        Answer checkUser = ansRepo.GetUserAnswered(s.Id, usrId);
-                        if (checkUser != null)
-                        {
-                            SurveyVoterResponse voted = new SurveyVoterResponse(s.Id, usrId, s.RoomId, true);
-                            voterList.Add(voted);
-                        }
-                        else
-                        {
-                            SurveyVoterResponse voted = new SurveyVoterResponse(s.Id, usrId, s.RoomId, false);
-                            voterList.Add(voted);
-                        }
-
-                        SurveyResponse newResponse = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, ansList);
-                        surveyList.Add(newResponse);
+                        SurveyResponse response = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, ansList);
+                        SurveyVoteResponse voteResponse = new SurveyVoteResponse(response, voted);
+                        surveyList.Add(voteResponse);
                     }
 
-                    LoadAllResponse response = new LoadAllResponse(msg.RoomId, messageResponse, surveyList);
-                    await Clients.Caller.SendAsync("Send_all_history", response);
-
-                    SurveyVoterResponseList list = new SurveyVoterResponseList(voterList);
-                    await Clients.Caller.SendAsync("Load_survey_status", list);
+                    LoadSurveyVoteResponse surveyResponse = new LoadSurveyVoteResponse(msg.RoomId, surveyList);
+                    await Clients.Caller.SendAsync("Send_survey_history", surveyResponse);
 
                 }
                 catch (Exception e)
@@ -494,12 +479,10 @@ namespace ComeX.Server.Hubs
                         }
 
                         SurveyResponse response = new SurveyResponse(createdSrv.Id, usrName, createdSrv.SendTime, createdSrv.RoomId, createdSrv.Question, ansList);
+                        SurveyVoteResponse voteResponse = new SurveyVoteResponse(response, false);
 
-                        await Clients.All.SendAsync("Survey_created", response);
+                        await Clients.All.SendAsync("Survey_created", voteResponse);
 
-                        SurveyVoterResponse voterResponse = new SurveyVoterResponse(createdSrv.Id, usrId, createdSrv.RoomId, false);
-
-                        await Clients.Caller.SendAsync("Survey_status", voterResponse);
                     }
                     catch (Exception e)
                     {
@@ -564,9 +547,8 @@ namespace ComeX.Server.Hubs
 
                     await Clients.All.SendAsync("Survey_updated", response);
 
-                    SurveyVoterResponse voterResponse = new SurveyVoterResponse(srv.Id, usrId, srv.RoomId, true);
-
-                    await Clients.Caller.SendAsync("Survey_status", voterResponse);
+                    SurveyVoteResponse voteResponse = new SurveyVoteResponse(response, true);
+                    await Clients.Caller.SendAsync("Survey_voted", voteResponse);
                 }
                 catch (Exception e)
                 {

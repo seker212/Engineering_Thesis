@@ -5,9 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ComeX.Lib.Common.ServerResponseModels {
-    public class SurveyVoteResponse {
-        public SurveyVoteResponse(SurveyResponse survey, bool voted) {
+namespace ComeX.Lib.Common.ServerResponseModels
+{
+    public class SurveyVoteResponse
+    {
+        public SurveyVoteResponse(SurveyResponse survey, bool voted)
+        {
             Survey = survey;
             Voted = voted;
         }
@@ -19,3 +22,4 @@ namespace ComeX.Lib.Common.ServerResponseModels {
         [JsonProperty("Voted")]
         public bool Voted { get; set; }
     }
+}
