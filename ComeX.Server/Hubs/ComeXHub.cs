@@ -415,7 +415,8 @@ namespace ComeX.Server.Hubs
                     }
 
                     LoadSurveyVoteResponse surveyResponse = new LoadSurveyVoteResponse(msg.RoomId, surveyList);
-                    await Clients.Caller.SendAsync("Send_survey_history", surveyResponse);
+                    LoadAllResponse finalResponse = new LoadAllResponse(msg.RoomId, messageResponse, surveyResponse);
+                    await Clients.Caller.SendAsync("Send_all_history", finalResponse);
 
                 }
                 catch (Exception e)

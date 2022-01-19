@@ -7,17 +7,17 @@ using System.Threading.Tasks;
 
 namespace ComeX.Lib.Common.ServerResponseModels {
     public class LoadAllResponse {
-        public LoadAllResponse(Guid roomId, List<MessageResponse> messageList, List<SurveyResponse> surveyList) {
+        public LoadAllResponse(Guid roomId, List<MessageResponse> messageList, LoadSurveyVoteResponse surveyVoted) {
             RoomId = roomId;
             MessageList = messageList;
-            SurveyList = surveyList;
+            SurveyVoted = surveyVoted;
         }
 
         [JsonProperty("RoomId")]
         public Guid RoomId { get; set; }
         [JsonProperty("MessageList")]
         public List<MessageResponse> MessageList { get; set; }
-        [JsonProperty("SurveyList")]
-        public List<SurveyResponse> SurveyList { get; set; }
+        [JsonProperty("SurveyVote")]
+        public LoadSurveyVoteResponse SurveyVoted { get; set; }
     }
 }
