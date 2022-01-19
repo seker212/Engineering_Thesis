@@ -68,20 +68,20 @@ namespace ComeX.WPF.MessageViewModels {
 
         public bool ButtonEnabled {
             get {
-                return (!AlreadyAnswered && AnyAnswerChecked() && VotingEnabled);
+                return (!AlreadyAnswered && AnyAnswerChecked() && !Voted);
             }
         }
 
-        private bool _votingEnabled;
-        public bool VotingEnabled {
+        private bool _voted;
+        public bool Voted {
             get {
-                return _votingEnabled;
+                return _voted;
             }
             set {
-                _votingEnabled = value;
+                _voted = value;
                 if (value) ButtonContent = "Vote";
                 else ButtonContent = "Already voted";
-                OnPropertyChanged(nameof(VotingEnabled));
+                OnPropertyChanged(nameof(Voted));
             }
         }
 
@@ -103,7 +103,7 @@ namespace ComeX.WPF.MessageViewModels {
             SendSurveyVoteCommand = new SendSurveyVoteCommand(this, chatVM);
             CheckedAnswerCommand = new CheckedAnswerCommand(this);
             IsRoomArchived = isRoomArchived;
-            VotingEnabled = true;
+            Voted = false;
 
             _chatVM = chatVM;
             Survey = survey;

@@ -16,7 +16,7 @@ namespace ComeX.WPF.Services {
         public event Action<RoomsListResponse> RoomsListReceived;
         public event Action<LoadMessageResponse> SpecificMessageReceived;
         public event Action<LoadChatResponse> ChatHistoryReceived;
-        public event Action<LoadSurveyResponse> SurveyHistoryReceived;
+        public event Action<LoadSurveyVoteResponse> SurveyHistoryReceived;
         public event Action<LoadAllResponse> AllHistoryReceived;
         public event Action<Guid> SurveyVoteDuplicateReceived;
         public event Action<SurveyResponse> UpdatedSurveyReceived;
@@ -31,7 +31,7 @@ namespace ComeX.WPF.Services {
             _connection.On<RoomsListResponse>("Sending_rooms", (roomsList) => RoomsListReceived?.Invoke(roomsList));
             _connection.On<LoadMessageResponse>("Load_message", (message) => SpecificMessageReceived?.Invoke(message));
             _connection.On<LoadChatResponse>("Send_chat_history", (chatHistory) => ChatHistoryReceived?.Invoke(chatHistory));
-            _connection.On<LoadSurveyResponse>("Send_survey_history", (surveyHistory) => SurveyHistoryReceived?.Invoke(surveyHistory));
+            _connection.On<LoadSurveyVoteResponse>("Send_survey_history", (surveyVoteHistory) => SurveyHistoryReceived?.Invoke(surveyVoteHistory));
             _connection.On<LoadAllResponse>("Send_all_history", (allHistory) => AllHistoryReceived?.Invoke(allHistory));
             _connection.On<Guid>("Vote_duplicate", (surveyId) => SurveyVoteDuplicateReceived?.Invoke(surveyId));
             _connection.On<SurveyResponse>("Survey_updated", (survey) => UpdatedSurveyReceived?.Invoke(survey));

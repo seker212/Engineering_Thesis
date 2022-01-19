@@ -45,9 +45,9 @@ namespace ComeX.WPF.ViewModels {
             ChangeRoomCommand = new ChangeRoomCommand(chatViewModel, this);
         }
 
-        public void AddMessagesAndSurveys(List<MessageResponse> messageResponse, List<SurveyResponse> surveyResponse, ChatViewModel chatViewModel) {
+        public void AddMessagesAndSurveys(List<MessageResponse> messageResponse, LoadSurveyVoteResponse surveyVoteResponse, ChatViewModel chatViewModel) {
             AddMessages(messageResponse, chatViewModel);
-            AddSurveys(surveyResponse, chatViewModel);
+            AddSurveysVote(surveyVoteResponse.SurveyVoteList, chatViewModel);
             SortMessageList();
         }
 
@@ -115,10 +115,10 @@ namespace ComeX.WPF.ViewModels {
             SurveyViewModel newSurvey = new SurveyViewModel(surveyResponse, chatViewModel, IsArchived);
             SurveyViewModel oldSurvey = (SurveyViewModel)GetMessageInListById(surveyResponse.Id);
 
-            if (oldSurvey == null)
-                MessageList.Add(newSurvey);
-            else {
-                MessageList[MessageList.IndexOf(oldSurvey)] = newSurvey;
+            if (oldSurvey == null) {
+                // await _serverViewModel.Service.LoadSpecificSurvey(new LoadMessageRequest(_chatViewModel.LoginDM.Token, (Guid)messageResponse.ParentId));
+            }  else {
+                ((SurveyViewModel)MessageList[MessageList.IndexOf(oldSurvey)]).Survey = surveyResponse;
             }
 
             SortMessageList();

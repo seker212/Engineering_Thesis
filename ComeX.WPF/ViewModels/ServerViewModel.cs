@@ -101,7 +101,7 @@ namespace ComeX.WPF.ViewModels {
             room.AddMessage(message, _chatViewModel);
         }
 
-        private void ChatService_SurveyReceived(SurveyVoteResponse surveyVote) {
+        private void ChatService_SurveyVoteReceived(SurveyVoteResponse surveyVote) {
             RoomViewModel room = GetRoomById(surveyVote.Survey.RoomId);
             room.AddSurveyVote(surveyVote, _chatViewModel);
         }
@@ -120,14 +120,14 @@ namespace ComeX.WPF.ViewModels {
             room.AddMessages(response.MessageList, _chatViewModel);
         }
 
-        private void ChatService_SurveyHistoryReceived(LoadSurveyResponse response) {
+        private void ChatService_SurveyHistoryReceived(LoadSurveyVoteResponse response) {
             RoomViewModel room = GetRoomById(response.RoomId);
-            room.AddSurveys(response.SurveyList, _chatViewModel);
+            room.AddSurveysVote(response.SurveyVoteList, _chatViewModel);
         }
 
         private void ChatService_AllHistoryReceived(LoadAllResponse response) {
             RoomViewModel room = GetRoomById(response.RoomId);
-            room.AddMessagesAndSurveys(response.MessageList, response.SurveyList, _chatViewModel);
+            room.AddMessagesAndSurveys(response.MessageList, response.SurveyVoted, _chatViewModel);
         }
         private void ChatService_SpecificMessageReceived(LoadMessageResponse response) {
             RoomViewModel room = GetRoomById(response.Message.RoomId);
