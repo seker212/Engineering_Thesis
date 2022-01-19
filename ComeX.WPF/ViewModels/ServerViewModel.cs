@@ -82,7 +82,7 @@ namespace ComeX.WPF.ViewModels {
 
         public void InitMethods() {
             Service.ChatMessageReceived += ChatService_ChatMessageReceived;
-            Service.SurveyReceived += ChatService_SurveyReceived;
+            Service.SurveyVoteReceived += ChatService_SurveyVoteReceived;
             Service.RoomsListReceived += ChatService_RoomsListReceived;
 
             Service.SpecificMessageReceived += ChatService_SpecificMessageReceived;
@@ -101,9 +101,9 @@ namespace ComeX.WPF.ViewModels {
             room.AddMessage(message, _chatViewModel);
         }
 
-        private void ChatService_SurveyReceived(SurveyResponse survey) {
-            RoomViewModel room = GetRoomById(survey.RoomId);
-            room.AddSurvey(survey, _chatViewModel);
+        private void ChatService_SurveyReceived(SurveyVoteResponse surveyVote) {
+            RoomViewModel room = GetRoomById(surveyVote.Survey.RoomId);
+            room.AddSurveyVote(surveyVote, _chatViewModel);
         }
 
         private void ChatService_RoomsListReceived(RoomsListResponse response) {

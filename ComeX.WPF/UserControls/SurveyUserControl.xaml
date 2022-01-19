@@ -88,7 +88,7 @@
                                     </Style>
                                 </Grid.Resources>
                                 <CheckBox x:Name="AnswerButton" Grid.Column="0"
-                                    IsEnabled="{Binding IsRoomArchived}"
+                                    IsEnabled="{Binding VotingEnabled}"
                                     VerticalAlignment="Top"
                                     Foreground="{StaticResource LightBlue1}"
                                     Margin="5"
@@ -107,7 +107,7 @@
                         IsEnabled="{Binding ButtonEnabled}"
                         Template="{StaticResource RoundedButtonTemplate}"
                         Width="80"
-                        Content="Vote"
+                        Content="{Binding ButtonContent}"
                         Command="{Binding SendSurveyVoteCommand}"/>
             </Grid>
         </Border>

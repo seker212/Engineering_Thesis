@@ -12,7 +12,7 @@ namespace ComeX.WPF.Services {
         private readonly HubConnection _connection;
 
         public event Action<MessageResponse> ChatMessageReceived;
-        public event Action<SurveyResponse> SurveyReceived;
+        public event Action<SurveyVoteResponse> SurveyVoteReceived;
         public event Action<RoomsListResponse> RoomsListReceived;
         public event Action<LoadMessageResponse> SpecificMessageReceived;
         public event Action<LoadChatResponse> ChatHistoryReceived;
@@ -27,7 +27,7 @@ namespace ComeX.WPF.Services {
         public ChatService(HubConnection connection) {
             _connection = connection;
             _connection.On<MessageResponse>("Message_created", (message) => ChatMessageReceived?.Invoke(message));
-            _connection.On<SurveyResponse>("Survey_created", (survey) => SurveyReceived?.Invoke(survey));
+            _connection.On<SurveyVoteResponse>("Survey_created", (surveyVote) => SurveyVoteReceived?.Invoke(surveyVote));
             _connection.On<RoomsListResponse>("Sending_rooms", (roomsList) => RoomsListReceived?.Invoke(roomsList));
             _connection.On<LoadMessageResponse>("Load_message", (message) => SpecificMessageReceived?.Invoke(message));
             _connection.On<LoadChatResponse>("Send_chat_history", (chatHistory) => ChatHistoryReceived?.Invoke(chatHistory));

@@ -49,12 +49,6 @@ namespace ComeX.WPF.MessageViewModels {
 
         public List<SurveyAnswerViewModel> SurveyAnswers { get; set; }
 
-        public bool ButtonEnabled {
-            get {
-                return (!AlreadyAnswered && AnyAnswerChecked());
-            }
-        }
-
         private bool _isRoomArchived;
         public bool IsRoomArchived {
             get {
@@ -72,6 +66,36 @@ namespace ComeX.WPF.MessageViewModels {
             }
         }
 
+        public bool ButtonEnabled {
+            get {
+                return (!AlreadyAnswered && AnyAnswerChecked() && VotingEnabled);
+            }
+        }
+
+        private bool _votingEnabled;
+        public bool VotingEnabled {
+            get {
+                return _votingEnabled;
+            }
+            set {
+                _votingEnabled = value;
+                if (value) ButtonContent = "Vote";
+                else ButtonContent = "Already voted";
+                OnPropertyChanged(nameof(VotingEnabled));
+            }
+        }
+
+        private string _buttonContent;
+        public string ButtonContent {
+            get {
+                return _buttonContent;
+            }
+            set {
+                _buttonContent = value;
+                OnPropertyChanged(nameof(ButtonContent));
+            }
+        }
+
         public ICommand SendSurveyVoteCommand { get; }
         public ICommand CheckedAnswerCommand { get; }
 
@@ -79,6 +103,7 @@ namespace ComeX.WPF.MessageViewModels {
             SendSurveyVoteCommand = new SendSurveyVoteCommand(this, chatVM);
             CheckedAnswerCommand = new CheckedAnswerCommand(this);
             IsRoomArchived = isRoomArchived;
+            VotingEnabled = true;
 
             _chatVM = chatVM;
             Survey = survey;
