@@ -35,8 +35,6 @@ namespace ComeX.WPF.Commands {
                 voteMessage.AnswerId = checkedAnswers.Select(o => o.AnswerId).ToList();
 
                 await _chatViewModel.CurrentServer.Service.SendChatSurveyVote(voteMessage);
-
-                _surveyViewModel.AlreadyAnswered = true;
             } catch (ArgumentException e) {
                 _chatViewModel.ErrorMessage = e.Message;
             } catch (Exception e) {

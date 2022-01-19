@@ -111,14 +111,17 @@ namespace ComeX.WPF.ViewModels {
             _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoomMessages));
         }
 
-        public void AddSurvey(SurveyResponse surveyResponse, ChatViewModel chatViewModel) {
-            SurveyViewModel newSurvey = new SurveyViewModel(surveyResponse, chatViewModel, IsArchived);
+        public async void AddSurvey(SurveyResponse surveyResponse, ChatViewModel chatViewModel) {
             SurveyViewModel oldSurvey = (SurveyViewModel)GetMessageInListById(surveyResponse.Id);
 
             if (oldSurvey == null) {
-                // await _serverViewModel.Service.LoadSpecificSurvey(new LoadMessageRequest(_chatViewModel.LoginDM.Token, (Guid)messageResponse.ParentId));
-            }  else {
-                ((SurveyViewModel)MessageList[MessageList.IndexOf(oldSurvey)]).Survey = surveyResponse;
+                await _serverViewModel.Service.LoadSpecificSurvey(new LoadMessageRequest(_chatViewModel.LoginDM.Token, (Guid)surveyResponse.Id));
+            } else {
+                SurveyViewModel newSurvey = new SurveyViewModel(surveyResponse, chatViewModel, IsArchived);
+                newSurvey.Voted = oldSurvey.Voted;
+                MessageList.Remove(oldSurvey);
+                MessageList.Add(newSurvey);
+                //((SurveyViewModel)MessageList[MessageList.IndexOf(oldSurvey)]).Survey = surveyResponse;
             }
 
             SortMessageList();

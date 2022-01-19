@@ -339,14 +339,14 @@ namespace ComeX.Server.Hubs
                     List<SurveyVoteResponse> surveyList = new List<SurveyVoteResponse>();
                     IEnumerable<Survey> surveys = srvRepo.GetSurveys(msg.RoomId, msg.Date);
 
-                    bool voted = false;
-
                     foreach (Survey s in surveys)
                     {
                         User usr = usrRepo.GetUser(s.AuthorId);
 
                         IEnumerable<Answer> answers = ansRepo.GetAnswers(s.Id);
                         List<SurveyAnswerResponse> ansList = new List<SurveyAnswerResponse>();
+
+                        bool voted = false;
 
                         foreach (Answer ans in answers)
                         {
@@ -432,9 +432,7 @@ namespace ComeX.Server.Hubs
 
                     //znalezienie ankiet
                     List<SurveyVoteResponse> surveyList = new List<SurveyVoteResponse>();
-                    IEnumerable<Survey> surveys = srvRepo.GetSurveys(msg.RoomId, msg.Date);
-
-                    bool voted = false;
+                    IEnumerable<Survey> surveys = srvRepo.GetSurveys(msg.RoomId, msg.Date, oldestMsg);
 
                     foreach (Survey s in surveys)
                     {
@@ -442,6 +440,8 @@ namespace ComeX.Server.Hubs
 
                         IEnumerable<Answer> answers = ansRepo.GetAnswers(s.Id);
                         List<SurveyAnswerResponse> ansList = new List<SurveyAnswerResponse>();
+
+                        bool voted = false;
 
                         foreach (Answer ans in answers)
                         {

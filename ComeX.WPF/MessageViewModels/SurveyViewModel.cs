@@ -14,8 +14,18 @@ using System.Windows.Input;
 namespace ComeX.WPF.MessageViewModels {
     public class SurveyViewModel : BaseMessageViewModel {
         private ChatViewModel _chatVM;
-        public SurveyResponse Survey { get; set; }
-        public bool AlreadyAnswered { get; set; }
+
+        private SurveyResponse _survey;
+        public SurveyResponse Survey {
+            get {
+                return _survey;
+            }
+            set {
+                _survey = value;
+                OnPropertyChanged(nameof(Survey));
+                OnPropertyChanged(nameof(Survey));
+            }
+        }
 
         public string MessageAuthor {
             get {
@@ -68,7 +78,7 @@ namespace ComeX.WPF.MessageViewModels {
 
         public bool ButtonEnabled {
             get {
-                return (!AlreadyAnswered && AnyAnswerChecked() && !Voted);
+                return (AnyAnswerChecked() && !Voted);
             }
         }
 
@@ -79,8 +89,8 @@ namespace ComeX.WPF.MessageViewModels {
             }
             set {
                 _voted = value;
-                if (value) ButtonContent = "Vote";
-                else ButtonContent = "Already voted";
+                if (value) ButtonContent = "Already voted";
+                else ButtonContent = "Vote";
                 OnPropertyChanged(nameof(Voted));
             }
         }
@@ -107,7 +117,6 @@ namespace ComeX.WPF.MessageViewModels {
 
             _chatVM = chatVM;
             Survey = survey;
-            AlreadyAnswered = false;
 
             SurveyAnswers = new List<SurveyAnswerViewModel>();
             foreach (var answer in Survey.AnswerList) {
