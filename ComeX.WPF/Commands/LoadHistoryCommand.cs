@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ComeX.WPF.Commands {
@@ -25,7 +26,7 @@ namespace ComeX.WPF.Commands {
 
         public async void Execute(object parameter) {
             try {
-                BaseMessageViewModel lastMsg = _chatViewModel.CurrentRoomMessages[1];
+                BaseMessageViewModel lastMsg = _chatViewModel.CurrentRoomMessages[2];
                 DateTime lastMsgTime = new DateTime();
                 if (lastMsg.GetType() == typeof(ChatMessageViewModel)) {
                     lastMsgTime = ((ChatMessageViewModel)lastMsg).Message.SendTime;
@@ -34,6 +35,7 @@ namespace ComeX.WPF.Commands {
                 } else {
                     throw new Exception();
                 }
+                _chatViewModel.LoadingVM.LoadingVisibility = Visibility.Visible;
                 await _chatViewModel.CurrentServer.Service.LoadAllHistory(new LoadChatRequest(_chatViewModel.LoginDM.Token, _chatViewModel.CurrentRoom.RoomId, lastMsgTime));
                 _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoom));
                 _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoomMessages));

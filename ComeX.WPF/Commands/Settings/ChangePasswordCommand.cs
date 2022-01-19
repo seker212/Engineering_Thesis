@@ -1,8 +1,10 @@
-﻿using ComeX.WPF.Services;
+﻿using ComeX.Lib.Common.Helpers;
+using ComeX.WPF.Services;
 using ComeX.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -44,7 +46,11 @@ namespace ComeX.WPF.Commands.Settings {
                     isInputCorrect = false;
                 }
                 if (isInputCorrect) {
-                    bool result = await _service.ChangePassword(_viewModel.LoginDM.Username, oldPassword, newPassword);
+                    var hashingHelper = new HashingHelper(SHA512.Create());
+                    var hashedOldPassword = hashingHelper.GenerateHash(oldPassword);
+                    var hashedNewPassword = hashingHelper.GenerateHash(newPassword);
+
+                    bool result = await _service.ChangePassword(_viewModel.LoginDM.Username, hashedOldPassword, hashedNewPassword);
                     if (result) {
                         _viewModel.SetChangePasswordErrorMessage("Password changed");
                     } else {

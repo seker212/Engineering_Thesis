@@ -23,17 +23,5 @@ namespace ComeX.WPF.UserControls {
         }
 
         public string RoomName { get; set; }
-
-        public void SetNewMessage() {
-            this.NotifyServerEllipse.Style = (Style)Server.FindResource("NewMessageRoomStyle");
-        }
-
-        public void SetNewMention() {
-            this.NotifyServerEllipse.Style = (Style)Server.FindResource("NewMentionRoomStyle");
-        }
-
-        public void DeleteNotify() {
-            this.NotifyServerEllipse.Style = (Style)Server.FindResource("DefaultEllipseStyle");
-        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using ComeX.Lib.Common.UserDatabaseAPI;
+﻿using ComeX.Lib.Common.Helpers;
+using ComeX.Lib.Common.UserDatabaseAPI;
 using ComeX.WPF.Services;
 using ComeX.WPF.ViewModels;
 using System;
@@ -6,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -59,10 +61,13 @@ namespace ComeX.WPF.Commands {
                     isInputCorrect = false;
                 }
                 if (isInputCorrect) {
+                    var hashingHelper = new HashingHelper(SHA512.Create());
+                    var hashedPassword = hashingHelper.GenerateHash(password);
+
                     _viewModel.LoadingVisibility = Visibility.Visible;
                     bool result = await _service.Register(login, password);
                     if (result) {
-                        LoginDataModel loginDataModel = await _service.Login(login, password);
+                        LoginDataModel loginDataModel = await _service.Login(login, hashedPassword);
                         _viewModel.LoginDM = loginDataModel;
                         _viewModel.SetLoginDMCommand.Execute(null);
                         _viewModel.ChangeViewToChatCommand.Execute(null);

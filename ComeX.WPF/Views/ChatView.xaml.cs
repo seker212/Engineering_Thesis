@@ -26,5 +26,34 @@ namespace ComeX.WPF.Views {
         public ChatView() {
             InitializeComponent();
         }
+
+        private void ListView_OnLoaded(object sender, RoutedEventArgs e) {
+            var listBox = (ListBox)sender;
+
+            var scrollViewer = FindScrollViewer(listBox);
+
+            if (scrollViewer != null) {
+                scrollViewer.ScrollChanged += (o, args) => {
+                    if (args.ExtentHeightChange > 0)
+                        scrollViewer.ScrollToBottom();
+                };
+            }
+        }
+
+        private static ScrollViewer FindScrollViewer(DependencyObject root) {
+            var queue = new Queue<DependencyObject>(new[] { root });
+
+            do {
+                var item = queue.Dequeue();
+
+                if (item is ScrollViewer)
+                    return (ScrollViewer)item;
+
+                for (var i = 0; i < VisualTreeHelper.GetChildrenCount(item); i++)
+                    queue.Enqueue(VisualTreeHelper.GetChild(item, i));
+            } while (queue.Count > 0);
+
+            return null;
+        }
     }
 }
