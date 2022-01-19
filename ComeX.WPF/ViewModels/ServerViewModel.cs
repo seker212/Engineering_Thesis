@@ -127,7 +127,8 @@ namespace ComeX.WPF.ViewModels {
 
         private void ChatService_AllHistoryReceived(LoadAllResponse response) {
             RoomViewModel room = GetRoomById(response.RoomId);
-            room.AddMessagesAndSurveys(response.MessageList, response.SurveyVoted, _chatViewModel);
+            room.AddMessagesAndSurveys(response.MessageList, response.SurveyList, _chatViewModel);
+            _chatViewModel.LoadingVM.LoadingVisibility = Visibility.Collapsed;
         }
         private void ChatService_SpecificMessageReceived(LoadMessageResponse response) {
             RoomViewModel room = GetRoomById(response.Message.RoomId);

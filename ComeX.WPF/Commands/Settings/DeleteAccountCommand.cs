@@ -1,8 +1,10 @@
-﻿using ComeX.WPF.Services;
+﻿using ComeX.Lib.Common.Helpers;
+using ComeX.WPF.Services;
 using ComeX.WPF.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -30,7 +32,10 @@ namespace ComeX.WPF.Commands.Settings {
                 if (string.IsNullOrEmpty(password)) {
                     _viewModel.SetDeleteAccountErrorMessage("Password cannot be empty");
                 } else {
-                    bool result = await _service.DeleteAccount(_viewModel.LoginDM.Username, password);
+                    var hashingHelper = new HashingHelper(SHA512.Create());
+                    var hashedPassword = hashingHelper.GenerateHash(password);
+
+                    bool result = await _service.DeleteAccount(_viewModel.LoginDM.Username, hashedPassword);
                     if (result) {
                         _viewModel.LogoutCommand.Execute(null);
                         _viewModel.ErrorMessage = "";

@@ -25,7 +25,7 @@
 
     <Grid x:Name="MessageGrid" Style="{StaticResource HoverBackgroundStyle}">
         <Grid.Resources>
-            <Style TargetType="{x:Type TextBlock}">
+            <Style TargetType="{x:Type TextBlock}" x:Key="ContentStyle">
                 <Setter Property="Grid.Column" Value="1"/>
                 <Setter Property="Grid.Row" Value="1"/>
                 <Setter Property="TextWrapping" Value="Wrap"/>
@@ -34,21 +34,16 @@
         </Grid.Resources>
         <Grid.RowDefinitions>
             <RowDefinition x:Name="ReplyRow" ></RowDefinition>
-            <RowDefinition x:Name="AuthorDateRow" Height="20"></RowDefinition>
+            <RowDefinition x:Name="AuthorDateRow"></RowDefinition>
             <RowDefinition x:Name="ContentRow"></RowDefinition>
             <RowDefinition x:Name="EmojiRow"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <WrapPanel Grid.Row="0" x:Name="ReplyWrapPanel"
-                                   Orientation="Horizontal"
+        <WrapPanel Grid.Row="0"
+                   x:Name="ReplyWrapPanel"
+                   Orientation="Horizontal"
                    Margin="15,0,0,0"
-                                   Visibility="{Binding ReplyParentVisibility}">
-            <WrapPanel.Resources>
-                <Style TargetType="{x:Type Label}">
-                    <Setter Property="Foreground" Value="{StaticResource LightBlue2}" />
-                    <Setter Property="VerticalAlignment" Value="Center" />
-                </Style>
-            </WrapPanel.Resources>
+                   Visibility="{Binding ReplyParentVisibility}">
             <Label x:Name="ReplyLabel" Content="Replied to: " />
             <Label x:Name="ReplyParentAuthor" Content="{Binding ReplyParentAuthor}"/>
             <Label x:Name="ReplyParentContent" Content="{Binding ReplyParentContentPrint}"/>
@@ -58,22 +53,25 @@
                    Orientation="Horizontal" 
                    VerticalAlignment="Center">
                 <WrapPanel.Resources>
-                    <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Margin" Value="0,0,10,0" />
+                    <Style TargetType="{x:Type TextBlock}" x:Key="AuthorDateStyle">
+                        <Setter Property="Margin" Value="5,0,10,0" />
                         <Setter Property="VerticalAlignment" Value="Center" />
                     </Style>
                 </WrapPanel.Resources>
-                <TextBlock x:Name="AuthorText"
-                       FontSize="16"
-                       Foreground="{StaticResource LightBlue1}"
+            <TextBlock x:Name="AuthorText"
+                       Style="{StaticResource AuthorDateStyle}"
+                       FontSize="18"
+                       Foreground="{StaticResource Orange1}"
                        Text="{Binding MessageAuthor}"/>
-                <TextBlock x:Name="DateText"                                                
-                       FontSize="12"
+                <TextBlock x:Name="DateText"
+                       Style="{StaticResource AuthorDateStyle}"
+                       FontSize="14"
                        Foreground="{StaticResource LightBlue2}"
                        Text="{Binding MessageDateTime}"/>
             </WrapPanel>
 
-        <TextBlock x:Name="ContentText" Grid.Row="2"
+        <TextBlock x:Name="ContentText" Grid.Row="2" Style="{StaticResource ContentStyle}"
+                   FontSize="16"
                        Margin="5,0,0,0"
                        Text="{Binding MessageContent}">
         </TextBlock>
@@ -98,11 +96,11 @@
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <Image x:Name="ReactionImage" Grid.Column="0"
-               Height="30"
-               Width="30"
+               Height="40"
+               Width="40"
                Source="{Binding Filename}" />
                             <Label x:Name="ReactionCounter" Grid.Column="1"
-               FontSize="11"
+               FontSize="14"
                Content="{Binding Counter}" />
                         </Grid>
                     </StackPanel>

@@ -1,4 +1,5 @@
-﻿using ComeX.Lib.Common.UserDatabaseAPI;
+﻿using ComeX.Lib.Common.Helpers;
+using ComeX.Lib.Common.UserDatabaseAPI;
 using ComeX.WPF.Models;
 using ComeX.WPF.Services;
 using ComeX.WPF.ViewModels;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -35,7 +37,7 @@ namespace ComeX.WPF.Commands {
 
                 bool isInputCorrect = true;
                 string login = _viewModel.Username;
-                SecureString password = _viewModel.Password;
+                string password = _viewModel.SecureStringToString(_viewModel.Password);
 
                 if (string.IsNullOrWhiteSpace(login)) {
                     _viewModel.SetUsernameErrorMessage("Username cannot be empty");
@@ -46,8 +48,11 @@ namespace ComeX.WPF.Commands {
                     isInputCorrect = false;
                 }
                 if (isInputCorrect) {
+                    var hashingHelper = new HashingHelper(SHA512.Create());
+                    var hashedPassword = hashingHelper.GenerateHash(password);
+
                     _viewModel.LoadingVisibility = Visibility.Visible;
-                    LoginDataModel loginDataModel = await _loginService.Login(login, _viewModel.SecureStringToString(password));
+                    LoginDataModel loginDataModel = await _loginService.Login(login, hashedPassword);
                     IEnumerable<ServerDataModel> serverDataModels = await _loginService.GetServers(login);
                     _viewModel.LoginDM = loginDataModel;
                     foreach (var serverDM in serverDataModels)

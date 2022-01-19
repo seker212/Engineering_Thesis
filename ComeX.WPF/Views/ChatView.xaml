@@ -51,6 +51,7 @@
                 <ListView Grid.Row="0"
                           Grid.ColumnSpan="2"
                           x:Name="ServerListView"
+                          HorizontalAlignment="Center"
                           ItemsSource="{Binding Servers}"
                           Background="{x:Null}"
                           BorderBrush="{x:Null}"
@@ -139,7 +140,7 @@
                 <ListView Grid.Row="0"
                           Grid.ColumnSpan="2"
                           x:Name="RoomsListView"
-                          Margin="5"
+                          Margin="10,5,5,5"
                           ItemsSource="{Binding Rooms}"
                           Background="{x:Null}"
                           BorderBrush="{x:Null}">
@@ -284,24 +285,25 @@
                     <ColumnDefinition x:Name="MessagesColumn"
                                       Width="*" />
                     <ColumnDefinition Width="Auto"
-                                      MaxWidth="220" />
+                                      MaxWidth="250" />
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0"
                       x:Name="RoomMessagesGrid"
                       Background="{StaticResource DarkBlue3}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="*" x:Name="ContentRow"></RowDefinition>
-                        <RowDefinition Height="120"></RowDefinition>
+                        <RowDefinition Height="130"></RowDefinition>
                     </Grid.RowDefinitions>
 
-
                         <ListView x:Name="MessagesListView"
-                                  Margin="5"
+                                  Margin="15,0,5,0"
                                   HorizontalAlignment="Stretch"
                                   ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                  ScrollViewer.CanContentScroll="False"
                                   ItemsSource="{Binding CurrentRoomMessages}"
                                   Background="{StaticResource DarkBlue3}"
-                                  BorderBrush="{x:Null}">
+                                  BorderBrush="{x:Null}"
+                                  Loaded="ListView_OnLoaded">
                             <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="Template">
@@ -341,7 +343,12 @@
                                         Height="30"
                                         Command="{Binding LoadHistoryCommand}" />
                             </DataTemplate>
-                            </ListView.Resources>
+                            <DataTemplate DataType="{x:Type mvm:LoadingViewModel}">
+                                <uc:LoadingUserControl
+                                    Visibility="{Binding LoadingVisibility}"
+                                    Margin="10"/>
+                            </DataTemplate>
+                        </ListView.Resources>
                         </ListView>
 
                         <Grid Grid.Row="1"
@@ -349,7 +356,7 @@
                           Margin="5,0,5,10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="80"></RowDefinition>
-                            <RowDefinition Height="40"></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Vertical">
                             <TextBox Template="{StaticResource BorderTextBoxTemplate}"
@@ -381,9 +388,9 @@
                                     <Setter Property="Margin"
                                             Value="5" />
                                     <Setter Property="Width"
-                                            Value="20" />
+                                            Value="30" />
                                     <Setter Property="Height"
-                                            Value="20" />
+                                            Value="30" />
                                     <Setter Property="HorizontalAlignment"
                                             Value="Right" />
                                     <Setter Property="VerticalAlignment"
@@ -412,11 +419,12 @@
                                        Content="{Binding ReplyParentContentPrint}" />
                             </WrapPanel>
                             <WrapPanel Grid.Column="1"
+                                       Margin="0,0,40,0"
                                        x:Name="TypeToolsWrapPanel"
                                        Orientation="Horizontal"
                                        FlowDirection="RightToLeft">
                                 <Button x:Name="SendButton"
-                                        Width="40"
+                                        Width="60"
                                         IsEnabled="{Binding SendMessageEnabled}"
                                         Command="{Binding SendChatMessageCommand}" />
                                 <Button x:Name="SurveyButton"
@@ -428,7 +436,7 @@
                 </Grid>
 
                 <Grid Grid.Column="1"
-                      Width="220"
+                      Width="250"
                       Visibility="{Binding SearchVisibility}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="20" />
@@ -442,7 +450,7 @@
                             Command="{Binding CloseSearchCommand}" />
                     <Rectangle Grid.Column="1"
                                Fill="{StaticResource DarkBlue1}"
-                               Width="200" />
+                               Width="230" />
                     <Grid Grid.Column="1"
                           x:Name="SearchGrid">
                         <Grid.RowDefinitions>
@@ -461,25 +469,25 @@
                             <StackPanel Grid.Row="0" Orientation="Horizontal">
                                 <Label x:Name="SearchPhraseLabel"
                                        Foreground="{StaticResource LightBlue2}"
-                                       FontSize="12"
+                                       FontSize="14"
                                        Content="Found " />
                                 <Label x:Name="SearchPhraseContentNumber"
                                        Foreground="{StaticResource LightBlue2}"
-                                       FontSize="12"
+                                       FontSize="14"
                                        Content="{Binding SearchPhraseNumberLabel}" />
                                 <Label Foreground="{StaticResource LightBlue2}"
-                                       FontSize="12"
+                                       FontSize="14"
                                        Content="result(s)" />
                             </StackPanel>
 
                             <StackPanel Grid.Row="1" Orientation="Horizontal">
                                 <Label 
                                        Foreground="{StaticResource LightBlue2}"
-                                       FontSize="12"
+                                       FontSize="14"
                                        Content="For phrase " />
                                 <TextBlock x:Name="SearchPhraseContent"
                                        Foreground="{StaticResource LightBlue2}"
-                                       FontSize="12"
+                                       FontSize="14"
                                        Width="100"
                                        VerticalAlignment="Center"
                                        TextWrapping="Wrap"
@@ -489,20 +497,21 @@
                             <StackPanel Grid.Row="2" Orientation="Horizontal">
                                 <Label x:Name="SearchRoomLabel"
                                        Foreground="{StaticResource LightBlue2}"
-                                       FontSize="12"
+                                       FontSize="14"
                                        Content="In room: " />
                                 <Label x:Name="SearchRoomContent"
                                        Foreground="{StaticResource LightBlue2}"
-                                       FontSize="12"
+                                       FontSize="14"
                                        Content="{Binding SearchPhraseRoom}" />
                             </StackPanel>
                         </Grid>
                         <WrapPanel Grid.Row="1"
                                    x:Name="SearchWrapP"
                                    Background="{StaticResource DarkBlue1}"
-                                   Width="190">
+                                   Width="220">
                             <ListView x:Name="SearchListView"
-                                      Width="190"
+                                      Margin="10"
+                                      Width="220"
                                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                                       ItemsSource="{Binding SearchMessages}"
                                       Background="{StaticResource DarkBlue1}"

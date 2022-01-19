@@ -20,8 +20,9 @@
     </Window.Resources>
 
     <Border x:Name="BorderMainGrid" Style="{StaticResource WindowBorderStyle}">
-        <Grid x:Name="SettingsMainGrid" Background="{StaticResource DarkBlue3}"
-          Margin="5,5,5,5">
+        <Grid x:Name="SettingsMainGrid"
+              Background="{StaticResource DarkBlue3}"
+              Margin="5,5,5,5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
@@ -46,6 +47,7 @@
                     VerticalContentAlignment="Center"
                     Width="70"
                     Content=" Cancel "
+                        FontSize="14"
                     Click="CancelButtonHandler"/>
             </Grid>
             <Grid Grid.Row="1" Margin="5" Background="{StaticResource DarkBlue2}">
@@ -60,14 +62,15 @@
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="HorizontalAlignment" Value="Left"/>
                             <Setter Property="Foreground" Value="{StaticResource LightBlue2}"/>
-                            <Setter Property="Margin" Value="10,0,10,0"/>
-                            <Setter Property="FontSize" Value="11"/>
+                            <Setter Property="Margin" Value="15,0,10,0"/>
+                            <Setter Property="FontSize" Value="12"/>
                             <Setter Property="TextWrapping" Value="Wrap"/>
                         </Style>
                         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource WindowRoundButtonStyle}">
-                            <Setter Property="Width" Value="120" />
+                            <Setter Property="Width" Value="130" />
                             <Setter Property="HorizontalAlignment" Value="Left" />
                             <Setter Property="Margin" Value="10,10,10,0"/>
+                            <Setter Property="FontSize" Value="14"/>
                         </Style>
                         <Style TargetType="{x:Type PasswordBox}">
                             <Setter Property="Template" Value="{StaticResource BorderPasswordBoxTemplate}" />
@@ -146,7 +149,6 @@
                         </Grid.ColumnDefinitions>
                         <Button Content=" Change password " Grid.Column="0" 
                             VerticalAlignment="Top"
-                            Height="26"
                             Command="{Binding ChangePasswordCommand}"/>
                         <TextBlock x:Name="ChangePasswordErrorLabel" Grid.Column="1" 
                                Foreground="Red"
