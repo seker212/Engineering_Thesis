@@ -224,6 +224,57 @@ namespace ComeX.Server.Hubs
             }
         }
 
+        // otrzymano zadanie wczytania konkretnej ankiety
+        public async Task LoadSpecificSurvey(LoadMessageRequest msg)
+        {
+            Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
+            string usrName = _connectionCache[msg.Token].Username;
+            if (CheckWhitelist(usrId, usrName))
+            {
+                try
+                {
+                    Survey searchSrv = srvRepo.Get(msg.Id);
+                    bool voted = false;
+
+                    User usr = usrRepo.GetUser(searchSrv.AuthorId);
+
+                    IEnumerable<Answer> answers = ansRepo.GetAnswers(searchSrv.Id);
+                    List<SurveyAnswerResponse> ansList = new List<SurveyAnswerResponse>();
+
+                    foreach (Answer ans in answers)
+                    {
+
+                        IEnumerable<Vote> votes = votRepo.GetVotes(ans.Id);
+                        int amount = votes.Count();
+
+                        SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content, amount);
+
+                        ansList.Add(rsp);
+
+                        Vote checkUser = votRepo.GetVote(ans.Id, usrId);
+                        if (checkUser != null)
+                        {
+                            voted = true;
+                        }
+                    }
+
+                    SurveyResponse response = new SurveyResponse(searchSrv.Id, usr.Username, searchSrv.SendTime, searchSrv.RoomId, searchSrv.Question, ansList);
+                    SurveyVoteResponse voteResponse = new SurveyVoteResponse(response, voted);
+
+                    await Clients.Caller.SendAsync("Load_survey", voteResponse);
+
+                }
+                catch (Exception e)
+                {
+                    await Clients.Caller.SendAsync("Load_survey_error");
+                }
+            }
+            else
+            {
+                await Clients.Caller.SendAsync("Not_allowed");
+            }
+        }
+
         // otrzymano zadanie wczytania wiadomosci
         public async Task LoadChatHistory(LoadChatRequest msg)
         {
