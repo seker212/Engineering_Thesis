@@ -30,8 +30,8 @@ namespace ComeX.Server.Hubs.Tests
     public class ComeXHubTests
     {
         TestServer server;
-        const string TOKEN = "jeFm73zp18JUH635L5pxl5VsGXLP58YB6gWZMO3B3Ww=";
-        const string USERNAME = "User1";
+        const string TOKEN = "XVcrlCT3F0qvIUMa8fTGH8n94ZSIXqWlTAlrFO8taIY=";
+        const string USERNAME = "IntegrationTestUsernameForTokenTests";
 
         [TestInitialize]
         public void TestInit()
