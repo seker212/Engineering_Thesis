@@ -31,6 +31,15 @@
     <Resource Include="Resources\Images\Emojis\5.png" />
     <Resource Include="Resources\Images\Emojis\6.png" />
     <Resource Include="Resources\Images\Emojis\7.png" />
+    <Resource Include="Resources\Images\Icons\close-circle-line.png" />
+    <Resource Include="Resources\Images\Icons\heart-add-line.png" />
+    <Resource Include="Resources\Images\Icons\refresh-line-24.png" />
+    <Resource Include="Resources\Images\Icons\refresh-line-36.png" />
+    <Resource Include="Resources\Images\Icons\reply-line.png" />
+    <Resource Include="Resources\Images\Icons\search-line.png" />
+    <Resource Include="Resources\Images\Icons\send-plane-2-line.png" />
+    <Resource Include="Resources\Images\Icons\settings-3-line.png" />
+    <Resource Include="Resources\Images\Icons\survey-line.png" />
   </ItemGroup>
 
   <ItemGroup>

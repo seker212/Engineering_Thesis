@@ -82,7 +82,11 @@
                         Height="40"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Stretch"
-                        Command="{Binding GetServersListCommand}" />
+                        Command="{Binding GetServersListCommand}">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/Resources/Images/Icons/refresh-line-36.png" />
+                    </Button.Background>
+                </Button>
             </WrapPanel>
 
             <WrapPanel Grid.Row="1"
@@ -120,8 +124,11 @@
 
                 <Button x:Name="Settings"
                         Width="60"
-                        Height="60"
+                        Height="60"                     
                         Command="{Binding OpenSettingsCommand}">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/Resources/Images/Icons/settings-3-line.png" />
+                    </Button.Background>
                 </Button>
             </WrapPanel>
         </Grid>
@@ -276,7 +283,11 @@
                     <Button x:Name="SearchButton"
                             IsEnabled="{Binding SendMessageEnabled}"
                             Command="{Binding SearchCommand}"
-                            Margin="5" />
+                            Margin="5">
+                        <Button.Background>
+                            <ImageBrush ImageSource="/Resources/Images/Icons/search-line.png" />
+                        </Button.Background>
+                    </Button>
                 </WrapPanel>
             </Grid>
 
@@ -341,7 +352,11 @@
                                         HorizontalAlignment="Center"
                                         Width="30"
                                         Height="30"
-                                        Command="{Binding LoadHistoryCommand}" />
+                                        Command="{Binding LoadHistoryCommand}">
+                                    <Button.Background>
+                                        <ImageBrush ImageSource="/Resources/Images/Icons/refresh-line-24.png" />
+                                    </Button.Background>
+                                </Button>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type mvm:LoadingViewModel}">
                                 <uc:LoadingUserControl
@@ -410,7 +425,11 @@
                                     </Style>
                                 </WrapPanel.Resources>
                                 <Button x:Name="DeleteReplyButton"
-                                        Command="{Binding UnsetReplyCommand}" />
+                                        Command="{Binding UnsetReplyCommand}">
+                                    <Button.Background>
+                                        <ImageBrush ImageSource="/Resources/Images/Icons/close-circle-line.png" />
+                                    </Button.Background>
+                                </Button>
                                 <Label x:Name="ReplyLabel"
                                        Content="Replying to: " />
                                 <Label x:Name="ReplyParentAuthor"
@@ -424,12 +443,19 @@
                                        Orientation="Horizontal"
                                        FlowDirection="RightToLeft">
                                 <Button x:Name="SendButton"
-                                        Width="60"
                                         IsEnabled="{Binding SendMessageEnabled}"
-                                        Command="{Binding SendChatMessageCommand}" />
+                                        Command="{Binding SendChatMessageCommand}">
+                                    <Button.Background>
+                                        <ImageBrush ImageSource="/Resources/Images/Icons/send-plane-2-line.png" />
+                                    </Button.Background>
+                                </Button>
                                 <Button x:Name="SurveyButton"
                                         IsEnabled="{Binding SendMessageEnabled}"
-                                        Command="{Binding CreateSurveyCommand}" />
+                                        Command="{Binding CreateSurveyCommand}">
+                                    <Button.Background>
+                                        <ImageBrush ImageSource="/Resources/Images/Icons/survey-line.png" />
+                                    </Button.Background>
+                                </Button>
                             </WrapPanel>
                         </Grid>
                     </Grid>
