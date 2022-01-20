@@ -12,7 +12,6 @@ namespace Comex.Server.AdminCli
         const string HELP_TEXT = @"
 Available commands:
     room mk <<room-name>>           Adds new text room of a given room name to the server as an unarchived room. Example: ""room mk room1""
-    room rm <<room-name>>           Removes the room with a given room name from the server. Example ""room rm room1""
     room ar <<room-name>>           Marks the unarchived room with a given room name as an archived room. Example: ""room ar room1""
     room unar <<room-name>>         Marks the room with a given room name as an unarchived room. Example: ""room unar room1""
     whitelist add <<user-name>>     Adds the user with a given user name to the server's whitelist. Example: ""whitelist add user1""
