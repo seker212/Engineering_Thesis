@@ -26,9 +26,6 @@ namespace Comex.Server.AdminCli
                     case "mk":
                         CreateRoomCommand(args.Skip(1).Single());
                         break;
-                    case "rm":
-                        DeleteRoomCommand(args.Skip(1).Single());
-                        break;
                     case "ar":
                         ArchiveRoomCommand(args.Skip(1).Single());
                         break;
@@ -43,11 +40,6 @@ namespace Comex.Server.AdminCli
         void CreateRoomCommand(string arg)
         {
             _repository.Insert(new Room(Guid.NewGuid(), arg, false));
-        }
-
-        void DeleteRoomCommand(string arg)
-        {
-            _repository.Delete(_repository.GetRooms().Single(x => x.Name == arg));
         }
 
         void ArchiveRoomCommand(string arg)
