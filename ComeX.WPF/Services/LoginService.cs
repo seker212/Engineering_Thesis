@@ -13,6 +13,7 @@ namespace ComeX.WPF.Services {
         private static readonly HttpClient _httpClient = new HttpClient();
         private UriBuilder _uriBuilderUser;
         private UriBuilder _uriBuilderServer;
+        private UriBuilder _uriBuilderUserServer;
 
         public event Action<TokenDataModel> LoginTokenReceived;
 
@@ -22,6 +23,7 @@ namespace ComeX.WPF.Services {
 
             _uriBuilderUser = new UriBuilder("https://localhost:44327/api/user/");
             _uriBuilderServer = new UriBuilder("https://localhost:44327/api/server/");
+            _uriBuilderUserServer = new UriBuilder("https://localhost:44327/api/server/user");
         }
 
         public async Task<LoginDataModel> Login(string login, string password) {
@@ -84,6 +86,18 @@ namespace ComeX.WPF.Services {
             if (response.StatusCode != System.Net.HttpStatusCode.OK) throw new ArgumentException();
             var content = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<IEnumerable<ServerDataModel>>(content);
+        }
+
+        public async Task<bool> JoinServer(string login, string serverUrl) {
+            var query = HttpUtility.ParseQueryString(_uriBuilderUserServer.Query);
+            query["username"] = login;
+            query["url"] = serverUrl;
+            _uriBuilderUserServer.Query = query.ToString();
+            string url = _uriBuilderUserServer.ToString();
+
+            var response = await _httpClient.PostAsync(url, null);
+            if (response.StatusCode != System.Net.HttpStatusCode.OK) throw new ArgumentException();
+            return true;
         }
     }
 }

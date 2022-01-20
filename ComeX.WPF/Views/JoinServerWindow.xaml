@@ -1,0 +1,107 @@
+﻿<Window x:Class="ComeX.WPF.Views.JoinServerWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ComeX.WPF.Views"
+        mc:Ignorable="d"
+        AllowsTransparency="True"
+        Background="Transparent"
+        Title="JoinServerWindow"
+        WindowStyle="None"
+        ResizeMode="NoResize"
+        Height="160"
+        Width="320">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Border x:Name="BorderMainGrid" Style="{StaticResource WindowBorderStyle}">
+        <Grid x:Name="JoinServerMainGrid" Background="{StaticResource DarkBlue3}"
+              Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition Width="70" />
+                </Grid.ColumnDefinitions>
+                <Label x:Name="UrlErrorLabel"
+                       Grid.Column="0"
+                       Margin="10,2,0,0"
+                       VerticalAlignment="Center"
+                       FontSize="14"
+                       Foreground="{Binding UrlErrorColor}"
+                       Visibility="{Binding UrlErrorVisibility}"
+                       Content="{Binding UrlError}" />
+                <Button x:Name="CancelButton"
+                    Grid.Column="1"
+                    Style="{StaticResource WindowRoundButtonStyle}"
+                    Margin="0,5,0,5"
+                    FontSize="14"
+                    HorizontalAlignment="Right"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Width="70"
+                    Content=" Cancel "
+                    Click="CancelButtonHandler" />
+            </Grid>
+
+            <Grid Grid.Row="1"
+                  Background="{StaticResource DarkBlue2}"
+                  Margin="5,5,5,5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="45"></RowDefinition>
+                    <RowDefinition Height="40"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Rectangle x:Name="Placeholder"
+                       Grid.Row="0"
+                       Margin="16,13,0,5"
+                       Height="23"
+                       Width="141"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top">
+                <Rectangle.Fill>
+                    <ImageBrush ImageSource="../Resources/Images/Placeholders/urlPlaceholder.jpg" />
+                </Rectangle.Fill>
+            </Rectangle>
+            <TextBox x:Name="UrlTextBox"
+                     Grid.Row="0"
+                     Template="{StaticResource BorderTextBoxTemplate}"
+                     BorderBrush="{Binding UrlBoxBorder}"
+                     Margin="10,10,10,5"
+                     Height="30"
+                     FontSize="16"
+                     BorderThickness="4"
+                     Foreground="{StaticResource LightBlue2}"
+                     CaretBrush="{StaticResource LightBlue2}"
+                     GotFocus="RemoveUrlPlaceholder"
+                     LostFocus="AddUrlPlaceholder"
+                     Text="{Binding Url}"
+                         FontStyle="Italic">
+                <TextBox.Background>
+                    <ImageBrush />
+                </TextBox.Background>
+            </TextBox>
+
+            <Button x:Name="JoinServerButton"
+                    Grid.Row="1"
+                    Style="{StaticResource WindowRoundButtonStyle}"
+                    Margin="0,5,0,5"
+                    FontSize="14"
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Width="70"
+                    Content=" Join "
+                    Command="{Binding JoinServerCommand}"/>
+            </Grid>
+        </Grid>
+    </Border>
+</Window>

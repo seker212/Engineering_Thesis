@@ -20,6 +20,7 @@
     <Resource Include="Resources\Images\Placeholders\oldPasswordPlaceholder.jpg" />
     <Resource Include="Resources\Images\Placeholders\newPasswordPlaceholder.jpg" />
     <Resource Include="Resources\Images\Placeholders\passwordPlaceholder.jpg" />
+    <Resource Include="Resources\Images\Placeholders\urlPlaceholder.jpg" />
     <Resource Include="Resources\Fonts\Nunito-Medium.ttf" />
     <Resource Include="Resources\Images\logo1.png" />
     <Resource Include="Resources\Images\logo2.png" />
@@ -31,6 +32,7 @@
     <Resource Include="Resources\Images\Emojis\5.png" />
     <Resource Include="Resources\Images\Emojis\6.png" />
     <Resource Include="Resources\Images\Emojis\7.png" />
+    <Resource Include="Resources\Images\Icons\add-circle-line.png" />
     <Resource Include="Resources\Images\Icons\close-circle-line.png" />
     <Resource Include="Resources\Images\Icons\heart-add-line.png" />
     <Resource Include="Resources\Images\Icons\refresh-line-24.png" />

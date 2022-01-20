@@ -27,7 +27,7 @@
           Height="{Binding ActualHeight, ElementName=ChatViewUserControl}"
           Width="{Binding ActualWidth, ElementName=ChatViewUserControl}">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100"></ColumnDefinition>
+            <ColumnDefinition Width="120"></ColumnDefinition>
             <ColumnDefinition Width="160"></ColumnDefinition>
             <ColumnDefinition MinWidth="200"
                               Width="*"></ColumnDefinition>
@@ -35,7 +35,7 @@
 
         <Grid x:Name="ServersUserGrid"
               Grid.Column="0"
-              Width="100"
+              Width="120"
               Background="{StaticResource DarkBlue3}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"></RowDefinition>
@@ -44,10 +44,10 @@
 
             <WrapPanel Grid.Row="0"
                        x:Name="ServersWrapP"
-                       ItemWidth="100"
+                       ItemWidth="120"
                        Orientation="Vertical"
                        VerticalAlignment="Top"
-                       Width="100">
+                       Width="120">
                 <ListView Grid.Row="0"
                           Grid.ColumnSpan="2"
                           x:Name="ServerListView"
@@ -85,6 +85,18 @@
                         Command="{Binding GetServersListCommand}">
                     <Button.Background>
                         <ImageBrush ImageSource="/Resources/Images/Icons/refresh-line-36.png" />
+                    </Button.Background>
+                </Button>
+                <Button x:Name="JoinServerButton"
+                        Style="{StaticResource RoundButtonStyle}"
+                        Margin="5"
+                        Width="40"
+                        Height="40"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Stretch"
+                        Command="{Binding OpenJoinServerCommand}">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/Resources/Images/Icons/add-circle-line.png" />
                     </Button.Background>
                 </Button>
             </WrapPanel>

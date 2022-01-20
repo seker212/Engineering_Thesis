@@ -1,8 +1,6 @@
-﻿using ComeX.Lib.Common.ServerCommunicationModels;
-using ComeX.WPF.Services;
+﻿using ComeX.WPF.Services;
 using ComeX.WPF.ViewModels;
 using ComeX.WPF.Views;
-using ComeX.WPF.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,12 +10,12 @@ using System.Windows;
 using System.Windows.Input;
 
 namespace ComeX.WPF.Commands {
-    public class OpenSettingsCommand : ICommand {
+    public class OpenJoinServerCommand : ICommand {
         private readonly ChatViewModel _viewModel;
         private readonly LoginService _service;
-        private SettingsView _settingsView;
+        private JoinServerWindow _joinServerWindow;
 
-        public OpenSettingsCommand(ChatViewModel viewModel, LoginService service) {
+        public OpenJoinServerCommand(ChatViewModel viewModel, LoginService service) {
             _viewModel = viewModel;
             _service = service;
         }
@@ -30,7 +28,7 @@ namespace ComeX.WPF.Commands {
 
         public async void Execute(object parameter) {
             try {
-                OpenSettingsWindow();
+                OpenJoinServerWindow();
 
             } catch (ArgumentException e) {
                 _viewModel.ErrorMessage = e.Message;
@@ -39,14 +37,13 @@ namespace ComeX.WPF.Commands {
             }
         }
 
-        private void OpenSettingsWindow() {
-            _settingsView = new SettingsView();
-            _settingsView.DataContext = new SettingsViewModel(_service, _viewModel.LoginDM);
-            _settingsView.Owner = Application.Current.MainWindow;
-            _settingsView.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-            //Application.Current.MainWindow.IsEnabled = false;
+        private void OpenJoinServerWindow() {
+            _joinServerWindow = new JoinServerWindow();
+            _joinServerWindow.DataContext = new JoinServerViewModel(_service, _viewModel.LoginDM.Username);
+            _joinServerWindow.Owner = Application.Current.MainWindow;
+            _joinServerWindow.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
-            _settingsView.Show();
+            _joinServerWindow.Show();
         }
     }
 }

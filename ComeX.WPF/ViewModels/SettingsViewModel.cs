@@ -175,12 +175,6 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        // todo
-        private ICommand _cancelCommand;
-        public ICommand CancelCommand {
-            get;
-        }
-
         public ICommand ChangePasswordCommand { get; }
         public ICommand DeleteAccountCommand { get; }
 
