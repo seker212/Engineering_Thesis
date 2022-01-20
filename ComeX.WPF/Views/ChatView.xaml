@@ -306,16 +306,16 @@
                         <RowDefinition Height="130"></RowDefinition>
                     </Grid.RowDefinitions>
 
-                        <ListView x:Name="MessagesListView"
-                                  Margin="15,0,5,0"
-                                  HorizontalAlignment="Stretch"
-                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                                  ScrollViewer.CanContentScroll="False"
-                                  ItemsSource="{Binding CurrentRoomMessages}"
-                                  Background="{StaticResource DarkBlue3}"
-                                  BorderBrush="{x:Null}"
-                                  Loaded="ListView_OnLoaded">
-                            <ListView.ItemContainerStyle>
+                    <ListView x:Name="MessagesListView"
+                              Margin="15,0,5,0"
+                              HorizontalAlignment="Stretch"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ScrollViewer.CanContentScroll="False"
+                              ItemsSource="{Binding CurrentRoomMessages}"
+                              Background="{StaticResource DarkBlue3}"
+                              BorderBrush="{x:Null}"
+                              Loaded="ListView_OnLoaded">
+                        <ListView.ItemContainerStyle>
                                 <Style TargetType="ListViewItem">
                                     <Setter Property="Template">
                                         <Setter.Value>
@@ -348,7 +348,7 @@
                                 </DataTemplate>
                             <DataTemplate DataType="{x:Type mvm:LoadHistoryViewModel}">
                                 <Button x:Name="LoadMessagesButton"
-                                        Template="{StaticResource RoundedButtonTemplate}"
+                                        Style="{StaticResource RoundButtonStyle}"
                                         HorizontalAlignment="Center"
                                         Width="30"
                                         Height="30"
