@@ -45,9 +45,9 @@ namespace ComeX.WPF.ViewModels {
             ChangeRoomCommand = new ChangeRoomCommand(chatViewModel, this);
         }
 
-        public void AddMessagesAndSurveys(List<MessageResponse> messageResponse, List<SurveyResponse> surveyResponse, ChatViewModel chatViewModel) {
+        public void AddMessagesAndSurveys(List<MessageResponse> messageResponse, LoadSurveyVoteResponse surveyVoteResponse, ChatViewModel chatViewModel) {
             AddMessages(messageResponse, chatViewModel);
-            AddSurveys(surveyResponse, chatViewModel);
+            AddSurveysVote(surveyVoteResponse.SurveyVoteList, chatViewModel);
             SortMessageList();
         }
 
@@ -64,6 +64,17 @@ namespace ComeX.WPF.ViewModels {
             foreach (var survey in surveyResponse) {
                 if (GetMessageInListById(survey.Id) == null)
                     MessageList.Add(new SurveyViewModel(survey, chatViewModel, IsArchived));
+            }
+        }
+
+        public void AddSurveysVote(List<SurveyVoteResponse> surveyVoteResponse, ChatViewModel chatViewModel) {
+            surveyVoteResponse.Sort((p, q) => p.Survey.SendTime.CompareTo(q.Survey.SendTime));
+            foreach (var survey in surveyVoteResponse) {
+                if (GetMessageInListById(survey.Survey.Id) == null) {
+                    SurveyViewModel surveyVM = new SurveyViewModel(survey.Survey, chatViewModel, IsArchived);
+                    surveyVM.Voted = survey.Voted;
+                    MessageList.Add(surveyVM);
+                }
             }
         }
 
@@ -100,9 +111,26 @@ namespace ComeX.WPF.ViewModels {
             _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoomMessages));
         }
 
-        public void AddSurvey(SurveyResponse surveyResponse, ChatViewModel chatViewModel) {
-            SurveyViewModel newSurvey = new SurveyViewModel(surveyResponse, chatViewModel, IsArchived);
+        public async void AddSurvey(SurveyResponse surveyResponse, ChatViewModel chatViewModel) {
             SurveyViewModel oldSurvey = (SurveyViewModel)GetMessageInListById(surveyResponse.Id);
+
+            if (oldSurvey == null) {
+                await _serverViewModel.Service.LoadSpecificSurvey(new LoadMessageRequest(_chatViewModel.LoginDM.Token, (Guid)surveyResponse.Id));
+            } else {
+                SurveyViewModel newSurvey = new SurveyViewModel(surveyResponse, chatViewModel, IsArchived);
+                newSurvey.Voted = oldSurvey.Voted;
+                MessageList.Remove(oldSurvey);
+                MessageList.Add(newSurvey);
+                //((SurveyViewModel)MessageList[MessageList.IndexOf(oldSurvey)]).Survey = surveyResponse;
+            }
+
+            SortMessageList();
+        }
+
+        public void AddSurveyVote(SurveyVoteResponse surveyVoteResponse, ChatViewModel chatViewModel) {
+            SurveyViewModel newSurvey = new SurveyViewModel(surveyVoteResponse.Survey, chatViewModel, IsArchived);
+            newSurvey.Voted = surveyVoteResponse.Voted;
+            SurveyViewModel oldSurvey = (SurveyViewModel)GetMessageInListById(surveyVoteResponse.Survey.Id);
 
             if (oldSurvey == null)
                 MessageList.Add(newSurvey);

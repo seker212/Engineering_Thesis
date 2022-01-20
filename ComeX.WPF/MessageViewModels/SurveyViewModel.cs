@@ -14,8 +14,18 @@ using System.Windows.Input;
 namespace ComeX.WPF.MessageViewModels {
     public class SurveyViewModel : BaseMessageViewModel {
         private ChatViewModel _chatVM;
-        public SurveyResponse Survey { get; set; }
-        public bool AlreadyAnswered { get; set; }
+
+        private SurveyResponse _survey;
+        public SurveyResponse Survey {
+            get {
+                return _survey;
+            }
+            set {
+                _survey = value;
+                OnPropertyChanged(nameof(Survey));
+                OnPropertyChanged(nameof(Survey));
+            }
+        }
 
         public string MessageAuthor {
             get {
@@ -49,12 +59,6 @@ namespace ComeX.WPF.MessageViewModels {
 
         public List<SurveyAnswerViewModel> SurveyAnswers { get; set; }
 
-        public bool ButtonEnabled {
-            get {
-                return (!AlreadyAnswered && AnyAnswerChecked());
-            }
-        }
-
         private bool _isRoomArchived;
         public bool IsRoomArchived {
             get {
@@ -72,6 +76,36 @@ namespace ComeX.WPF.MessageViewModels {
             }
         }
 
+        public bool ButtonEnabled {
+            get {
+                return (AnyAnswerChecked() && !Voted);
+            }
+        }
+
+        private bool _voted;
+        public bool Voted {
+            get {
+                return _voted;
+            }
+            set {
+                _voted = value;
+                if (value) ButtonContent = "Already voted";
+                else ButtonContent = "Vote";
+                OnPropertyChanged(nameof(Voted));
+            }
+        }
+
+        private string _buttonContent;
+        public string ButtonContent {
+            get {
+                return _buttonContent;
+            }
+            set {
+                _buttonContent = value;
+                OnPropertyChanged(nameof(ButtonContent));
+            }
+        }
+
         public ICommand SendSurveyVoteCommand { get; }
         public ICommand CheckedAnswerCommand { get; }
 
@@ -79,10 +113,10 @@ namespace ComeX.WPF.MessageViewModels {
             SendSurveyVoteCommand = new SendSurveyVoteCommand(this, chatVM);
             CheckedAnswerCommand = new CheckedAnswerCommand(this);
             IsRoomArchived = isRoomArchived;
+            Voted = false;
 
             _chatVM = chatVM;
             Survey = survey;
-            AlreadyAnswered = false;
 
             SurveyAnswers = new List<SurveyAnswerViewModel>();
             foreach (var answer in Survey.AnswerList) {

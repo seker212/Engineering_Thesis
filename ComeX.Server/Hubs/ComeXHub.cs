@@ -224,6 +224,57 @@ namespace ComeX.Server.Hubs
             }
         }
 
+        // otrzymano zadanie wczytania konkretnej ankiety
+        public async Task LoadSpecificSurvey(LoadMessageRequest msg)
+        {
+            Guid usrId = Guid.Parse(_connectionCache[msg.Token].UserId);
+            string usrName = _connectionCache[msg.Token].Username;
+            if (CheckWhitelist(usrId, usrName))
+            {
+                try
+                {
+                    Survey searchSrv = srvRepo.Get(msg.Id);
+                    bool voted = false;
+
+                    User usr = usrRepo.GetUser(searchSrv.AuthorId);
+
+                    IEnumerable<Answer> answers = ansRepo.GetAnswers(searchSrv.Id);
+                    List<SurveyAnswerResponse> ansList = new List<SurveyAnswerResponse>();
+
+                    foreach (Answer ans in answers)
+                    {
+
+                        IEnumerable<Vote> votes = votRepo.GetVotes(ans.Id);
+                        int amount = votes.Count();
+
+                        SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content, amount);
+
+                        ansList.Add(rsp);
+
+                        Vote checkUser = votRepo.GetVote(ans.Id, usrId);
+                        if (checkUser != null)
+                        {
+                            voted = true;
+                        }
+                    }
+
+                    SurveyResponse response = new SurveyResponse(searchSrv.Id, usr.Username, searchSrv.SendTime, searchSrv.RoomId, searchSrv.Question, ansList);
+                    SurveyVoteResponse voteResponse = new SurveyVoteResponse(response, voted);
+
+                    await Clients.Caller.SendAsync("Load_survey", voteResponse);
+
+                }
+                catch (Exception e)
+                {
+                    await Clients.Caller.SendAsync("Load_survey_error");
+                }
+            }
+            else
+            {
+                await Clients.Caller.SendAsync("Not_allowed");
+            }
+        }
+
         // otrzymano zadanie wczytania wiadomosci
         public async Task LoadChatHistory(LoadChatRequest msg)
         {
@@ -285,7 +336,7 @@ namespace ComeX.Server.Hubs
                 //wczytanie ankiet starszych niz podana data
                 try
                 {
-                    List<SurveyResponse> surveyList = new List<SurveyResponse>();
+                    List<SurveyVoteResponse> surveyList = new List<SurveyVoteResponse>();
                     IEnumerable<Survey> surveys = srvRepo.GetSurveys(msg.RoomId, msg.Date);
 
                     foreach (Survey s in surveys)
@@ -294,6 +345,8 @@ namespace ComeX.Server.Hubs
 
                         IEnumerable<Answer> answers = ansRepo.GetAnswers(s.Id);
                         List<SurveyAnswerResponse> ansList = new List<SurveyAnswerResponse>();
+
+                        bool voted = false;
 
                         foreach (Answer ans in answers)
                         {
@@ -304,14 +357,20 @@ namespace ComeX.Server.Hubs
                             SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content, amount);
 
                             ansList.Add(rsp);
-                        }
 
+                            Vote checkUser = votRepo.GetVote(ans.Id, usrId);
+                            if (checkUser != null)
+                            {
+                                voted = true;
+                            }
+                        }
+                        
                         SurveyResponse response = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, ansList);
-                        surveyList.Add(response);
+                        SurveyVoteResponse voteResponse = new SurveyVoteResponse(response, voted);
+                        surveyList.Add(voteResponse);
                     }
 
-                    LoadSurveyResponse surveyResponse = new LoadSurveyResponse(msg.RoomId, surveyList);
-
+                    LoadSurveyVoteResponse surveyResponse = new LoadSurveyVoteResponse(msg.RoomId, surveyList);
                     await Clients.Caller.SendAsync("Send_survey_history", surveyResponse);
 
                 }
@@ -372,7 +431,7 @@ namespace ComeX.Server.Hubs
                     }
 
                     //znalezienie ankiet
-                    List<SurveyResponse> surveyList = new List<SurveyResponse>();
+                    List<SurveyVoteResponse> surveyList = new List<SurveyVoteResponse>();
                     IEnumerable<Survey> surveys = srvRepo.GetSurveys(msg.RoomId, msg.Date, oldestMsg);
 
                     foreach (Survey s in surveys)
@@ -381,6 +440,8 @@ namespace ComeX.Server.Hubs
 
                         IEnumerable<Answer> answers = ansRepo.GetAnswers(s.Id);
                         List<SurveyAnswerResponse> ansList = new List<SurveyAnswerResponse>();
+
+                        bool voted = false;
 
                         foreach (Answer ans in answers)
                         {
@@ -391,14 +452,22 @@ namespace ComeX.Server.Hubs
                             SurveyAnswerResponse rsp = new SurveyAnswerResponse(ans.Id, ans.Content, amount);
 
                             ansList.Add(rsp);
+
+                            Vote checkUser = votRepo.GetVote(ans.Id, usrId);
+                            if (checkUser != null)
+                            {
+                                voted = true;
+                            }
                         }
 
-                        SurveyResponse newResponse = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, ansList);
-                        surveyList.Add(newResponse);
+                        SurveyResponse response = new SurveyResponse(s.Id, usr.Username, s.SendTime, s.RoomId, s.Question, ansList);
+                        SurveyVoteResponse voteResponse = new SurveyVoteResponse(response, voted);
+                        surveyList.Add(voteResponse);
                     }
 
-                    LoadAllResponse response = new LoadAllResponse(msg.RoomId, messageResponse, surveyList);
-                    await Clients.Caller.SendAsync("Send_all_history", response);
+                    LoadSurveyVoteResponse surveyResponse = new LoadSurveyVoteResponse(msg.RoomId, surveyList);
+                    LoadAllResponse finalResponse = new LoadAllResponse(msg.RoomId, messageResponse, surveyResponse);
+                    await Clients.Caller.SendAsync("Send_all_history", finalResponse);
 
                 }
                 catch (Exception e)
@@ -462,8 +531,9 @@ namespace ComeX.Server.Hubs
                         }
 
                         SurveyResponse response = new SurveyResponse(createdSrv.Id, usrName, createdSrv.SendTime, createdSrv.RoomId, createdSrv.Question, ansList);
+                        SurveyVoteResponse voteResponse = new SurveyVoteResponse(response, false);
 
-                        await Clients.All.SendAsync("Survey_created", response);
+                        await Clients.All.SendAsync("Survey_created", voteResponse);
 
                     }
                     catch (Exception e)
@@ -529,6 +599,8 @@ namespace ComeX.Server.Hubs
 
                     await Clients.All.SendAsync("Survey_updated", response);
 
+                    SurveyVoteResponse voteResponse = new SurveyVoteResponse(response, true);
+                    await Clients.Caller.SendAsync("Survey_voted", voteResponse);
                 }
                 catch (Exception e)
                 {

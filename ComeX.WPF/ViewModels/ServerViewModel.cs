@@ -82,7 +82,7 @@ namespace ComeX.WPF.ViewModels {
 
         public void InitMethods() {
             Service.ChatMessageReceived += ChatService_ChatMessageReceived;
-            Service.SurveyReceived += ChatService_SurveyReceived;
+            Service.SurveyVoteReceived += ChatService_SurveyVoteReceived;
             Service.RoomsListReceived += ChatService_RoomsListReceived;
 
             Service.SpecificMessageReceived += ChatService_SpecificMessageReceived;
@@ -91,6 +91,7 @@ namespace ComeX.WPF.ViewModels {
             Service.AllHistoryReceived += ChatService_AllHistoryReceived;
             // _connection.On<Guid>("Vote_duplicate", (surveyId) => SurveyVoteDuplicateReceived?.Invoke(surveyId));
             Service.UpdatedSurveyReceived += ChatService_UpdatedSurveyReceived;
+            Service.UpdatedSurveyVoteReceived += ChatService_UpdatedSurveyVoteReceived;
             Service.UpdatedMessageReceived += ChatService_UpdatedMessageReceived;
             Service.SearchMessageReceived += ChatService_SearchMessageReceived;
             // _connection.On<Guid>("React_duplicate", (messageId) => MessageReactionDuplicateReceived?.Invoke(messageId));
@@ -101,9 +102,9 @@ namespace ComeX.WPF.ViewModels {
             room.AddMessage(message, _chatViewModel);
         }
 
-        private void ChatService_SurveyReceived(SurveyResponse survey) {
-            RoomViewModel room = GetRoomById(survey.RoomId);
-            room.AddSurvey(survey, _chatViewModel);
+        private void ChatService_SurveyVoteReceived(SurveyVoteResponse surveyVote) {
+            RoomViewModel room = GetRoomById(surveyVote.Survey.RoomId);
+            room.AddSurveyVote(surveyVote, _chatViewModel);
         }
 
         private void ChatService_RoomsListReceived(RoomsListResponse response) {
@@ -120,14 +121,15 @@ namespace ComeX.WPF.ViewModels {
             room.AddMessages(response.MessageList, _chatViewModel);
         }
 
-        private void ChatService_SurveyHistoryReceived(LoadSurveyResponse response) {
+        private void ChatService_SurveyHistoryReceived(LoadSurveyVoteResponse response) {
             RoomViewModel room = GetRoomById(response.RoomId);
-            room.AddSurveys(response.SurveyList, _chatViewModel);
+            room.AddSurveysVote(response.SurveyVoteList, _chatViewModel);
         }
 
         private void ChatService_AllHistoryReceived(LoadAllResponse response) {
             RoomViewModel room = GetRoomById(response.RoomId);
-            room.AddMessagesAndSurveys(response.MessageList, response.SurveyList, _chatViewModel);
+            room.AddMessagesAndSurveys(response.MessageList, response.SurveyVoted, _chatViewModel);
+            _chatViewModel.LoadingVM.LoadingVisibility = Visibility.Collapsed;
         }
         private void ChatService_SpecificMessageReceived(LoadMessageResponse response) {
             RoomViewModel room = GetRoomById(response.Message.RoomId);
@@ -138,6 +140,11 @@ namespace ComeX.WPF.ViewModels {
         private void ChatService_UpdatedSurveyReceived(SurveyResponse response) {
             RoomViewModel room = GetRoomById(response.RoomId);
             room.AddSurvey(response, _chatViewModel);
+        }
+
+        private void ChatService_UpdatedSurveyVoteReceived(SurveyVoteResponse response) {
+            RoomViewModel room = GetRoomById(response.Survey.RoomId);
+            room.AddSurveyVote(response, _chatViewModel);
         }
 
         private void ChatService_UpdatedMessageReceived(LoadMessageResponse response) {

@@ -132,12 +132,23 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
+        private LoadingViewModel _loadingVM;
+        public LoadingViewModel LoadingVM {
+            get {
+                return _loadingVM;
+            }
+            set {
+                _loadingVM = value;
+            }
+        }
+
         public ObservableCollection<BaseMessageViewModel> CurrentRoomMessages {
             get {
                 if (CurrentRoom == null) return new ObservableCollection<BaseMessageViewModel>();
                 else {
                     ObservableCollection<BaseMessageViewModel> list = new ObservableCollection<BaseMessageViewModel>();
                     list.Add(new LoadHistoryViewModel(this));
+                    list.Add(LoadingVM);
                     foreach (var el in CurrentRoom.MessageList)
                         list.Add(el);
                     return list;
@@ -369,6 +380,7 @@ namespace ComeX.WPF.ViewModels {
             ReplyParentVisibility = Visibility.Collapsed;
             ArchivedRoomsVisibility = Visibility.Collapsed;
             SearchVisibility = Visibility.Collapsed;
+            LoadingVM = new LoadingViewModel();
             SendMessageEnabled = false;
 
             ServerDMs = new List<ServerDataModel>();

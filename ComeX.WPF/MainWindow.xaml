@@ -11,10 +11,9 @@
         d:DataContext="{d:DesignInstance vm:MainViewModel}"
         mc:Ignorable="d"
         Title="ComeX"
+        Icon="Resources/Images/logo3.png"
         MinHeight="650"
-        Height="{Binding WindowHeight}"
         MinWidth="{Binding WindowMinWidth}"
-        Width="{Binding WindowWidth}"
         SizeToContent="WidthAndHeight"
         ResizeMode="{Binding WindowResizeMode}">
 
@@ -39,7 +38,7 @@
         </ResourceDictionary>
     </Window.Resources>
 
-    <Grid>
-        <ContentControl Content="{Binding CurrentView}" />
-    </Grid>
+
+        <ContentControl Content="{Binding CurrentView}"/>
+
 </Window>

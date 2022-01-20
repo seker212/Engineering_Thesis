@@ -13,34 +13,16 @@
                     <ResourceDictionary Source="../Styles.xaml"/>
                 </ResourceDictionary.MergedDictionaries>
 
-                <Style x:Key="DefaultEllipseStyle" TargetType="{x:Type Ellipse}">
-                    <Setter Property="Width" Value="10"/>
-                    <Setter Property="Height" Value="10"/>
-                    <Setter Property="Visibility" Value="Hidden"/>
-                </Style>
-                <Style x:Key="NewMessageRoomStyle" TargetType="{x:Type Ellipse}" BasedOn="{StaticResource DefaultEllipseStyle}">
-                    <Setter Property="Fill" Value="White"/>
-                    <Setter Property="Visibility" Value="Visible"/>
-                </Style>
-                <Style x:Key="NewMentionRoomStyle" TargetType="{x:Type Ellipse}" BasedOn="{StaticResource DefaultEllipseStyle}">
-                    <Setter Property="Fill" Value="Red"/>
-                    <Setter Property="Visibility" Value="Visible"/>
-                </Style>
                 <Style x:Key="RoomNameButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource DefaultButtonStyle}">
-
                     <Setter Property="Background" Value="{x:Null}" />
                     <Setter Property="Foreground" Value="{StaticResource LightBlue1}" />
-                    <Setter Property="FontSize" Value="14" />
+                    <Setter Property="FontSize" Value="18" />
                     <Setter Property="HorizontalContentAlignment" Value="Left" />
                 </Style>
             </ResourceDictionary>
         </Grid.Resources>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="20"/>
-            <ColumnDefinition Width="120"/>
-        </Grid.ColumnDefinitions>
-        <Ellipse x:Name="NotifyServerEllipse" Grid.Column="0" Style="{StaticResource DefaultEllipseStyle}"/>
-        <Button x:Name="ServerNameButton" Grid.Column="1"
+
+        <Button x:Name="ServerNameButton"
                 Style="{StaticResource RoomNameButtonStyle}"
                 Content="{Binding Name}"
                 Command="{Binding ChangeServerCommand}"/>

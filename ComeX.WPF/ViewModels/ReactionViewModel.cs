@@ -52,7 +52,7 @@ namespace ComeX.WPF.ViewModels {
 
             Reaction = null;
             ReactionList = new List<ReactionModel>();
-            for (int i = 1; i < 7; i++) {
+            for (int i = 1; i < 8; i++) {
                 ReactionList.Add(new ReactionModel(i.ToString(), "/Resources/Images/Emojis/" + i.ToString() + ".png"));
             }
         }
