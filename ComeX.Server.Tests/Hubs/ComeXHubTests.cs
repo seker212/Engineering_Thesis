@@ -30,7 +30,7 @@ namespace ComeX.Server.Hubs.Tests
     public class ComeXHubTests
     {
         TestServer server;
-        const string TOKEN = "2lNwrCIvaNcXrwgnIIXwXsCC0bM3lknARHqFggUu1fA=";
+        const string TOKEN = "jeFm73zp18JUH635L5pxl5VsGXLP58YB6gWZMO3B3Ww=";
         const string USERNAME = "User1";
 
         [TestInitialize]
@@ -144,6 +144,30 @@ namespace ComeX.Server.Hubs.Tests
         }
 
         [TestMethod()]
+        public async Task LoadSpecificSurveyTest()
+        {
+            await SendLoginMessageTest();
+            var mock = new Mock<ITest>();
+            HubConnection connection = null;
+
+            mock.Setup(x => x.TestMethod()).Verifiable();
+            connection = GetNewConnection();
+
+            var msg = new LoadMessageRequest(TOKEN, Guid.Parse("dacd1ea3-e135-40ef-b13a-7e637f866a88"));
+
+            connection.On<SurveyVoteResponse>("Load_survey", (rsp) =>
+            {
+                rsp.Survey.Id.Should().Be(msg.Id);
+                mock.Object.TestMethod();
+            });
+
+            await connection.StartAsync();
+            await connection.InvokeAsync("LoadSpecificSurvey", msg);
+
+            VerifyMock(mock);
+        }
+
+        [TestMethod()]
         public async Task LoadChatHistoryTest()
         {
             await SendLoginMessageTest();
@@ -175,9 +199,9 @@ namespace ComeX.Server.Hubs.Tests
             mock.Setup(x => x.TestMethod()).Verifiable();
             connection = GetNewConnection();
 
-            connection.On<LoadSurveyResponse>("Send_survey_history", (rsp) =>
+            connection.On<LoadSurveyVoteResponse>("Send_survey_history", (rsp) =>
             {
-                rsp.SurveyList.Should().Contain(rsp => rsp.RoomId == Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"));
+                rsp.SurveyVoteList.Should().Contain(rsp => rsp.Survey.RoomId == Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"));
                 mock.Object.TestMethod();
             });
 
@@ -198,7 +222,7 @@ namespace ComeX.Server.Hubs.Tests
 
             connection.On<LoadAllResponse>("Send_all_history", (rsp) =>
             {
-                rsp.SurveyList.Should().Contain(rsp => rsp.RoomId == Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"));
+                rsp.SurveyVoted.RoomId.Should().Be(Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"));
                 rsp.MessageList.Should().Contain(rsp => rsp.RoomId == Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"));
                 mock.Object.TestMethod();
             });
@@ -223,10 +247,10 @@ namespace ComeX.Server.Hubs.Tests
             answerList.Add("Test answer 2");
             SurveyMessage msg = new SurveyMessage(TOKEN, Guid.Parse("6e36c4f8-e2b3-4638-afd0-fafc4340b040"), "Test question", answerList);
 
-            connection.On<SurveyResponse>("Survey_created", (rsp) =>
+            connection.On<SurveyVoteResponse>("Survey_created", (rsp) =>
             {
-                rsp.RoomId.Should().Be(msg.RoomId);
-                rsp.Question.Should().Be(msg.Question);
+                rsp.Survey.RoomId.Should().Be(msg.RoomId);
+                rsp.Survey.Question.Should().Be(msg.Question);
                 mock.Object.TestMethod();
             });
 
