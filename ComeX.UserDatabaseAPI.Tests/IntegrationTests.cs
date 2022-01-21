@@ -23,7 +23,10 @@ namespace ComeX.UserDatabaseAPI.Tests
     {
         private TestServer _server;
         private HttpClient _httpClient;
-        private string TOKEN_HASH = "5B60C4910BBEF1641035AD057C8F292503DAF706358C4A858CBC055932C7CAEF42735E16F5AE5B8A49D06812F84628A41393B5F6F80A1793A3F873CAE8398B97";
+        private const string TOKEN_HASH = "5B60C4910BBEF1641035AD057C8F292503DAF706358C4A858CBC055932C7CAEF42735E16F5AE5B8A49D06812F84628A41393B5F6F80A1793A3F873CAE8398B97";
+        private const string USERNAME = "IntegrationTestUsernameForTokenTests";
+        private const string USER_ID = "34dd3d37-2506-4acf-925e-452d809bcfa9";
+        private const string DATE ="21.01.2580 20:14:41";
 
         [TestInitialize]
         public void TestInit()
@@ -126,9 +129,14 @@ namespace ComeX.UserDatabaseAPI.Tests
         {
             var url = GetUrlToAuthEndpoint();
 
+            var tokenDataModel = new TokenDataModel(USER_ID, USERNAME, DATE);
             var response = await _httpClient.GetAsync(url);
+            var content = await response.Content.ReadAsStringAsync();
+
+            var result = JsonSerializer.Deserialize<TokenDataModel>(content);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
+            Assert.AreEqual(tokenDataModel, result);
         }
 
         [TestMethod()]
