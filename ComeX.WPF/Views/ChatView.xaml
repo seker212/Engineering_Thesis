@@ -44,10 +44,10 @@
 
             <WrapPanel Grid.Row="0"
                        x:Name="ServersWrapP"
-                       ItemWidth="120"
+                       ItemWidth="100"
                        Orientation="Vertical"
                        VerticalAlignment="Top"
-                       Width="120">
+                       Width="100">
                 <ListView Grid.Row="0"
                           Grid.ColumnSpan="2"
                           x:Name="ServerListView"
@@ -55,7 +55,7 @@
                           ItemsSource="{Binding Servers}"
                           Background="{x:Null}"
                           BorderBrush="{x:Null}"
-                          Margin="0,0,0,5">
+                          Margin="0,5,0,5">
                     <ListView.ItemContainerStyle>
                         <Style TargetType="ListViewItem">
                             <Setter Property="Template">
@@ -70,7 +70,7 @@
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <WrapPanel>
-                                <uc:ServerUserControl />
+                                <uc:ServerUserControl/>
                             </WrapPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>

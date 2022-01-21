@@ -24,26 +24,26 @@
         <Grid x:Name="JoinServerMainGrid" Background="{StaticResource DarkBlue3}"
               Margin="5">
             <Grid.RowDefinitions>
-                <RowDefinition Height="40"></RowDefinition>
+                <RowDefinition Height="45"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition />
-                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="80" />
                 </Grid.ColumnDefinitions>
-                <Label x:Name="UrlErrorLabel"
-                       Grid.Column="0"
-                       Margin="10,2,0,0"
-                       VerticalAlignment="Center"
-                       FontSize="14"
-                       Foreground="{Binding UrlErrorColor}"
-                       Visibility="{Binding UrlErrorVisibility}"
-                       Content="{Binding UrlError}" />
+                <TextBlock x:Name="Title"
+                           Grid.Column="0"
+                           Style="{StaticResource DefaultHeaderTextBlockStyle}"
+                           Margin="5,5,5,5"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           Width="Auto"
+                           Text=" Join server " />
                 <Button x:Name="CancelButton"
                     Grid.Column="1"
                     Style="{StaticResource WindowRoundButtonStyle}"
-                    Margin="0,5,0,5"
+                    Margin="0,5,10,5"
                     FontSize="14"
                     HorizontalAlignment="Right"
                     HorizontalContentAlignment="Center"
@@ -60,8 +60,13 @@
                     <RowDefinition Height="45"></RowDefinition>
                     <RowDefinition Height="40"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Rectangle x:Name="Placeholder"
-                       Grid.Row="0"
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="80" />
+                    </Grid.ColumnDefinitions>
+                    <Rectangle x:Name="Placeholder"
+                       Grid.Column="0"
                        Margin="16,13,0,5"
                        Height="22"
                        Width="194"
@@ -72,7 +77,7 @@
                 </Rectangle.Fill>
             </Rectangle>
                 <TextBox x:Name="UrlTextBox"
-                         Grid.Row="0"
+                         Grid.Column="0"
                          Template="{StaticResource BorderTextBoxTemplate}"
                          BorderBrush="{Binding UrlBoxBorder}"
                          Margin="10,10,10,5"
@@ -86,18 +91,27 @@
                          LostFocus="AddUrlPlaceholder"
                          Text="{Binding Url}">
                 </TextBox>
+                    <Button x:Name="JoinServerButton"
+                            Grid.Column="1"
+                            Style="{StaticResource WindowRoundButtonStyle}"
+                            Margin="0,5,0,5"
+                            FontSize="14"
+                            HorizontalAlignment="Center"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center"
+                            Width="70"
+                            Content=" Join "
+                            Command="{Binding JoinServerCommand}" />
+                </Grid>
+                <Label x:Name="UrlErrorLabel"
+                       Grid.Row="1"
+                       Margin="10,2,0,0"
+                       VerticalAlignment="Center"
+                       FontSize="14"
+                       Foreground="{Binding UrlErrorColor}"
+                       Visibility="{Binding UrlErrorVisibility}"
+                       Content="{Binding UrlError}" />
 
-            <Button x:Name="JoinServerButton"
-                    Grid.Row="1"
-                    Style="{StaticResource WindowRoundButtonStyle}"
-                    Margin="0,5,0,5"
-                    FontSize="14"
-                    HorizontalAlignment="Center"
-                    HorizontalContentAlignment="Center"
-                    VerticalContentAlignment="Center"
-                    Width="70"
-                    Content=" Join "
-                    Command="{Binding JoinServerCommand}"/>
             </Grid>
         </Grid>
     </Border>
