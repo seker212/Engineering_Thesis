@@ -176,7 +176,8 @@ namespace ComeX.UserDatabaseAPI.Tests
             };
 
             Assert.AreEqual(HttpStatusCode.OK, getServersResponse.StatusCode);
-            servers.Should().Contain(x => x.Name == result.ElementAt(0).Name && x.Url == result.ElementAt(0).Url || x.Name == result.ElementAt(1).Name && x.Url == result.ElementAt(1).Url);
+            servers.Should().Contain(x => x.Name == result.ElementAt(0).Name && x.Url == result.ElementAt(0).Url);
+            servers.Should().Contain(x => x.Name == result.ElementAt(1).Name && x.Url == result.ElementAt(1).Url);
         }
     }
 }
