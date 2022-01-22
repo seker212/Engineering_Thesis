@@ -33,7 +33,7 @@ namespace ComeX.Lib.Auth
             {
                 throw new InvalidCredentialsException("Invalid token.");
             }
-            var tokenData = new TokenData(tokenHash, tokenReceived.UserId, tokenReceived.Username, DateTime.Parse(tokenReceived.ValidTo), connectionId);
+            var tokenData = new TokenData(tokenHash, tokenReceived.UserId, tokenReceived.Username, DateTime.ParseExact(tokenReceived.ValidTo, "MM/dd/yyyy HH:mm:ss", null), connectionId);
             if (tokenData.IsValid())
             {
                 if (!_connectionCache.TryAdd(token, tokenData))

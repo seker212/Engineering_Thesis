@@ -29,7 +29,7 @@ namespace ComeX.Server
         {
             services.AddRazorPages();
             services.AddSignalR();
-            services.AddComeXAuth(new Uri("https://localhost:44327"));
+            services.AddComeXAuth(new Uri("https://comx.molly.ovh:41443"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

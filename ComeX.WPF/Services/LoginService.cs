@@ -11,6 +11,8 @@ using System.Web;
 namespace ComeX.WPF.Services {
     public class LoginService {
         private static readonly HttpClient _httpClient = new HttpClient();
+        //private const string UserApiBaseUri = "https://localhost:44327/api";
+        private const string UserApiBaseUri = "https://comx.molly.ovh:41443/api";
         private UriBuilder _uriBuilderUser;
         private UriBuilder _uriBuilderServer;
         private UriBuilder _uriBuilderUserServer;
@@ -21,9 +23,9 @@ namespace ComeX.WPF.Services {
             _httpClient.Timeout = new TimeSpan(0, 0, 30);
             _httpClient.DefaultRequestHeaders.Clear();
 
-            _uriBuilderUser = new UriBuilder("https://localhost:44327/api/user/");
-            _uriBuilderServer = new UriBuilder("https://localhost:44327/api/server/");
-            _uriBuilderUserServer = new UriBuilder("https://localhost:44327/api/server/user");
+            _uriBuilderUser = new UriBuilder(UserApiBaseUri + "/user/");
+            _uriBuilderServer = new UriBuilder(UserApiBaseUri + "/server/");
+            _uriBuilderUserServer = new UriBuilder(UserApiBaseUri + "/server/user");
         }
 
         public async Task<LoginDataModel> Login(string login, string password) {
