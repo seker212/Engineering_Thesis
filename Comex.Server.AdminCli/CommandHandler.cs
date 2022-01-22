@@ -8,9 +8,10 @@ namespace Comex.Server.AdminCli
 {
     public class CommandHandler
     {
-        string connectionString = "Server = comx.molly.ovh; Port = 25432; Database = postgres; User Id = banan; Password = s9n5#@Jo";
+        public readonly string connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? throw new ArgumentNullException("Environment variable CONNECTION_STRING was not set.");
         const string HELP_TEXT = @"
 Available commands:
+    setup                           Sets up connected database to be used with server. This should be run during setting up the server for the first time.
     room mk <<room-name>>           Adds new text room of a given room name to the server as an unarchived room. Example: ""room mk room1""
     room ar <<room-name>>           Marks the unarchived room with a given room name as an archived room. Example: ""room ar room1""
     room unar <<room-name>>         Marks the room with a given room name as an unarchived room. Example: ""room unar room1""
@@ -31,10 +32,12 @@ Available commands:
                     case "whitelist":
                         new WhitelistCommandHandler(connectionString).HandleWhitelistCommand(args.Skip(1));
                         break;
+                    case "setup":
+                        new SetupCommandHandler(connectionString).HandleSetupCommand();
+                        break;
                     case "help":
                     case "man":
-                        if (args.Length == 1)
-                            Console.WriteLine(HELP_TEXT);
+                        Console.WriteLine(HELP_TEXT);
                         break;
                     default:
                         throw new UnknownCommandException();
