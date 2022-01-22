@@ -20,25 +20,26 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Styles.xaml"/>
+                <ResourceDictionary Source="Styles.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <DataTemplate DataType="{x:Type vm:ChatViewModel}">
-                <views:ChatView/>
+                <views:ChatView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type vm:LoginViewModel}">
-                <views:LoginView/>
+                <views:LoginView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type vm:RegisterViewModel}">
-                <views:RegisterView/>
+                <views:RegisterView />
             </DataTemplate>
             <DataTemplate DataType="{x:Type vm:SettingsViewModel}">
-                <views:SettingsView/>
+                <views:SettingsView />
             </DataTemplate>
         </ResourceDictionary>
     </Window.Resources>
 
-
-        <ContentControl Content="{Binding CurrentView}"/>
+    <Grid>
+        <ContentControl Content="{Binding CurrentView}" />
+    </Grid>
 
 </Window>

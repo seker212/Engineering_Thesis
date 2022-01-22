@@ -121,7 +121,6 @@ namespace ComeX.WPF.ViewModels {
                 newSurvey.Voted = oldSurvey.Voted;
                 MessageList.Remove(oldSurvey);
                 MessageList.Add(newSurvey);
-                //((SurveyViewModel)MessageList[MessageList.IndexOf(oldSurvey)]).Survey = surveyResponse;
             }
 
             SortMessageList();

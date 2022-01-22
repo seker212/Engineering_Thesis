@@ -37,7 +37,6 @@ namespace ComeX.WPF.ViewModels {
         public ICommand GetRoomsListCommand { get; }
 
         public ServerViewModel(string url, string name, ChatViewModel chatViewModel) {
-            // http://localhost:5000/ComeXLogin
             Url = url;
             Name = name;
             RoomList = new List<RoomViewModel>();
@@ -89,12 +88,10 @@ namespace ComeX.WPF.ViewModels {
             Service.ChatHistoryReceived += ChatService_ChatHistoryReceived;
             Service.SurveyHistoryReceived += ChatService_SurveyHistoryReceived;
             Service.AllHistoryReceived += ChatService_AllHistoryReceived;
-            // _connection.On<Guid>("Vote_duplicate", (surveyId) => SurveyVoteDuplicateReceived?.Invoke(surveyId));
             Service.UpdatedSurveyReceived += ChatService_UpdatedSurveyReceived;
             Service.UpdatedSurveyVoteReceived += ChatService_UpdatedSurveyVoteReceived;
             Service.UpdatedMessageReceived += ChatService_UpdatedMessageReceived;
             Service.SearchMessageReceived += ChatService_SearchMessageReceived;
-            // _connection.On<Guid>("React_duplicate", (messageId) => MessageReactionDuplicateReceived?.Invoke(messageId));
         }
 
         private void ChatService_ChatMessageReceived(MessageResponse message) {
@@ -150,7 +147,6 @@ namespace ComeX.WPF.ViewModels {
         private void ChatService_UpdatedMessageReceived(LoadMessageResponse response) {
             RoomViewModel room = GetRoomById(response.Message.RoomId);
             room.AddMessage(response.Message, _chatViewModel);
-            // _chatViewModel.OnPropertyChanged(nameof(_chatViewModel.CurrentRoomMessages));
         }
 
         private void ChatService_SearchMessageReceived(LoadChatResponse response) {
@@ -159,8 +155,8 @@ namespace ComeX.WPF.ViewModels {
             }
             _chatViewModel.SearchVisibility = Visibility.Visible;
             _chatViewModel.SearchPhraseLabel = _chatViewModel.SearchPhrase;
-            int elo = response.MessageList.Count;
-            _chatViewModel.SearchPhraseNumberLabel = elo.ToString();
+            int count = response.MessageList.Count;
+            _chatViewModel.SearchPhraseNumberLabel = count.ToString();
             _chatViewModel.SearchPhraseRoom = _chatViewModel.CurrentRoom.Name;
         }
 
