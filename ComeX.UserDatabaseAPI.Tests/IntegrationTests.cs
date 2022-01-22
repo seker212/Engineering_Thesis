@@ -153,7 +153,7 @@ namespace ComeX.UserDatabaseAPI.Tests
         }
 
         [TestMethod()]
-        public async Task GetServersTest()
+        public async Task GetServersAndAddUserToServerTest()
         {
             var createFirstUrl = GetUrlToServerEndpoints("api/Server", "IntegrationServerTest", "integration.com", null);
             var createSecondUrl = GetUrlToServerEndpoints("api/Server", "IntegrationServerTest2", "integration2.com", null);
@@ -184,6 +184,8 @@ namespace ComeX.UserDatabaseAPI.Tests
             };
 
             Assert.AreEqual(HttpStatusCode.OK, getServersResponse.StatusCode);
+            Assert.AreEqual(HttpStatusCode.OK, addToFirstResponse.StatusCode);
+            Assert.AreEqual(HttpStatusCode.OK, addToSecondResponse.StatusCode);
             servers.Should().Contain(x => x.Name == result.ElementAt(0).Name && x.Url == result.ElementAt(0).Url);
             servers.Should().Contain(x => x.Name == result.ElementAt(1).Name && x.Url == result.ElementAt(1).Url);
         }
