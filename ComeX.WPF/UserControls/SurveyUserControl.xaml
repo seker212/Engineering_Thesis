@@ -139,12 +139,15 @@
                     </ListView.ItemContainerStyle>
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <Grid x:Name="SurveyAnswer">
+                            <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition x:Name="AnswerButtonCol"
-                                                      Width="450"></ColumnDefinition>
-                                    <ColumnDefinition x:Name="AnswerVotesCounterCol"
-                                                      Width="50"></ColumnDefinition>
+                                    <ColumnDefinition ></ColumnDefinition>
+                                    <ColumnDefinition ></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <Grid x:Name="SurveyAnswer" Grid.Column="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition x:Name="AnswerButtonCol"></ColumnDefinition>
+                                    <ColumnDefinition x:Name="AnswerVotesCounterCol" ></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <Grid.Resources>
                                     <Style TargetType="{x:Type TextBlock}"
@@ -171,8 +174,9 @@
                                 <TextBlock x:Name="AnswerVotesCounter"
                                            Grid.Column="1"
                                            FontSize="16"
-                                           HorizontalAlignment="Right"
+                                           HorizontalAlignment="Left"
                                            Text="{Binding Votes}" />
+                            </Grid>
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -183,7 +187,7 @@
                         Visibility="{Binding ButtonVisibility}"
                         IsEnabled="{Binding ButtonEnabled}"
                         Template="{StaticResource RoundedButtonTemplate}"
-                        Width="80"
+                        Width="90"
                         Content="{Binding ButtonContent}"
                         Command="{Binding SendSurveyVoteCommand}"/>
             </Grid>
