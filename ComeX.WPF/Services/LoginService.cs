@@ -12,7 +12,7 @@ namespace ComeX.WPF.Services {
     public class LoginService {
         private static readonly HttpClient _httpClient = new HttpClient();
         //private const string UserApiBaseUri = "https://localhost:44327/api";
-        private const string UserApiBaseUri = "https://comx.molly.ovh:41443/api";
+        private const string UserApiBaseUri = "https://comx.molly.ovh:40443/api";
         private UriBuilder _uriBuilderUser;
         private UriBuilder _uriBuilderServer;
         private UriBuilder _uriBuilderUserServer;
