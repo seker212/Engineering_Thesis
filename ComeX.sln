@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComeX.Lib.Auth", "ComeX.Lib
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComeX.Lib.Common", "ComeX.Lib.Common\ComeX.Lib.Common.csproj", "{6D0DF8E1-2998-4C04-9E2A-B6869C4ADDA9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComeX.UserDatabaseAPI.Tests", "ComeX.UserDatabaseAPI.Tests\ComeX.UserDatabaseAPI.Tests.csproj", "{421096F6-9874-499E-B646-E555B10D45EB}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Comex.Server.AdminCli", "Comex.Server.AdminCli\Comex.Server.AdminCli.csproj", "{DA5B8A7A-B4B1-49A6-8D5B-3450919A37E6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComeX.Server.Tests", "ComeX.Server.Tests\ComeX.Server.Tests.csproj", "{95038E4C-1801-4B60-BF5D-6479BA0E7E37}"
@@ -43,6 +45,10 @@ Global
 		{6D0DF8E1-2998-4C04-9E2A-B6869C4ADDA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6D0DF8E1-2998-4C04-9E2A-B6869C4ADDA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6D0DF8E1-2998-4C04-9E2A-B6869C4ADDA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{421096F6-9874-499E-B646-E555B10D45EB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{421096F6-9874-499E-B646-E555B10D45EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{421096F6-9874-499E-B646-E555B10D45EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{421096F6-9874-499E-B646-E555B10D45EB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{DA5B8A7A-B4B1-49A6-8D5B-3450919A37E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DA5B8A7A-B4B1-49A6-8D5B-3450919A37E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA5B8A7A-B4B1-49A6-8D5B-3450919A37E6}.Release|Any CPU.ActiveCfg = Release|Any CPU

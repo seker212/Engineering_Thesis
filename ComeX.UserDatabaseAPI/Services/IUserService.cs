@@ -1,5 +1,4 @@
 ﻿using ComeX.UserDatabaseAPI.Models;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ComeX.UserDatabaseAPI.Services
