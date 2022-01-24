@@ -26,6 +26,7 @@ namespace ComeX.WPF.Services {
             _uriBuilderUser = new UriBuilder(UserApiBaseUri + "/user/");
             _uriBuilderServer = new UriBuilder(UserApiBaseUri + "/server/");
             _uriBuilderUserServer = new UriBuilder(UserApiBaseUri + "/server/user");
+
         }
 
         public async Task<LoginDataModel> Login(string login, string password) {
