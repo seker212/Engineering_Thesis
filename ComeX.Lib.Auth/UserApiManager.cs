@@ -8,7 +8,7 @@ namespace ComeX.Lib.Auth
 {
     internal class UserApiManager : IUserApiManager
     {
-        private readonly IRestClient _restClient;
+        private readonly RestClient _restClient;
         private readonly IUserApiRequestFactory _requestFactory;
 
         public UserApiManager(IUserApiRequestFactory requestFactory, Uri baseUserApiUri)
@@ -23,9 +23,11 @@ namespace ComeX.Lib.Auth
             return ExecuteGetModel<TokenDataModel>(request);
         }
 
-        private T ExecuteGetModel<T>(IRestRequest request)
+        private T ExecuteGetModel<T>(RestRequest request)
         {
-            var response = _restClient.Execute(request);
+            var responseTask = _restClient.ExecuteAsync(request);
+            responseTask.Wait();
+            var response = responseTask.Result;
             if (response.StatusCode == HttpStatusCode.OK)
             {
                 try

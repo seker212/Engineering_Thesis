@@ -19,6 +19,7 @@
       "commandName": "Project",
       "launchBrowser": true,
       "environmentVariables": {
+        "CONNECTION_STRING": "Server = localhost; Port = 25432; Database = postgres; User Id = banan; Password = s9n5#@Jo;",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "dotnetRunMessages": "true",
