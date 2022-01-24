@@ -16,7 +16,7 @@ namespace ComeX.Lib.Auth
 
         public int Count => _cacheDict.Count;
 
-        public TokenData this[string key] => _cacheDict[key];
+        public TokenData this[string key] => _cacheDict[key].IsValid() ? _cacheDict[key] : throw new InvalidCredentialsException("Token has expired");
 
         internal ConnectionCache()
         {
@@ -43,7 +43,11 @@ namespace ComeX.Lib.Auth
 
         public bool ContainsKey(string key) => _cacheDict.ContainsKey(key);
 
-        public bool TryGetValue(string key, [MaybeNullWhen(false)] out TokenData value) => _cacheDict.TryGetValue(key, out value);
+        public bool TryGetValue(string key, [MaybeNullWhen(false)] out TokenData value)
+        {
+            _cacheDict.TryGetValue(key, out value);
+            return value.IsValid() ? true : throw new InvalidCredentialsException("Token has expired");
+        }
 
         public IEnumerator<KeyValuePair<string, TokenData>> GetEnumerator() => _cacheDict.GetEnumerator();
 

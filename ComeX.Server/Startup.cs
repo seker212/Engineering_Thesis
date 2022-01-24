@@ -15,7 +15,7 @@ namespace ComeX.Server
 {
     public class Startup
     {
-        public const string SELF_DATABASE_URL = "Server = comx.molly.ovh; Port = 25432; Database = postgres; User Id = banan; Password = s9n5#@Jo;";
+        public static readonly string SELF_DATABASE_URL = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? throw new ArgumentNullException("Environment variable CONNECTION_STRING was not set.");
 
         public Startup(IConfiguration configuration)
         {
@@ -29,7 +29,7 @@ namespace ComeX.Server
         {
             services.AddRazorPages();
             services.AddSignalR();
-            services.AddComeXAuth(new Uri("https://localhost:44327"));
+            services.AddComeXAuth(new Uri("https://comx.molly.ovh:41443"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

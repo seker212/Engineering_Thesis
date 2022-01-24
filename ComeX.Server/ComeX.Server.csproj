@@ -2,10 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>4c8a694b-de03-4588-882e-bf695390632e</UserSecretsId>
+    <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
+    <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.11.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Npgsql" Version="6.0.0" />
     <PackageReference Include="SqlKata" Version="2.3.7" />
@@ -19,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ComeX.Lib.Common\ComeX.Lib.Common.csproj" />
+    <ProjectReference Include="..\Comex.Server.AdminCli\Comex.Server.AdminCli.csproj" />
   </ItemGroup>
 
 </Project>
