@@ -4,9 +4,9 @@ namespace ComeX.Lib.Auth
 {
     internal class UserApiRequestFactory : IUserApiRequestFactory
     {
-        public IRestRequest GetTokenInfo(string tokenHash)
+        public RestRequest GetTokenInfo(string tokenHash)
         {
-            var request = new RestRequest("api/Auth", Method.GET);
+            var request = new RestRequest("api/Auth", Method.Get);
             request.AddQueryParameter("tokenHash", tokenHash);
             return request;
         }

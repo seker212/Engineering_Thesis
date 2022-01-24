@@ -4,6 +4,6 @@ namespace ComeX.Lib.Auth
 {
     internal interface IUserApiRequestFactory
     {
-        IRestRequest GetTokenInfo(string tokenHash);
+        RestRequest GetTokenInfo(string tokenHash);
     }
 }
