@@ -65,7 +65,7 @@ namespace ComeX.WPF.Commands {
                     var hashedPassword = hashingHelper.GenerateHash(password);
 
                     _viewModel.LoadingVisibility = Visibility.Visible;
-                    bool result = await _service.Register(login, password);
+                    bool result = await _service.Register(login, hashedPassword);
                     if (result) {
                         LoginDataModel loginDataModel = await _service.Login(login, hashedPassword);
                         _viewModel.LoginDM = loginDataModel;
@@ -75,7 +75,7 @@ namespace ComeX.WPF.Commands {
                 }
             } catch (ArgumentException e) {
                 _viewModel.LoadingVisibility = Visibility.Hidden;
-                _viewModel.SetUsernameErrorMessage("This username is already taken");
+                _viewModel.SetUsernameErrorMessage("This username is already taken or invalid");
             } catch (Exception e) {
                 _viewModel.LoadingVisibility = Visibility.Hidden;
                 _viewModel.ErrorMessage = "Register failed";

@@ -366,6 +366,7 @@ namespace ComeX.WPF.ViewModels {
         public ICommand UnsetReplyCommand { get; }
         public ICommand SearchCommand { get; }
         public ICommand CloseSearchCommand { get; }
+        public ICommand OpenJoinServerCommand { get; }
 
         private ICommand _changeViewToLoginCommand;
         public ICommand ChangeViewToLoginCommand {
@@ -406,6 +407,7 @@ namespace ComeX.WPF.ViewModels {
             UnsetReplyCommand = new UnsetReplyCommand(this);
             SearchCommand = new SearchCommand(this);
             CloseSearchCommand = new CloseSearchCommand(this);
+            OpenJoinServerCommand = new OpenJoinServerCommand(this, loginService);
         }
 
         public void AddSearchMessage(MessageResponse msg) {
