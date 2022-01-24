@@ -1,0 +1,111 @@
+﻿<UserControl x:Class="ComeX.WPF.UserControls.SearchMessageUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ComeX.WPF.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style x:Key="HoverBackgroundStyle" TargetType="Grid">
+                <Setter Property="Background" Value="{StaticResource DarkBlue2}" />
+                <Style.Triggers>
+                    <Trigger Property="Grid.IsMouseOver" Value="True" >
+                        <Setter Property="Background" Value="{StaticResource DarkBlue2}" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid x:Name="MessageGrid" Style="{StaticResource HoverBackgroundStyle}">
+        <Grid.Resources>
+            <Style TargetType="{x:Type TextBlock}" x:Key="ContentStyle">
+                <Setter Property="Grid.Column" Value="1"/>
+                <Setter Property="Grid.Row" Value="1"/>
+                <Setter Property="TextWrapping" Value="Wrap"/>
+                <Setter Property="Foreground" Value="{StaticResource LightBlue1}"/>
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition x:Name="ReplyRow" ></RowDefinition>
+            <RowDefinition x:Name="AuthorDateRow"></RowDefinition>
+            <RowDefinition x:Name="ContentRow"></RowDefinition>
+            <RowDefinition x:Name="EmojiRow"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <WrapPanel Grid.Row="0"
+                   x:Name="ReplyWrapPanel"
+                   Orientation="Horizontal"
+                   Margin="15,0,0,0"
+                   Visibility="{Binding ReplyParentVisibility}">
+            <Label x:Name="ReplyLabel" Content="Replied to: " />
+            <Label x:Name="ReplyParentAuthor" Content="{Binding ReplyParentAuthor}"/>
+            <Label x:Name="ReplyParentContent" Content="{Binding ReplyParentContentPrint}"/>
+        </WrapPanel>
+
+            <WrapPanel x:Name="MessageNickDateWrapP" Grid.Row="1"
+                   Orientation="Horizontal" 
+                   VerticalAlignment="Center">
+                <WrapPanel.Resources>
+                    <Style TargetType="{x:Type TextBlock}" x:Key="AuthorDateStyle">
+                        <Setter Property="Margin" Value="5,0,10,0" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+                </WrapPanel.Resources>
+            <TextBlock x:Name="AuthorText"
+                       Style="{StaticResource AuthorDateStyle}"
+                       FontSize="18"
+                       Foreground="{StaticResource Orange1}"
+                       Text="{Binding MessageAuthor}"/>
+                <TextBlock x:Name="DateText"
+                       Style="{StaticResource AuthorDateStyle}"
+                       FontSize="14"
+                       Foreground="{StaticResource LightBlue2}"
+                       Text="{Binding MessageDateTime}"/>
+            </WrapPanel>
+
+        <TextBlock x:Name="ContentText" Grid.Row="2" Style="{StaticResource ContentStyle}"
+                   FontSize="16"
+                       Margin="5,0,0,0"
+                       Text="{Binding MessageContent}">
+        </TextBlock>
+
+        <ListView x:Name="EmojiListView" Grid.Row="3"
+                  Margin="0,0,0,15"
+                  HorizontalAlignment="Left"
+                      BorderThickness="0"
+                      Background="{x:Null}"
+                      ItemsSource="{Binding ReactionList}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"></StackPanel>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Orientation="Horizontal">
+                        <Grid x:Name="ReactionGrid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Image x:Name="ReactionImage" Grid.Column="0"
+               Height="40"
+               Width="40"
+               Source="{Binding Filename}" />
+                            <Label x:Name="ReactionCounter" Grid.Column="1"
+               FontSize="14"
+               Content="{Binding Counter}" />
+                        </Grid>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

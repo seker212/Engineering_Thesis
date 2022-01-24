@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="ComeX.WPF.UserControls.RoomUserControl"
+             x:Name="RoomUC"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ComeX.WPF"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="140"
+             >
+    <Grid x:Name="Room" Height="40" Width="140">
+        <Grid.Resources>
+            <ResourceDictionary>
+                <ResourceDictionary.MergedDictionaries>
+                    <ResourceDictionary Source="../Styles.xaml"/>
+                </ResourceDictionary.MergedDictionaries>
+
+                <Style x:Key="RoomNameButtonStyle" TargetType="{x:Type Button}" BasedOn="{StaticResource DefaultButtonStyle}">
+                    <Setter Property="Background" Value="{x:Null}" />
+                    <Setter Property="Foreground" Value="{StaticResource LightBlue1}" />
+                    <Setter Property="FontSize" Value="18" />
+                    <Setter Property="HorizontalContentAlignment" Value="Left" />
+                </Style>
+            </ResourceDictionary>
+        </Grid.Resources>
+
+        <Button x:Name="RoomNameButton" Grid.Column="1"
+                Style="{StaticResource RoomNameButtonStyle}"
+                Content="{Binding Name}"
+                Command="{Binding ChangeRoomCommand}"/>
+    </Grid>
+</UserControl>

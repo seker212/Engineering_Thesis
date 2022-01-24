@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  userapi:
+    image: seker212/et_user_api:pro
+    ports:
+      - "40443:443"
+    environment:
+      - ASPNETCORE_HTTPS_PORT=40443
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=a
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/cert.pfx
+    volumes:
+      - ~/https:/https:ro
+      - ~/ComeX/UserAPI-Atlas/appsettings.json:/app/appsettings.json

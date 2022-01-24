@@ -1,0 +1,586 @@
+﻿<UserControl x:Class="ComeX.WPF.Views.ChatView"
+             x:Name="ChatViewUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:uc="clr-namespace:ComeX.WPF.UserControls"
+             xmlns:mvm="clr-namespace:ComeX.WPF.MessageViewModels"
+             xmlns:local="clr-namespace:ComeX.WPF.Views"
+             mc:Ignorable="d"
+             MinHeight="450"
+             MinWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="../Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <UserControl.InputBindings>
+        <KeyBinding Command="{Binding SendChatMessageCommand}"
+                    Gesture="Enter" />
+    </UserControl.InputBindings>
+
+    <Grid x:Name="MainGrid"
+          Height="{Binding ActualHeight, ElementName=ChatViewUserControl}"
+          Width="{Binding ActualWidth, ElementName=ChatViewUserControl}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="120"></ColumnDefinition>
+            <ColumnDefinition Width="160"></ColumnDefinition>
+            <ColumnDefinition MinWidth="200"
+                              Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Grid x:Name="ServersUserGrid"
+              Grid.Column="0"
+              Width="120"
+              Background="{StaticResource DarkBlue3}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="80"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <WrapPanel Grid.Row="0"
+                       x:Name="ServersWrapP"
+                       ItemWidth="100"
+                       Orientation="Vertical"
+                       VerticalAlignment="Top"
+                       Width="100">
+                <ListView Grid.Row="0"
+                          Grid.ColumnSpan="2"
+                          x:Name="ServerListView"
+                          HorizontalAlignment="Center"
+                          ItemsSource="{Binding Servers}"
+                          Background="{x:Null}"
+                          BorderBrush="{x:Null}"
+                          Margin="0,5,0,5">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <WrapPanel>
+                                <uc:ServerUserControl/>
+                            </WrapPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <Button x:Name="RefreshServersButton"
+                        Style="{StaticResource RoundButtonStyle}"
+                        Margin="5"
+                        Width="40"
+                        Height="40"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Stretch"
+                        Command="{Binding GetServersListCommand}">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/Resources/Images/Icons/refresh-line-36.png" />
+                    </Button.Background>
+                </Button>
+                <Button x:Name="JoinServerButton"
+                        Style="{StaticResource RoundButtonStyle}"
+                        Margin="5"
+                        Width="40"
+                        Height="40"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Stretch"
+                        Command="{Binding OpenJoinServerCommand}">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/Resources/Images/Icons/add-circle-line.png" />
+                    </Button.Background>
+                </Button>
+            </WrapPanel>
+
+            <WrapPanel Grid.Row="1"
+                       x:Name="UserWrapP"
+                       Orientation="Vertical"
+                       Margin="5,0,5,10"
+                       ItemWidth="70"
+                       Width="70">
+                <WrapPanel.Resources>
+                    <Style TargetType="{x:Type Button}"
+                           BasedOn="{StaticResource RoundButtonStyle}">
+                        <Setter Property="Margin"
+                                Value="0,5,0,5" />
+                        <Setter Property="Width"
+                                Value="60" />
+                        <Setter Property="Height"
+                                Value="60" />
+                        <Setter Property="HorizontalAlignment"
+                                Value="Center" />
+                        <Setter Property="VerticalAlignment"
+                                Value="Stretch" />
+
+                    </Style>
+                    <Style TargetType="{x:Type TextBox}">
+                        <Setter Property="Background"
+                                Value="{x:Null}" />
+                        <Setter Property="BorderBrush"
+                                Value="{x:Null}" />
+                        <Setter Property="Foreground"
+                                Value="{StaticResource LightBlue1}" />
+                        <Setter Property="FontSize"
+                                Value="14" />
+                    </Style>
+                </WrapPanel.Resources>
+
+                <Button x:Name="Settings"
+                        Width="60"
+                        Height="60"                     
+                        Command="{Binding OpenSettingsCommand}">
+                    <Button.Background>
+                        <ImageBrush ImageSource="/Resources/Images/Icons/settings-3-line.png" />
+                    </Button.Background>
+                </Button>
+            </WrapPanel>
+        </Grid>
+
+        <Grid Grid.Column="1"
+              Background="{StaticResource DarkBlue1}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <WrapPanel Grid.Row="0"
+                       x:Name="RoomsWrapP"
+                       Width="160"
+                       Orientation="Vertical">
+                <ListView Grid.Row="0"
+                          Grid.ColumnSpan="2"
+                          x:Name="RoomsListView"
+                          Margin="10,5,5,5"
+                          ItemsSource="{Binding Rooms}"
+                          Background="{x:Null}"
+                          BorderBrush="{x:Null}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <WrapPanel>
+                                <uc:RoomUserControl />
+                            </WrapPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </WrapPanel>
+
+            <Label Grid.Row="1"
+                   x:Name="ArchivedRoomsLabel"
+                   Style="{StaticResource DefaultHeaderLabelStyle}"
+                   Margin="0,15,0,0"
+                   FontSize="14"
+                   HorizontalAlignment="Center"
+                   Visibility="{Binding ArchivedRoomsVisibility}"
+                   Content="Archived rooms" />
+
+            <WrapPanel Grid.Row="2"
+                       x:Name="ArchivedRoomsWrapP"
+                       Width="160"
+                       Orientation="Vertical">
+                <ListView Grid.Row="0"
+                          Grid.ColumnSpan="2"
+                          x:Name="ArchivedRoomsListView"
+                          Margin="5"
+                          ItemsSource="{Binding ArchivedRooms}"
+                          Background="{x:Null}"
+                          BorderBrush="{x:Null}">
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="ListViewItem">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <WrapPanel>
+                                <uc:RoomUserControl />
+                            </WrapPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </WrapPanel>
+        </Grid>
+
+        <Grid Grid.Column="2"
+              x:Name="ContentGrid"
+              MinWidth="200">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"></RowDefinition>
+                <RowDefinition></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="220" />
+                </Grid.ColumnDefinitions>
+                <Rectangle Grid.Column="0"
+                           Fill="{StaticResource DarkBlue2}" />
+                <WrapPanel Grid.Column="0"
+                           x:Name="RoomTitle"
+                           MinWidth="30"
+                           Height="40"
+                           Orientation="Horizontal"
+                           Background="{StaticResource DarkBlue2}">
+
+                    <Border BorderBrush="{x:Null}"
+                            Height="40">
+                        <TextBlock x:Name="SelectedRoomTitle"
+                                   Style="{StaticResource DefaultHeaderTextBlockStyle}"
+                                   VerticalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   Width="120"
+                                   Margin="10,5,5,5"
+                                   Text="{Binding CurrentRoomName}" />
+                    </Border>
+                </WrapPanel>
+
+                <WrapPanel Grid.Column="1"
+                           Width="220"
+                           x:Name="SearchToolsWrapP"
+                           Background="{StaticResource DarkBlue2}">
+                    <WrapPanel.Resources>
+                        <Style TargetType="{x:Type Button}"
+                               BasedOn="{StaticResource RoundButtonStyle}">
+                            <Setter Property="Margin"
+                                    Value="0,5,0,5" />
+                            <Setter Property="Width"
+                                    Value="40" />
+                            <Setter Property="Height"
+                                    Value="40" />
+                            <Setter Property="HorizontalAlignment"
+                                    Value="Stretch" />
+                            <Setter Property="VerticalAlignment"
+                                    Value="Center" />
+                        </Style>
+                    </WrapPanel.Resources>
+                    <TextBox x:Name="SearchTextBox"
+                             Template="{StaticResource BorderTextBoxTemplate}"
+                             BorderThickness="2"
+                             BorderBrush="{StaticResource DarkBlue2}"
+                             Height="40"
+                             Width="170"
+                             FontSize="16"
+                             Padding="5,0,0,0"
+                             VerticalContentAlignment="Center"
+                             MaxLength="{Binding SearchMaxLen}"
+                             Foreground="{StaticResource LightBlue1}"
+                             CaretBrush="{StaticResource LightBlue1}"
+                             Background="{StaticResource DarkBlue3}"
+                             Text="{Binding SearchPhrase}" />
+                    <Button x:Name="SearchButton"
+                            IsEnabled="{Binding SendMessageEnabled}"
+                            Command="{Binding SearchCommand}"
+                            Margin="5">
+                        <Button.Background>
+                            <ImageBrush ImageSource="/Resources/Images/Icons/search-line.png" />
+                        </Button.Background>
+                    </Button>
+                </WrapPanel>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition x:Name="MessagesColumn"
+                                      Width="*" />
+                    <ColumnDefinition Width="Auto"
+                                      MaxWidth="250" />
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0"
+                      x:Name="RoomMessagesGrid"
+                      Background="{StaticResource DarkBlue3}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" x:Name="ContentRow"></RowDefinition>
+                        <RowDefinition Height="130"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <ListView x:Name="MessagesListView"
+                              Margin="15,0,5,0"
+                              HorizontalAlignment="Stretch"
+                              ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                              ScrollViewer.CanContentScroll="False"
+                              ItemsSource="{Binding CurrentRoomMessages}"
+                              Background="{StaticResource DarkBlue3}"
+                              BorderBrush="{x:Null}"
+                              Loaded="ListView_OnLoaded">
+                        <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="ListViewItem">
+                                                <ContentPresenter />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Style.Triggers>
+                                        <Trigger Property="Control.IsMouseOver"
+                                                 Value="True">
+                                            <Setter Property="Control.Background"
+                                                    Value="Transparent" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel x:Name="MessagesWrapP"
+                                                Orientation="Vertical" />
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                            <ListView.Resources>
+                                <DataTemplate DataType="{x:Type mvm:ChatMessageViewModel}">
+                                    <uc:MessageUserControl />
+                                </DataTemplate>
+                                <DataTemplate DataType="{x:Type mvm:SurveyViewModel}">
+                                    <uc:SurveyUserControl />
+                                </DataTemplate>
+                            <DataTemplate DataType="{x:Type mvm:LoadHistoryViewModel}">
+                                <Button x:Name="LoadMessagesButton"
+                                        Style="{StaticResource RoundButtonStyle}"
+                                        HorizontalAlignment="Center"
+                                        Width="30"
+                                        Height="30"
+                                        Command="{Binding LoadHistoryCommand}">
+                                    <Button.Background>
+                                        <ImageBrush ImageSource="/Resources/Images/Icons/refresh-line-24.png" />
+                                    </Button.Background>
+                                </Button>
+                            </DataTemplate>
+                            <DataTemplate DataType="{x:Type mvm:LoadingViewModel}">
+                                <uc:LoadingUserControl
+                                    Visibility="{Binding LoadingVisibility}"
+                                    Margin="10"/>
+                            </DataTemplate>
+                        </ListView.Resources>
+                        </ListView>
+
+                        <Grid Grid.Row="1"
+                          x:Name="TypeGrid"
+                          Margin="5,0,5,10">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="80"></RowDefinition>
+                            <RowDefinition Height="50"></RowDefinition>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Vertical">
+                            <TextBox Template="{StaticResource BorderTextBoxTemplate}"
+                                     Grid.Row="0"
+                                     x:Name="TypeTextBox"
+                                     FontSize="16"
+                                     BorderThickness="4"
+                                     BorderBrush="{StaticResource DarkBlue3}"
+                                     Foreground="{StaticResource LightBlue1}"
+                                     CaretBrush="{StaticResource LightBlue1}"
+                                     Background="{StaticResource DarkBlue2}"
+                                     TextWrapping="Wrap"
+                                     FontStyle="Normal"
+                                     Height="80"
+                                     Padding="5,3,5,3"
+                                     MaxLength="{Binding MessageMaxLen}"
+                                     Text="{Binding Content}" />
+                        </StackPanel>
+
+                        <Grid x:Name="TypeToolsGrid"
+                              Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.Resources>
+                                <Style TargetType="{x:Type Button}"
+                                       BasedOn="{StaticResource RoundButtonStyle}">
+                                    <Setter Property="Margin"
+                                            Value="5" />
+                                    <Setter Property="Width"
+                                            Value="30" />
+                                    <Setter Property="Height"
+                                            Value="30" />
+                                    <Setter Property="HorizontalAlignment"
+                                            Value="Right" />
+                                    <Setter Property="VerticalAlignment"
+                                            Value="Center" />
+                                </Style>
+                            </Grid.Resources>
+                            <WrapPanel Grid.Column="0"
+                                       x:Name="ReplyWrapPanel"
+                                       Orientation="Horizontal"
+                                       Visibility="{Binding ReplyParentVisibility}">
+                                <WrapPanel.Resources>
+                                    <Style TargetType="{x:Type Label}">
+                                        <Setter Property="Foreground"
+                                                Value="{StaticResource LightBlue2}" />
+                                        <Setter Property="VerticalAlignment"
+                                                Value="Center" />
+                                    </Style>
+                                </WrapPanel.Resources>
+                                <Button x:Name="DeleteReplyButton"
+                                        Command="{Binding UnsetReplyCommand}">
+                                    <Button.Background>
+                                        <ImageBrush ImageSource="/Resources/Images/Icons/close-circle-line.png" />
+                                    </Button.Background>
+                                </Button>
+                                <Label x:Name="ReplyLabel"
+                                       Content="Replying to: " />
+                                <Label x:Name="ReplyParentAuthor"
+                                       Content="{Binding ReplyParentAuthor}" />
+                                <Label x:Name="ReplyParentContent"
+                                       Content="{Binding ReplyParentContentPrint}" />
+                            </WrapPanel>
+                            <WrapPanel Grid.Column="1"
+                                       Margin="0,0,40,0"
+                                       x:Name="TypeToolsWrapPanel"
+                                       Orientation="Horizontal"
+                                       FlowDirection="RightToLeft">
+                                <Button x:Name="SendButton"
+                                        IsEnabled="{Binding SendMessageEnabled}"
+                                        Command="{Binding SendChatMessageCommand}">
+                                    <Button.Background>
+                                        <ImageBrush ImageSource="/Resources/Images/Icons/send-plane-2-line.png" />
+                                    </Button.Background>
+                                </Button>
+                                <Button x:Name="SurveyButton"
+                                        IsEnabled="{Binding SendMessageEnabled}"
+                                        Command="{Binding CreateSurveyCommand}">
+                                    <Button.Background>
+                                        <ImageBrush ImageSource="/Resources/Images/Icons/survey-line.png" />
+                                    </Button.Background>
+                                </Button>
+                            </WrapPanel>
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Column="1"
+                      Width="250"
+                      Visibility="{Binding SearchVisibility}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="20" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"
+                            BorderThickness="0"
+                            Background="{StaticResource DarkBlue2}"
+                            Foreground="{StaticResource LightBlue2}"
+                            Content=">"
+                            Command="{Binding CloseSearchCommand}" />
+                    <Rectangle Grid.Column="1"
+                               Fill="{StaticResource DarkBlue1}"
+                               Width="230" />
+                    <Grid Grid.Column="1"
+                          x:Name="SearchGrid">
+                        <Grid.RowDefinitions>
+                            <RowDefinition MaxHeight="150" Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid x:Name="SearchTopGrid"
+                              Grid.Row="0"
+                              Margin="5">
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+
+                            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                                <Label x:Name="SearchPhraseLabel"
+                                       Foreground="{StaticResource LightBlue2}"
+                                       FontSize="14"
+                                       Content="Found " />
+                                <Label x:Name="SearchPhraseContentNumber"
+                                       Foreground="{StaticResource LightBlue2}"
+                                       FontSize="14"
+                                       Content="{Binding SearchPhraseNumberLabel}" />
+                                <Label Foreground="{StaticResource LightBlue2}"
+                                       FontSize="14"
+                                       Content="result(s)" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="1" Orientation="Horizontal">
+                                <Label 
+                                       Foreground="{StaticResource LightBlue2}"
+                                       FontSize="14"
+                                       Content="For phrase " />
+                                <TextBlock x:Name="SearchPhraseContent"
+                                       Foreground="{StaticResource LightBlue2}"
+                                       FontSize="14"
+                                       Width="100"
+                                       VerticalAlignment="Center"
+                                       TextWrapping="Wrap"
+                                       Text="{Binding SearchPhraseLabel}" />
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="2" Orientation="Horizontal">
+                                <Label x:Name="SearchRoomLabel"
+                                       Foreground="{StaticResource LightBlue2}"
+                                       FontSize="14"
+                                       Content="In room: " />
+                                <Label x:Name="SearchRoomContent"
+                                       Foreground="{StaticResource LightBlue2}"
+                                       FontSize="14"
+                                       Content="{Binding SearchPhraseRoom}" />
+                            </StackPanel>
+                        </Grid>
+                        <WrapPanel Grid.Row="1"
+                                   x:Name="SearchWrapP"
+                                   Background="{StaticResource DarkBlue1}"
+                                   Width="220">
+                            <ListView x:Name="SearchListView"
+                                      Margin="10"
+                                      Width="220"
+                                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                      ItemsSource="{Binding SearchMessages}"
+                                      Background="{StaticResource DarkBlue1}"
+                                      BorderBrush="{x:Null}">
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListViewItem">
+                                                    <ContentPresenter />
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapPanel x:Name="SearchMessagesWrapP"
+                                                   Orientation="Vertical"/>
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                                <ListView.Resources>
+                                    <DataTemplate DataType="{x:Type mvm:ChatMessageViewModel}">
+                                        <uc:SearchMessageUserControl />
+                                    </DataTemplate>
+                                </ListView.Resources>
+                            </ListView>
+                        </WrapPanel>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

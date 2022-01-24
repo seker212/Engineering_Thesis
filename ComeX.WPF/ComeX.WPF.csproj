@@ -6,4 +6,57 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="ExampleImages\**" />
+    <EmbeddedResource Remove="ExampleImages\**" />
+    <None Remove="ExampleImages\**" />
+    <Page Remove="ExampleImages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\Placeholders\messagePlaceholder.jpg" />
+    <Resource Include="Resources\Images\Placeholders\answerPlaceholder.jpg" />
+    <Resource Include="Resources\Images\Placeholders\questionPlaceholder.jpg" />
+    <Resource Include="Resources\Images\Placeholders\oldPasswordPlaceholder.jpg" />
+    <Resource Include="Resources\Images\Placeholders\newPasswordPlaceholder.jpg" />
+    <Resource Include="Resources\Images\Placeholders\passwordPlaceholder.jpg" />
+    <Resource Include="Resources\Images\Placeholders\urlPlaceholder.jpg" />
+    <Resource Include="Resources\Fonts\Nunito-Medium.ttf" />
+    <Resource Include="Resources\Images\logo1.png" />
+    <Resource Include="Resources\Images\logo2.png" />
+    <Resource Include="Resources\Images\logo3.png" />
+    <Resource Include="Resources\Images\Emojis\1.png" />
+    <Resource Include="Resources\Images\Emojis\2.png" />
+    <Resource Include="Resources\Images\Emojis\3.png" />
+    <Resource Include="Resources\Images\Emojis\4.png" />
+    <Resource Include="Resources\Images\Emojis\5.png" />
+    <Resource Include="Resources\Images\Emojis\6.png" />
+    <Resource Include="Resources\Images\Emojis\7.png" />
+    <Resource Include="Resources\Images\Icons\add-circle-line.png" />
+    <Resource Include="Resources\Images\Icons\close-circle-line.png" />
+    <Resource Include="Resources\Images\Icons\heart-add-line.png" />
+    <Resource Include="Resources\Images\Icons\refresh-line-24.png" />
+    <Resource Include="Resources\Images\Icons\refresh-line-36.png" />
+    <Resource Include="Resources\Images\Icons\reply-line.png" />
+    <Resource Include="Resources\Images\Icons\search-line.png" />
+    <Resource Include="Resources\Images\Icons\send-plane-2-line.png" />
+    <Resource Include="Resources\Images\Icons\settings-3-line.png" />
+    <Resource Include="Resources\Images\Icons\survey-line.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
+    <Folder Include="Windows\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Emoji.Wpf" Version="0.3.3" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ComeX.Lib.Common\ComeX.Lib.Common.csproj" />
+  </ItemGroup>
+
 </Project>
