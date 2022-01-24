@@ -63,12 +63,12 @@ namespace ComeX.WPF.ViewModels {
                 ArchivedRooms = _currentServer.ArchivedRoomList;
                 CurrentRoom = null;
                 OnPropertyChanged(nameof(CurrentServer));
-                OnPropertyChanged(nameof(Rooms));
+
             }
         }
 
-        private List<RoomViewModel> _rooms;
-        public List<RoomViewModel> Rooms {
+        private ObservableCollection<RoomViewModel> _rooms;
+        public ObservableCollection<RoomViewModel> Rooms {
             get {
                 return _rooms;
             }
@@ -80,8 +80,8 @@ namespace ComeX.WPF.ViewModels {
             }
         }
 
-        private List<RoomViewModel> _archivedRooms;
-        public List<RoomViewModel> ArchivedRooms {
+        private ObservableCollection<RoomViewModel> _archivedRooms;
+        public ObservableCollection<RoomViewModel> ArchivedRooms {
             get {
                 return _archivedRooms;
             }

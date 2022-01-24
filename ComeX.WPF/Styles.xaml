@@ -209,12 +209,18 @@
     </ControlTemplate>
 
 
-    <Style x:Key="WindowRoundButtonStyle" TargetType="{x:Type Button}">
-        <Setter Property="Template" Value="{StaticResource RoundedButtonTemplate}" />
-        <Setter Property="FontSize" Value="12" />
-        <Setter Property="Foreground" Value="{StaticResource DarkBlue1}" />
-        <Setter Property="BorderThickness" Value="4" />
-        <Setter Property="BorderBrush" Value="{StaticResource DarkBlue3}" />
+    <Style x:Key="WindowRoundButtonStyle"
+           TargetType="{x:Type Button}">
+        <Setter Property="Template"
+                Value="{StaticResource RoundedButtonTemplate}" />
+        <Setter Property="FontSize"
+                Value="12" />
+        <Setter Property="Foreground"
+                Value="{StaticResource DarkBlue1}" />
+        <Setter Property="BorderThickness"
+                Value="4" />
+        <Setter Property="BorderBrush"
+                Value="{StaticResource DarkBlue3}" />
     </Style>
 
 </ResourceDictionary>

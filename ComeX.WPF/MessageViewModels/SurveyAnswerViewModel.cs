@@ -19,11 +19,20 @@ namespace ComeX.WPF.MessageViewModels {
             }
         }
         public bool IsChecked { get; set; }
+        public bool IsRoomArchived { get; set; }
+        public bool AlreadyVoted { get; set; }
+
+        public bool CheckboxEnabled {
+            get {
+                return (!IsRoomArchived && !AlreadyVoted);
+            }
+        }
 
         public SurveyAnswerViewModel() { }
-        public SurveyAnswerViewModel(SurveyAnswerResponse answerResponse, bool isChecked) {
+        public SurveyAnswerViewModel(SurveyAnswerResponse answerResponse, bool isChecked, bool isRoomArchived) {
             AnswerResponse = answerResponse;
             IsChecked = isChecked;
+            IsRoomArchived = isRoomArchived;
         }
     }
 }

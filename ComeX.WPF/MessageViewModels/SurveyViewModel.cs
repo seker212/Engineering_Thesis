@@ -89,8 +89,11 @@ namespace ComeX.WPF.MessageViewModels {
             }
             set {
                 _voted = value;
-                if (value) ButtonContent = "Already voted";
-                else ButtonContent = "Vote";
+                if (value) {
+                    ButtonContent = "Already voted";
+                    foreach (var ans in SurveyAnswers)
+                        ans.AlreadyVoted = true;
+                } else ButtonContent = "Vote";
                 OnPropertyChanged(nameof(Voted));
             }
         }
@@ -120,7 +123,7 @@ namespace ComeX.WPF.MessageViewModels {
 
             SurveyAnswers = new List<SurveyAnswerViewModel>();
             foreach (var answer in Survey.AnswerList) {
-                SurveyAnswers.Add(new SurveyAnswerViewModel(answer, false));
+                SurveyAnswers.Add(new SurveyAnswerViewModel(answer, false, IsRoomArchived));
             }
         }
 

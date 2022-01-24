@@ -10,7 +10,7 @@
         Title="ReactionWindow"
         WindowStyle="None"
         ResizeMode="NoResize"
-        Height="90"
+        Height="160"
         Width="400">
     <Window.Resources>
         <ResourceDictionary>
@@ -24,8 +24,24 @@
             Style="{StaticResource WindowBorderStyle}">
         <Grid x:Name="ReactionMainGrid"
               Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="50" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Button x:Name="CancelButton"
+                    Grid.Row="0"
+                    Style="{StaticResource WindowRoundButtonStyle}"
+                    Margin="0,5,10,5"
+                    FontSize="14"
+                    HorizontalAlignment="Right"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Width="70"
+                    Content=" Close "
+                    Click="CancelButtonHandler" />
             <ListView x:Name="AnswersListView"
-                      Grid.Row="0"
+                      Grid.Row="1"
                       BorderThickness="0"
                       HorizontalAlignment="Center"
                       Background="{StaticResource DarkBlue3}"
@@ -38,20 +54,52 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <Button Style="{StaticResource DefaultButtonStyle}"
-                                    Content="{Binding Name}"
-                                    Foreground="{StaticResource DarkBlue3}"
-                                    Height="40"
-                                    Width="40"
-                                    Click="AddReactionButtonHandler">
-                                <Button.Background>
-                                    <ImageBrush ImageSource="{Binding Filename}" />
-                                </Button.Background>
-                            </Button>
+                            <ToggleButton Name="ReactionTButton"
+                                          Foreground="{StaticResource DarkBlue3}"
+                                          Background="{x:Null}"
+                                          BorderThickness="0"
+                                          Height="40"
+                                          Width="40"
+                                          IsChecked="{Binding IsChecked}">
+
+                                <Image Width="40"
+                                       Height="40"
+                                       HorizontalAlignment="Center"
+                                       VerticalAlignment="Center">
+                                    <Image.Style>
+                                        <Style TargetType="{x:Type Image}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsChecked, Mode=TwoWay, ElementName=ReactionTButton}"
+                                                             Value="True">
+                                                    <Setter Property="Source"
+                                                            Value="{Binding Filename}" />
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding IsChecked, Mode=TwoWay, ElementName=ReactionTButton}"
+                                                             Value="False">
+                                                    <Setter Property="Source"
+                                                            Value="{Binding Filename}" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Image.Style>
+                                </Image>
+
+                            </ToggleButton>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Button x:Name="ReactButton"
+                    Grid.Row="2"
+                    Style="{StaticResource WindowRoundButtonStyle}"
+                    Margin="0,5,10,5"
+                    FontSize="14"
+                    HorizontalAlignment="Center"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
+                    Width="120"
+                    Content=" Send reaction "
+                    Command="{Binding SendReactionCommand}" />
         </Grid>
     </Border>
 </Window>
