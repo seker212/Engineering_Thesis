@@ -18,6 +18,13 @@
                     <Setter Property="Foreground" Value="{StaticResource LightBlue1}" />
                     <Setter Property="FontSize" Value="18" />
                     <Setter Property="HorizontalContentAlignment" Value="Left" />
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                            <Setter Property="Background"
+                                    Value="{StaticResource DarkBlue2}" />
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
             </ResourceDictionary>
         </Grid.Resources>

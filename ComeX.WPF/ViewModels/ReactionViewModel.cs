@@ -1,5 +1,6 @@
 ﻿using ComeX.Lib.Common.ServerCommunicationModels;
 using ComeX.WPF.Commands;
+using ComeX.WPF.MessageViewModels;
 using ComeX.WPF.Models;
 using System;
 using System.Collections.Generic;
@@ -11,16 +12,6 @@ using System.Windows.Input;
 
 namespace ComeX.WPF.ViewModels {
     public class ReactionViewModel : BaseViewModel {
-        private ReactionMessage _reaction;
-        public ReactionMessage Reaction {
-            get {
-                return _reaction;
-            }
-            set {
-                _reaction = value;
-            }
-        }
-
         private Visibility _windowVisibility;
         public Visibility WindowVisibility {
             get {
@@ -45,16 +36,34 @@ namespace ComeX.WPF.ViewModels {
 
         public object Visibility { get; internal set; }
 
-        public ICommand ChooseReactionCommand { get; }
+        public string ChosenReaction {
+            get {
+                foreach (var r in ReactionList) {
+                    if (r.IsChecked) {
+                        return r.Name;
+                    }
+                }
+                return string.Empty;
+            }
+        }
 
-        public ReactionViewModel(ChatViewModel chatViewModel) {
-            ChooseReactionCommand = new ChooseReactionCommand(chatViewModel, this);
+        public ICommand SendReactionCommand { get; }
 
-            Reaction = null;
+        public ReactionViewModel(ChatViewModel chatViewModel, ChatMessageViewModel msgViewModel) {
+            SendReactionCommand = new SendReactionCommand(chatViewModel, msgViewModel, this);
+
             ReactionList = new List<ReactionModel>();
             for (int i = 1; i < 8; i++) {
-                ReactionList.Add(new ReactionModel(i.ToString(), "/Resources/Images/Emojis/" + i.ToString() + ".png"));
+                ReactionList.Add(new ReactionModel(this, i.ToString(), "/Resources/Images/Emojis/" + i.ToString() + ".png"));
             }
+        }
+
+        public void UpdateChecks(string name) {
+            foreach (var r in ReactionList) {
+                if (r.Name != name)
+                    r.IsChecked = false;
+            }
+            OnPropertyChanged(nameof(ReactionList));
         }
     }
 }

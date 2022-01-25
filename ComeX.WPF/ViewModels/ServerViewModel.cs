@@ -8,6 +8,7 @@ using ComeX.WPF.ViewModels;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,8 +29,8 @@ namespace ComeX.WPF.ViewModels {
         public string Url;
         public HubConnection Connection;
         public ChatService Service;
-        public List<RoomViewModel> RoomList;
-        public List<RoomViewModel> ArchivedRoomList;
+        public ObservableCollection<RoomViewModel> RoomList;
+        public ObservableCollection<RoomViewModel> ArchivedRoomList;
 
         private ChatViewModel _chatViewModel;
 
@@ -39,8 +40,8 @@ namespace ComeX.WPF.ViewModels {
         public ServerViewModel(string url, string name, ChatViewModel chatViewModel) {
             Url = url;
             Name = name;
-            RoomList = new List<RoomViewModel>();
-            ArchivedRoomList = new List<RoomViewModel>();
+            RoomList = new ObservableCollection<RoomViewModel>();
+            ArchivedRoomList = new ObservableCollection<RoomViewModel>();
             _chatViewModel = chatViewModel;
 
             ChangeServerCommand = new ChangeServerCommand(chatViewModel, this);

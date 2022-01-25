@@ -706,7 +706,7 @@ namespace ComeX.Server.Hubs
                     MessageResponse rsp = new MessageResponse(message.Id, creator.Username, message.SendTime, message.RoomId, message.ParentId, message.Content, emojiList);
                     LoadMessageResponse response = new LoadMessageResponse(rsp);
 
-                    await Clients.Caller.SendAsync("Message_updated", response);
+                    await Clients.All.SendAsync("Message_updated", response);
 
                 }
                 catch (Exception e)

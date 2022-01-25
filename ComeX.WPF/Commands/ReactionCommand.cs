@@ -29,14 +29,7 @@ namespace ComeX.WPF.Commands {
 
         public async void Execute(object parameter) {
             try {
-                ReactionMessage newReaction = OpenReactionWindow();
-                if (newReaction != null) {
-                    newReaction.Token = _chatViewModel.LoginDM.Token;
-                    newReaction.MessageId = _msgViewModel.Message.Id;
-
-                    await _chatViewModel.CurrentServer.Service.AddReaction(newReaction);
-                    _chatViewModel.ErrorMessage = string.Empty;
-                }
+                OpenReactionWindow();
             } catch (ArgumentException e) {
                 _chatViewModel.ErrorMessage = e.Message;
             } catch (Exception e) {
@@ -44,19 +37,14 @@ namespace ComeX.WPF.Commands {
             }
         }
 
-        private ReactionMessage OpenReactionWindow() {
-            ReactionMessage newReaction;
-
+        private void OpenReactionWindow() {
             _reactionView = new ReactionWindow();
-            ReactionViewModel reactionViewModel = new ReactionViewModel(_chatViewModel);
+            ReactionViewModel reactionViewModel = new ReactionViewModel(_chatViewModel, _msgViewModel);
             _reactionView.DataContext = reactionViewModel;
             _reactionView.Owner = Application.Current.MainWindow;
             _reactionView.WindowStartupLocation = WindowStartupLocation.CenterOwner;
 
             _reactionView.ShowDialog();
-            newReaction = reactionViewModel.Reaction;
-
-            return newReaction;
         }
     }
 }

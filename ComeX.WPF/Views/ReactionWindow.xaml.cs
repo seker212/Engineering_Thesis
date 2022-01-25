@@ -33,16 +33,8 @@ namespace ComeX.WPF.Windows {
             Reaction = null;
         }
 
-        protected override void OnDeactivated(EventArgs e) {
-            base.OnDeactivated(e);
+        private void CancelButtonHandler(object sender, RoutedEventArgs e) {
             this.Close();
-        }
-
-        private void AddReactionButtonHandler(object sender, RoutedEventArgs e) {
-            string buttonName = ((Button)sender).Content.ToString();
-            if (this.DataContext != null) {
-                ((dynamic)this.DataContext).ChooseReactionCommand.Execute(buttonName);
-            }
         }
     }
 }

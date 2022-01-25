@@ -162,7 +162,7 @@
                                 </Grid.Resources>
                                 <CheckBox x:Name="AnswerButton"
                                           Grid.Column="0"
-                                          IsEnabled="{Binding IsRoomArchived}"
+                                          IsEnabled="{Binding CheckboxEnabled}"
                                           VerticalAlignment="Center"
                                           VerticalContentAlignment="Center"
                                           Foreground="{StaticResource LightBlue1}"

@@ -20,7 +20,8 @@
 
     <UserControl.InputBindings>
         <KeyBinding Command="{Binding SendChatMessageCommand}"
-                    Gesture="Enter" />
+                    Gesture="Enter"
+                    Key="Return" />
     </UserControl.InputBindings>
 
     <Grid x:Name="MainGrid"
@@ -400,7 +401,8 @@
                                      Height="80"
                                      Padding="5,3,5,3"
                                      MaxLength="{Binding MessageMaxLen}"
-                                     Text="{Binding Content}" />
+                                     Text="{Binding Content, UpdateSourceTrigger=PropertyChanged}">
+                            </TextBox>
                         </StackPanel>
 
                         <Grid x:Name="TypeToolsGrid"
