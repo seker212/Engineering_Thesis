@@ -13,11 +13,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComeX.Lib.Auth", "ComeX.Lib
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComeX.Lib.Common", "ComeX.Lib.Common\ComeX.Lib.Common.csproj", "{6D0DF8E1-2998-4C04-9E2A-B6869C4ADDA9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComeX.UserDatabaseAPI.Tests", "ComeX.UserDatabaseAPI.Tests\ComeX.UserDatabaseAPI.Tests.csproj", "{421096F6-9874-499E-B646-E555B10D45EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComeX.UserDatabaseAPI.Tests", "ComeX.UserDatabaseAPI.Tests\ComeX.UserDatabaseAPI.Tests.csproj", "{421096F6-9874-499E-B646-E555B10D45EB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Comex.Server.AdminCli", "Comex.Server.AdminCli\Comex.Server.AdminCli.csproj", "{DA5B8A7A-B4B1-49A6-8D5B-3450919A37E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComeX.Server.Tests", "ComeX.Server.Tests\ComeX.Server.Tests.csproj", "{95038E4C-1801-4B60-BF5D-6479BA0E7E37}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ComeX.Server.Tests", "ComeX.Server.Tests\ComeX.Server.Tests.csproj", "{95038E4C-1801-4B60-BF5D-6479BA0E7E37}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Setup", "Setup\Setup.vdproj", "{DAFFD631-25AF-4F33-954F-C062B81B4EE0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,8 @@ Global
 		{95038E4C-1801-4B60-BF5D-6479BA0E7E37}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{95038E4C-1801-4B60-BF5D-6479BA0E7E37}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{95038E4C-1801-4B60-BF5D-6479BA0E7E37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAFFD631-25AF-4F33-954F-C062B81B4EE0}.Debug|Any CPU.ActiveCfg = Debug
+		{DAFFD631-25AF-4F33-954F-C062B81B4EE0}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
