@@ -718,5 +718,11 @@ namespace ComeX.Server.Hubs
                 await Clients.Caller.SendAsync("Not_allowed");
             }
         }
+
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            _loginManager.Logout(Context.ConnectionId);
+            return base.OnDisconnectedAsync(exception);
+        }
     }
 }

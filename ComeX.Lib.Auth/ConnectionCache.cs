@@ -23,19 +23,19 @@ namespace ComeX.Lib.Auth
             _cacheDict = new ConcurrentDictionary<string, TokenData>();
         }
 
-        internal bool TryAdd(string connectionId, TokenData tokenData)
+        internal bool TryAdd(string token, TokenData tokenData)
         {
             if (_cacheDict.Values.Contains(tokenData))
             {
                 var existingTokenData = _cacheDict.First(x => x.Value.Equals(tokenData)).Value;
-                existingTokenData.AddConnectionId(connectionId);
-                return _cacheDict.TryAdd(connectionId, existingTokenData);
+                existingTokenData.AddConnectionId(token);
+                return _cacheDict.TryAdd(token, existingTokenData);
             }
             else
             {
                 if (tokenData.ConnectionIds.Count == 0)
-                    tokenData.AddConnectionId(connectionId);
-                return _cacheDict.TryAdd(connectionId, tokenData);
+                    tokenData.AddConnectionId(token);
+                return _cacheDict.TryAdd(token, tokenData);
             }
         }
 
